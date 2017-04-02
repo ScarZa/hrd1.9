@@ -122,7 +122,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                                  <div class="row">
                                  <div class="col-lg-12">
                                      <table width="100%" border="0" cellspacing="0" >
-                                         <tr><td width="50%" valign="top"><br><br>
+                                         <tr><td width="50%" valign="top"><br>
                                                  <p><u>สถิติการลาปีงบประมาณนี้</u></p><br>
                                      <table width="75%" border="1" cellspacing="" cellpadding="" frame="below" class="divider">
   <tr>
@@ -265,7 +265,7 @@ where p.empno='$empno' and p.workid='$workid' order by print_id desc");
                                          <?php }?>
                                          </td>
                                          <td width="50%">
-                                     <br><br>
+                                     <br>
                                          <center>ขอแสดงความนับถือ<br><br>
                                                      ..........................................................<br>
                                                      ( <?= $work['fullname']?> )<br>
