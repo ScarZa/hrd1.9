@@ -60,7 +60,7 @@ $befor_leave=  mysqli_fetch_assoc($sql_leave);
 
 $befor_workid=$befor_leave['workid'];
 for($i = 0; $i < count($_POST["typela"]); $i++){
-    if (!empty(trim($_POST["typela"][$i]))) {
+    if (!empty($_POST["typela"][$i])) {
         $typela[$i]= $_POST["typela"][$i];
         $last_amount[$i]= $_POST["leave_type"][$i];
     }
@@ -84,7 +84,7 @@ function removespecialchars($raw) {
     return preg_replace('#[^a-zA-Z0-9.-]#u', '', $raw);
 }
 
-if (!empty(trim(isset($_FILES["image"]["name"])?$_FILES["image"]["name"]:''))) {
+if (!empty($_FILES["image"]["name"])) {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], "myfile/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
         $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
         $image = removespecialchars($file1);
@@ -197,7 +197,7 @@ function removespecialchars($raw) {
     return preg_replace('#[^a-zA-Z0-9.-]#u', '', $raw);
 }
 
-if (!empty(trim(isset($_FILES["image"]["name"])?$_FILES["image"]["name"]:''))) {
+if (!empty($_FILES["image"]["name"])) {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], "time_l/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
         $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
         $image = removespecialchars($file1);
