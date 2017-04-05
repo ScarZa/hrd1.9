@@ -57,9 +57,9 @@ if (empty($_SESSION['user'])) {
                         <tr>
                             <td>
                                 <div class="form-group">
-                                    <select name="name" id="name" class="form-control select2" style="width: 200px"> 
+                                    <select name="name" id="name" class="form-control select2" style="width: 100%"> 
 				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
-				 echo "<option value=''> -- เลือกบุคลากร -- </option>";
+				 echo "<option value=''> - ค้นหาด้วยชื่อบุคลากร - </option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
           if($result['empno']==$_POST['name']){$selected='selected';}else{$selected='';}
 				 echo "<option value='".$result['empno']."' $selected>".$result['fullname']."</option>";
