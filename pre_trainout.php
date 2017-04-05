@@ -61,7 +61,7 @@ if (empty($_SESSION['user'])) {
 				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
 				 echo "<option value=''> -- เลือกบุคลากร -- </option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
-          if($result['empno']==$resultGet['Name']){$selected='selected';}else{$selected='';}
+          if($result['empno']==$_POST['name']){$selected='selected';}else{$selected='';}
 				 echo "<option value='".$result['empno']."' $selected>".$result['fullname']."</option>";
 				 } ?>
 			 </select>
@@ -185,7 +185,7 @@ if (empty($_SESSION['check_trainout'])) {
                      if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method = 'empno_search') {
-                        echo $empno = isset($_POST['name'])?$_POST['name']:'';
+                        $empno = isset($_POST['name'])?$_POST['name']:'';
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
