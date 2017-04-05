@@ -41,7 +41,7 @@ if (empty($_SESSION['user'])) {
                         <tr>
                             <td>
                                 <div class="form-group">
-                                    <input type="text" placeholder="ค้นหา" name='txtKeyword' class="form-control" value="" >
+                                    <input type="text" placeholder="ค้นหาเลขหนังสือ/ชื่อโครงการ" name='txtKeyword' class="form-control" value="" >
                                     <input type='hidden' name='method'  value='txtKeyword'>
                                 </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
 
@@ -57,7 +57,7 @@ if (empty($_SESSION['user'])) {
                         <tr>
                             <td>
                                 <div class="form-group">
-                                    <select name="name" id="name" class="form-control select2" style="width: 200px" onkeydown="return nextbox(event, 'fname');"> 
+                                    <select name="name" id="name" class="form-control select2" style="width: 200px"> 
 				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
 				 echo "<option value=''> -- เลือกบุคลากร -- </option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
