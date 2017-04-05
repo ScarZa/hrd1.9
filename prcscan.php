@@ -58,7 +58,7 @@ function removespecialchars($raw) {
     return preg_replace('#[^ก-ฮะ-็่-๋์a-zA-Z0-9.-]#u', '', $raw);
 }
 
-if (trim($_FILES["image"]["name"] != "")) {
+if (!empty($_FILES["image"]["name"])) {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], "explanation/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
         $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
         $image = removespecialchars($file1);
@@ -136,7 +136,7 @@ function removespecialchars($raw) {
     return preg_replace('#[^ก-ฮะ-็่-๋์a-zA-Z0-9.-]#u', '', $raw);
 }
 
-if (!empty(trim($_FILES["image"]["name"]))) {
+if (!empty($_FILES["image"]["name"])) {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], "explanation/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
         $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
         $image = removespecialchars($file1);

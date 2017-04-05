@@ -52,6 +52,29 @@ if (empty($_SESSION['user'])) {
                         </tr>
                     </table>
                 </form>
+                <form class="navbar-form navbar-right" name="frmSearch" role="search" method="post" action="pre_trainout.php" enctype="multipart/form-data">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <select name="name" id="name" class="form-control select2" style="width: 200px" onkeydown="return nextbox(event, 'fname');"> 
+				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
+				 echo "<option value=''> -- เลือกบุคลากร -- </option>";
+				 while( $result = mysqli_fetch_assoc( $sql ) ){
+          if($result['empno']==$resultGet['Name']){$selected='selected';}else{$selected='';}
+				 echo "<option value='".$result['empno']."' $selected>".$result['fullname']."</option>";
+				 } ?>
+			 </select>
+                                    <input type='hidden' name='method'  value='empno_search'>
+                                </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
+
+
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </form>
                 <?php }?>
                 <?php
 
@@ -89,8 +112,10 @@ if($date >= $bdate and $date <= $edate){
 
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
-                    }
-                    $Search_word = $_SESSION['txtKeyword'];
+                    }elseif ($method = 'empno_search') {
+                        $empno = isset($_POST['name'])?$_POST['name']:'';
+        }
+                    $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
@@ -98,7 +123,13 @@ LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
          WHERE (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%') and  t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30'
              GROUP BY t.tuid
          order by Beginedate desc";
-                    } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
+                    }elseif (!empty ($empno)) {
+                        $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
+LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
+         WHERE p.empno = $empno and  t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30'
+             GROUP BY t.tuid
+         order by Beginedate desc";
+        } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 where (p.empno='".$_SESSION['user']."' or t.nameAdmin='".$_SESSION['user']."') and  (t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30')
@@ -127,6 +158,14 @@ order by Beginedate desc";
                                 and (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%')
                                 GROUP BY t.tuid
                                 order by Beginedate desc";
+                    }elseif (!empty($empno)) {
+//คำสั่งค้นหา
+                        $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
+                                LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
+                                where (Beginedate between '$date01' and '$date02') and (endDate between '$date01' and '$date02')
+                                and p.empno = $empno
+                                GROUP BY t.tuid
+                                order by Beginedate desc";
                     } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
                                 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo 
@@ -145,7 +184,9 @@ order by Beginedate desc";
 if (empty($_SESSION['check_trainout'])) {
                      if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
-                    }
+                    }elseif ($method = 'empno_search') {
+                        echo $empno = isset($_POST['name'])?$_POST['name']:'';
+        }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
@@ -154,7 +195,13 @@ LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
          WHERE (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%') and  t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30'
              GROUP BY t.tuid
          order by Beginedate desc";
-                    } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
+                    }elseif (!empty ($empno)) { 
+                        $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
+LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
+         WHERE p.empno = $empno and  t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30'
+             GROUP BY t.tuid
+         order by Beginedate desc";
+        } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 where (p.empno='".$_SESSION['user']."' or t.nameAdmin='".$_SESSION['user']."') and  (t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30') 
@@ -173,7 +220,9 @@ order by Beginedate desc";
 
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
-                    }
+                    }elseif ($method = 'empno_search') {
+                        $empno = isset($_POST['name'])?$_POST['name']:'';
+        }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
@@ -181,6 +230,14 @@ order by Beginedate desc";
                                 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02')
                                 and (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%')
+                                GROUP BY t.tuid
+                                order by Beginedate desc";
+                    }elseif (!empty($empno)) {
+//คำสั่งค้นหา
+                        $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count, p.status_out as status_out from training_out t 
+                                LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
+                                where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02')
+                                and p.empno = $empno
                                 GROUP BY t.tuid
                                 order by Beginedate desc";
                     } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
