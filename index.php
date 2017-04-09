@@ -46,7 +46,7 @@ if (!$db) {
     <?php if (isset($_SESSION['user'])) { ?>
 <div class="col-lg-2 col-xs-6 row">
     <?php ?>
-                <a href="<?= $resultHos['url'] ?>service&support/process/from_hrd.php?fullname=<?=$_SESSION['fname'].' '.$_SESSION['lname']?>
+                <a href="<?= $resultHos['url'] ?>service&support1.2/process/from_hrd.php?fullname=<?=$_SESSION['fname'].' '.$_SESSION['lname']?>
                    &id=<?= $_SESSION['user']?>&dep=<?= $_SESSION['dep']?>" class="btn btn-warning" target="_blank">โปรมแกรมสนับสนุน</a>       
             </div>
         <div align="right">
