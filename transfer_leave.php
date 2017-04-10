@@ -63,10 +63,18 @@ $NameDetial = mysqli_fetch_assoc($Detial_name);
                 <th align="right">&nbsp;</th>
                 <td colspan="3">&nbsp;</td>
               </tr>
-              <tr><th align="right">วันที่เขียนใบลา : </th>
+              <tr><th align="right">วันที่เขียนใบลา : </th> 
+                  <?php $reg_date=date('Y-m-d');
+                        ?>
+                <script type="text/javascript">
+                $(function() {
+                $( "#datepicker" ).datepicker("setDate", new Date('<?=$reg_date?>')); //Set ค่าวัน
+                 });
+                </script> 
+                  
                   <td  colspan="3">
                       <div class="form-group">
-                      <input type="date" name="date_reg" id="date_reg" class="form-control" required>
+                      <input type="text" name="date_reg" id="datepicker" class="form-control" required>
                       </div></td></tr>
               <tr>
                 <th align="right">&nbsp;</th>

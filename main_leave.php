@@ -133,14 +133,14 @@ function nextbox(e, id) {
               <tr><td align="right"><b>วันที่ลา : &nbsp;</b></td><td>
                       <div class="form-group">
                           <input name="date_s"  type="text" 
-                                <?php  if($method=='edit'){}else{ echo "id='datepicker2'";}?>
+                                <?php  if($method=='edit'){ echo "value='$begindate'";}else{ echo "id='datepicker2'";}?>
                                  placeholder='รูปแบบ 22/07/2557' class="form-control" required <?= $readonly?>>
                       
                       
                       </div>                 <b> ถึง&nbsp;</b>
                     <div class="form-group">
                         <input name="date_e" type="text" 
-                             <?php  if($method=='edit'){}else{ echo "id='datepicker3'";}?>
+                             <?php  if($method=='edit'){ echo "value='$enddate'";}else{ echo "id='datepicker3'";}?>
                              placeholder='รูปแบบ 22/07/2557' class="form-control" required <?= $readonly?>>
                     </div>
                 </td>

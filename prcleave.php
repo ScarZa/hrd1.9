@@ -239,12 +239,12 @@ $leave_no="$Y/$Ln";
     echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=pre_leave.php'>";
     }}}}elseif ($method=='transfer') {
     $leave_no=$_POST['leave_no'];
-    $date_reg = $_POST['date_reg'];
+    $date_reg = insert_date($_POST['date_reg']);
     $typel = $_POST['typel'];
     $amount = $_POST['amount'];
     $note = $_POST['note'];
-    $date_s = $_POST['date_reg'];
-    $date_e = $_POST['date_reg'];
+    $date_s = insert_date($_POST['date_reg']);
+    $date_e = insert_date($_POST['date_reg']);
     $reason_l = '';
     $add_conn = '';
     $tell = '';
