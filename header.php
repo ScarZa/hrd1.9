@@ -183,77 +183,8 @@ if ($resultHos['logo'] != '') {
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <!--<ul class="nav  navbar-custom navbar-nav side-nav">
-                    <li><a href="./"><img src='images/gohome.ico' width='25'>  หน้าหลัก</a></li> 		
-<?php if ($_SESSION['user'] != '') { ?>
-                        
-                        <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/kuser.ico' width='25'> ระบบบุคลากร <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <?if($_SESSION[Status]=='ADMIN'){?>
-                                    <li><a href="pre_person.php"><img src='images/identity.ico' width='25'> ข้อมูลบุคลากร</a></li>
-                                    <li><a href="add_person.php"><img src='images/adduser.ico' width='25'> เพิ่มข้อมูลบุคลากร</a></li>
-                                <?}else{?>
-                                    <li><a href="#" onClick="window.open('detial_person.php','','width=700,height=500'); return false;" title="Code PHP Popup"><i class="fa fa-bar-chart-o"></i> ข้อมูลบุคลากร</a></li>
-                                <?}?>
-                                </ul>            
-                            </li>
-                        
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/Letter.png' width='25'> ระบบการลา <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <?if($_SESSION[status]=='ADMIN'){?>
-                                    <li><a href="receive_leave.php"><img src='images/Lfolder.ico' width='25'> บันทึกทะเบียนรับใบลา</a></li>
-                                    <li><a href="pre_leave.php"><img src='images/Lfolder.ico' width='25'> บันทึกการลาบุคลากร</a></li>
-                                    <li><a href="conclude_cancle.php"><img src='images/Cfolder.ico' width='25'> ยกเลิกการลา</a></li>
-                                    <li><a href="conclude_transfer.php"><img src='images/folder_sent.ico' width='25'> โอนลาชั่วโมง</a></li>
-                                    <li><a href="Lperson_report.php"><img src='images/kchart.ico' width='25'> สถิติการลาแยกหน่วยงาน</a></li>
-                                    <li><a href="statistics_leave.php"><img src='images/kchart.ico' width='25'> สถิติการลา</a></li>
-                            <?}else{?> 
-                                    <li><a href="detial_leave.php"><i class="fa fa-bar-chart-o"></i> บันทึกการลาบุคลากร</a></li>
-                            <?}?>
-                            </ul> 
-                        </li>
-                        <?if($_SESSION[status]=='ADMIN'){?>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/training.ico' width='25'> ระบบฝึกอบรมภายนอก <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="add_project_out.php"><img src='images/add.ico' width='25'></i> บันทึกการฝึกอบรมภายนอก</a></li>
-                                    <li><a href="pre_trainout.php"><img src='images/kig.ico' width='25'> รายงานฝึกอบรมภายนอก</a></li>
-                                    <li><a href="statistics_trainout.php"><img src='images/kchart.ico' width='25'> ประวัติการฝึกอบรมภายนอก</a></li>
-                                </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/trainin.ico' width='25'> ระบบฝึกอบรมภายใน <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                    <li><a href="add_project.php"><img src='images/add.ico' width='25'> บันทึกโครงการ</a></li>
-                                    <li><a href="pre_trainin.php"><img src='images/kig.ico' width='25'> บันทึกการฝึกอบรมภายใน</a></li>
-                                    <li><a href="statistics_trainin.php"><img src='images/kchart.ico' width='25'> รายงานการฝึกอบรมภายใน</a></li>
-                                </ul>
-                        </li>
-                        
-                        <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/System2.ico' width='25'> ตั้งค่า <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="Add_User.php"><img src='images/Settings.ico' width='25'> ผู้ใช้งาน</a></li>
-                                    <li><a href="Add_Department.php"><img src='images/Settings.ico' width='25'> ฝ่าย/ศูนย์/กลุ่มงาน</a></li>
-                                    <li><a href="Add_Position.php"><img src='images/Settings.ico' width='25'> ตำแหน่ง</a></li>
-                                </ul>
-                            </li>
-                        <?}else{?>
-                            <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bookmark-o"></i> ประวัติระบบฝึกอบรม <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                    <li><a href="detial_trainin.php"><i class="fa fa-bar-chart-o"></i> ประวัติระบบฝึกอบรม</a></li>
-                                </ul>
-                        </li><?}?>
-<?php } //$_SESSION['user_id']!=''   ?>
-                </ul>-->
                 <ul class="nav navbar-nav navbar-right navbar-user">
-
-                    <?PHP
-                    if (empty($_SESSION['user'])) {
-                        ?>            	
+                    <?PHP if (empty($_SESSION['user'])) { ?>            	
                         <li> 	
                             <form class="navbar-form navbar-right" action='checkLogin(2).php' method='post'>
                                 <div class="form-group">

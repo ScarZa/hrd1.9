@@ -50,8 +50,8 @@ include 'connection/connect_i.php';
                     function insert_date($take_date_conv)
                     {
                         $take_date=explode("-",$take_date_conv);
-			 $take_date_year=$take_date[2]-543;
-			 $take_date="$take_date_year-$take_date[1]-$take_date[0]";
+			 $take_date_year=@$take_date[2]-543;
+			 $take_date=$take_date_year."-".@$take_date[1]."-".@$take_date[0];
                          return $take_date;
                     }
     $empno=$_POST['empno'];
@@ -81,7 +81,7 @@ include 'connection/connect_i.php';
     }  
 }else if ($method == 'update_Whistory') {
     $his=$_REQUEST['his'];
-    $dateEnd_w = insert_date($_POST['dateEnd_w']);
+    $dateEnd_w = isset($_POST['dateEnd_w'])?insert_date($_POST['dateEnd_w']):'';
     $edit_his=  mysqli_query($db,"update work_history set empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
                          education='$educat', dateBegin='$swday', dateEnd_w='$dateEnd_w' where his_id='$his' and empno='$empno'");
     $edit_emp=  mysqli_query($db,"update emppersonal set empcode='$order', pid='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',

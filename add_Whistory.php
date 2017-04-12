@@ -151,7 +151,7 @@ if (empty($_SESSION['user'])) {
                 <script type="text/javascript">
                 $(function() {
                 $( "#datepicker" ).datepicker("setDate", new Date('<?=$dateBegin?>')); //Set ค่าวัน
-                $( "#datepicker2" ).datepicker("setDate", new Date('<?=$dateEnd_w?>')); //Set ค่าวัน
+                //$( "#datepicker2" ).datepicker("setDate", new Date('<?=$dateEnd_w?>')); //Set ค่าวัน
                  });
                 </script>
                 <input type="text" id="datepicker"  placeholder='รูปแบบ 22/07/2557' class="form-control" name="swday" id="swday" onkeydown="return nextbox(event, 'teducat')">
@@ -159,7 +159,7 @@ if (empty($_SESSION['user'])) {
                     <?php if($method =='edit_his'){?>
                     <div class="form-group"> 
                 <label>วันที่สิ้นสุดปฏิบัติงานในตำแหน่ง &nbsp;</label>
-                <input type="text" id="datepicker2"  placeholder='รูปแบบ 22/07/2557' class="form-control" name="dateEnd_w" id="dateEnd_w" onkeydown="return nextbox(event, 'teducat')">
+                <input type="text" id="datepicker2"  placeholder='รูปแบบ 01-01-2560' class="form-control" name="dateEnd_w" id="dateEnd_w" onkeydown="return nextbox(event, 'teducat')">
              	</div>
                     <?php }?>
                     <br>
