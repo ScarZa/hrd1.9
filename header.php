@@ -118,8 +118,8 @@ if ($resultHos['logo'] != '') {
                 var pmeters = 'mySort=' + Sort;
                 HttPRequest.open('POST', url, true);
                 HttPRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                HttPRequest.setRequestHeader("Content-length", pmeters.length);
-                HttPRequest.setRequestHeader("Connection", "close");
+                //HttPRequest.setRequestHeader("Content-length", pmeters.length);
+                //HttPRequest.setRequestHeader("Connection", "close");
                 HttPRequest.send(pmeters);
                 HttPRequest.onreadystatechange = function ()
                 {
@@ -202,7 +202,7 @@ if ($resultHos['logo'] != '') {
                         <script language="JavaScript">
                             function bodyOnload()
                             {
-                                doCallAjax('CustomerID')
+                                doCallAjax('countrecomm')
                                 setTimeout("doLoop();", 10000);
                             }
                             function doLoop()

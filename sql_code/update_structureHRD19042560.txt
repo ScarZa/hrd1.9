@@ -1,0 +1,2 @@
+ALTER TABLE `work` CHANGE `amount` `amount` DECIMAL(5,1) NOT NULL;
+
