@@ -47,9 +47,11 @@ include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
     $beg_date="$y-10-01";
     $en_date="$Yy-09-30";
+    $year = date('Y')-1;
 }else{
     $beg_date="$Y-10-01";
     $en_date="$y-09-30";
+    $year = date('Y');
 }
 
 $check_leave_date=  mysqli_query($db,"select begindate from work where enpid='$empno' and begindate='$date_s' and statusla='Y'");
@@ -110,29 +112,29 @@ $leave_no="$Y/$Ln";
     $insert_event=mysqli_query($db,"insert into tbl_event set event_title='".$Event['fullname']."',event_start='$date_s',event_end='$date_end',event_allDay='true',
             empno='$empno',workid='$Workid[workid]',typela='$typel',process='0'");
     
-        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno'");
+        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno' and fiscal_year='$year'");
         $L_Day=  mysqli_fetch_assoc($L_day);
     if($typel=='1'){
         $leave=$L_Day['L1']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno' and fiscal_year='$year'");
       }  elseif($typel=='2'){
         $leave=$L_Day['L2']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='3'){
         $leave=$L_Day['L3']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='4'){
         $leave=$L_Day['L4']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='5'){
         $leave=$L_Day['L5']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='6'){
         $leave=$L_Day['L6']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='7'){
         $leave=$L_Day['L7']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno' and fiscal_year='$year'");
       } 
           
           if ($insert_leave == false) {
@@ -254,30 +256,35 @@ $leave_no="$Y/$Ln";
     $insert_leave=  mysqli_query($db,"insert into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
                                 typela='$typel', amount='$amount', abnote='$reason_l', address='$add_conn', tel='$tell',
                                     check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='Y',depId='$depno',regis_leave='$regis'");
-    
-        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno'");
+include 'option/function_date.php';
+if($date >= $bdate and $date <= $edate){
+    $year = date('Y')-1;
+}else{
+    $year = date('Y');
+}    
+        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno' and fiscal_year='$year'");
         $L_Day=  mysqli_fetch_assoc($L_day);                            
      if($typel=='1'){
         $leave=$L_Day['L1']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno' and fiscal_year='$year'");
       }  elseif($typel=='2'){
         $leave=$L_Day['L2']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='3'){
         $leave=$L_Day['L3']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='4'){
         $leave=$L_Day['L4']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='5'){
         $leave=$L_Day['L5']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='6'){
         $leave=$L_Day['L6']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='7'){
         $leave=$L_Day['L7']-$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno' and fiscal_year='$year'");
       } 
     
     if ($insert_leave == false) {
@@ -344,9 +351,11 @@ if (trim($_FILES["image"]["name"] != "")) {
 if($date >= $bdate and $date <= $edate){
     $beg_date="$y-10-01";
     $en_date="$Yy-09-30";
+    $year = date('Y')-1;
 }else{
     $beg_date="$Y-10-01";
     $en_date="$y-09-30";
+    $year = date('Y');
 }
     /*   $sql_leave=  mysql_query("select workid from work where enpid='$empno' and  typela='$typel' and statusla='Y' and begindate between '$beg_date' and '$en_date' ORDER BY workid desc");
 $befor_leave=  mysql_fetch_assoc($sql_leave);
@@ -441,30 +450,35 @@ if (trim($_FILES["image"]["name"] != "")) {
            
     $delete_event=mysqli_query($db,"delete from tbl_event where empno='$empno' and workid='$Lno'");
     $delete_print_leave=mysqli_query($db,"delete from print_leave where empno='$empno' and workid='$Lno'");
-    
-        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno'");
+    include 'option/function_date.php';
+if($date >= $bdate and $date <= $edate){
+    $year = date('Y')-1;
+}else{
+    $year = date('Y');
+}    
+        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno' and fiscal_year='$year'");
         $L_Day=  mysqli_fetch_assoc($L_day);
     if($typel=='1'){
         $leave=$L_Day['L1']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno' and fiscal_year='$year'");
       }  elseif($typel=='2'){
         $leave=$L_Day['L2']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='3'){
         $leave=$L_Day['L3']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='4'){
         $leave=$L_Day['L4']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='5'){
         $leave=$L_Day['L5']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='6'){
         $leave=$L_Day['L6']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='7'){
         $leave=$L_Day['L7']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno' and fiscal_year='$year'");
       }
     if ($in_cancle == false) {
         echo "<p>";
@@ -475,6 +489,7 @@ if (trim($_FILES["image"]["name"] != "")) {
         echo "	<span class='glyphicon glyphicon-remove'></span>";
         echo "<a href='main_leave.php' >กลับ</a>";
 } }  elseif($method=='add_leave'){
+    $year = $_POST['year']-543;
     $L1=$_POST['L1'];
     $L2=$_POST['L2'];
     $L3=$_POST['L3'];
@@ -483,17 +498,7 @@ if (trim($_FILES["image"]["name"] != "")) {
     $L6=$_POST['L6'];
     $L7=$_POST['L7'];
     
-    $sql=  mysqli_query($db,"SELECT empno FROM leave_day WHERE empno='$empno'");
-         $num_row=  mysqli_num_rows($sql);
-         if($num_row >= 1){
-             echo "<div class='alert alert-dismissable alert-danger'>
-	  <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-	  <a class='alert-link' target='_blank' href='#'><center>***เพิ่มคนนี้ไปแล้วจ้า***</center></a> 
-</div>";
-
-    echo "<meta http-equiv='refresh' content='2;URL=pre_leave.php'>";
-         }else{
-    $insert_leave=  mysqli_query($db,"insert into leave_day set empno='$empno',emptype='$emptype', L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7' ");
+    $insert_leave=  mysqli_query($db,"insert into leave_day set empno='$empno',emptype='$emptype',fiscal_year='$year', L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7' ");
     if ($insert_leave == false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);
@@ -502,9 +507,10 @@ if (trim($_FILES["image"]["name"] != "")) {
 
         echo "	<span class='glyphicon glyphicon-remove'></span>";
         echo "<a href='add_leave.php' >กลับ</a>";
-         }
-    echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=pre_leave.php'>";
-}}elseif($method=='edit_add_leave'){
+         }else{
+         echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=pre_leave.php'>";}
+}elseif($method=='edit_add_leave'){
+    $year = $_POST['year']-543;
     $L1=$_POST['L1'];
     $L2=$_POST['L2'];
     $L3=$_POST['L3'];
@@ -512,8 +518,8 @@ if (trim($_FILES["image"]["name"] != "")) {
     $L5=$_POST['L5'];
     $L6=$_POST['L6'];
     $L7=$_POST['L7'];
-    $update_add_leave=  mysqli_query($db,"update leave_day set  L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7'
-            where empno='$empno' ");
+    $update_add_leave=  mysqli_query($db,"update leave_day set L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7'
+            where empno='$empno' and fiscal_year='$year'");
     if ($update_add_leave == false) {
         echo "<p>";
         echo "update not complete" . mysqli_error($db);
@@ -551,30 +557,35 @@ if (trim($_FILES["image"]["name"] != "")) {
     $amount_leave=  mysqli_query($db,"select amount from work where enpid='$empno' and workid='$workid'");
     $sql_amount=  mysqli_fetch_assoc($amount_leave);
     $amount=$sql_amount['amount'];
-    
-        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno'");
+    include 'option/function_date.php';
+if($date >= $bdate and $date <= $edate){
+    $year = date('Y')-1;
+}else{
+    $year = date('Y');
+}
+        $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno' and fiscal_year='$year'");
         $L_Day=  mysqli_fetch_assoc($L_day);
     if($typel=='1'){
         $leave=$L_Day['L1']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L1='$leave' where empno='$empno' and fiscal_year='$year'");
       }  elseif($typel=='2'){
         $leave=$L_Day['L2']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L2='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='3'){
         $leave=$L_Day['L3']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L3='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='4'){
         $leave=$L_Day['L4']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L4='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='5'){
         $leave=$L_Day['L5']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L5='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='6'){
         $leave=$L_Day['L6']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L6='$leave' where empno='$empno' and fiscal_year='$year'");
       }elseif($typel=='7'){
         $leave=$L_Day['L7']+$amount;
-        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno'");
+        $L_day2=  mysqli_query($db,"update leave_day set L7='$leave' where empno='$empno' and fiscal_year='$year'");
     }}
     if ($update_regis == false) {
         echo "<p>";

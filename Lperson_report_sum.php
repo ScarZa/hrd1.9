@@ -75,6 +75,7 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
                 if (!empty($_POST['year']) or !empty($_GET['year'])) {
                     
     if($date >= $bdate and $date <= $edate){//ถ้าช่วงที่ใช้งานอยู่ปัจจุบันอยู่ในช่วงเดือน ตุลาคม - ธันวาคม
+        $year = date('Y')-1;
                 $take_month= isset($_POST['month'])?$_POST['month']:'';
                 $depno= isset($_POST['dep'])?$_POST['dep']:'';
                 
@@ -103,6 +104,7 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
                                     $Yst = date("Y");
                                                                      
     }  else {//ถ้าช่วงที่ใช้งานอยู่ปัจจุบันอยู่ในช่วงเดือน มกราคม - กันยายน
+        $year = date('Y');
                                     $yen = date("Y")+1;
                                     $Yst = date("Y");    
         
@@ -142,6 +144,7 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
                             $date_start = "$Yst-10-01";
                             $date_end = "$yen-09-30"."<br>";
                 }else{
+                    $year='';
                     $depno='';
                     $take_month1='';
                     $take_month2='';
@@ -161,7 +164,7 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
         $code3="e1.emptype='$depno'";
         $code4="select TypeName as name from emptype where EmpType='$depno'";
 }
-    $sql=mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e1.empno as empno, ld.L3,
+    $sql=mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e1.empno as empno, e1.emptype,
 (SELECT COUNT(w.amount)  from `work` w where w.typela='1'and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') amonut_sick,
 (select SUM(w.amount) from `work` w where w.typela='1' and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') sum_sick,
 (SELECT COUNT(w.amount)  from `work` w where w.typela='2' and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') amonut_leave,
@@ -180,8 +183,9 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
 (select SUM(w.amount) from `work` w where (w.typela='4' or w.typela='5') and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_date1' and '$take_month2') or  (w.enddate between '$take_date1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') sum_maternity_total,
 (SELECT COUNT(t.total)  from timela t WHERE t.`status`='N' and e1.empno=t.empno and $code3 and t.datela between '$take_date1' and '$take_month2' and e1.status ='1') amonut_t,
 (select SUM(t.total) from timela t WHERE t.`status`='N' and e1.empno=t.empno and $code3 and t.datela between '$take_date1' and '$take_month2' and e1.status ='1') sum_t,
-(SELECT SUM(w.amount) FROM `work` w WHERE $code1 and e1.empno=w.enpid and w.typela='3' and ((w.begindate between '$take_date1' and '$take_date2') or  (w.enddate between '$take_date1' and '$take_date2')) and w.statusla='Y' and w.regis_leave!='N') leave_total,
-(SELECT SUM(w.amount) FROM `work` w WHERE $code1 and e1.empno=w.enpid and w.typela='3' and ((w.begindate between '$date_start' and '$date_end') or  (w.enddate between '$date_start' and '$date_end')) and w.statusla='Y' and w.regis_leave!='N') nowleave    
+(SELECT SUM(w.amount) FROM `work` w WHERE $code1 and e1.empno=w.enpid and w.typela='3' and ((w.begindate between '$take_date1' and '$take_month2') or  (w.enddate between '$take_date1' and '$take_month2')) and w.statusla='Y' and w.regis_leave!='N') now_leave ,
+(select ld.L3 from leave_day ld where $code1 and e1.empno=ld.empno and fiscal_year='".($year-1)."') befor_leave,
+(select ld.L3 from leave_day ld where $code1 and e1.empno=ld.empno and fiscal_year='$year') total_leave
 from emppersonal e1
 LEFT OUTER JOIN leave_day ld ON e1.empno=ld.empno
 LEFT OUTER JOIN `work` w on w.depId=e1.depid
@@ -254,7 +258,7 @@ $depname = mysqli_fetch_assoc($sql_dep);
 
                     $i = 1;
                     while ($result = mysqli_fetch_assoc($sql)) {
-                        $sum_total=$result['L3']+$result['leave_total'];
+                        //$sum_total=$result['L3']+$result['leave_total'];
                         ?>
                         <tr>
                             <td align="center"><?= $i ?></td>
@@ -275,22 +279,19 @@ $depname = mysqli_fetch_assoc($sql_dep);
                             <td align="center"><?= $result['sum_vacation_total']?></td>
                             <td align="center"><?= $result['amonut_maternity_total']; ?></td>
                             <td align="center"><?= $result['sum_maternity_total']; ?></td>
-                    <?php 
-                                compareDate($take_date1, $date_start);
-                                //compareDate("$Y-10-01", $date_start);
-                    if($Yst == $Y) {?>
-                            <td align="center"><?= ($sum_total-10)?></td>
+                            <?php if($result['emptype']=='1' or $result['emptype']=='2'){
+                                $befor_leave=$result['befor_leave'];
+                                $total = $result['befor_leave']+10;
+                            }else{
+                                $befor_leave=0;
+                                $total = 10;
+                            }
+                                $now_leave = $total-$result['now_leave'];                           
+                                ?>
+                            <td align="center"><?= $befor_leave?></td>
                             <td align="center">10</td>
-                            <td align="center"><?=$sum_total?></td>
-                            <td align="center"><?=$result['L3']?></td>
-                           
-                    <?php }else {?>
-                            
-                            <td align="center"><?= ($sum_total-10)-$result['leave_total']?></td>
-                            <td align="center">10</td>
-                            <td align="center"><?=$sum_total-$result['leave_total']?></td>
-                            <td align="center"><?=$result['L3']-$result['leave_total']?></td>
-                    <?php }?>
+                            <td align="center"><?= $total?></td>
+                            <td align="center"><?= $now_leave?></td>
                             <td align="center"><?= $result['sum_t']; ?></td>
                         </tr>
                     <?php $i++;

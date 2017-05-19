@@ -1,0 +1,3 @@
+ALTER TABLE `leave_day`
+ADD COLUMN `fiscal_year`  varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `emptype`;
+UPDATE leave_day SET fiscal_year = SUBSTR(NOW(),1,4) WHERE fiscal_year='' ;

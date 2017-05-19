@@ -16,7 +16,7 @@ if (!empty($_REQUEST['work_id'])) {
                 fulldelete($location);}
                 
     $sql_delw = "delete from work where workid ='$work_id'";
-    mysqli_query($db,$sql_delw) or die(mysqil_error($db));
+    mysqli_query($db,$sql_delw) or die(mysqli_error($db));
     $del_event = "delete from tbl_event where workid ='$work_id'";
     mysqli_query($db,$del_event) or die(mysqli_error($db));
     
@@ -63,7 +63,7 @@ if (!empty($_SESSION['emp'])) {
     $empno = $_SESSION['user'];
 }
 $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,
-                            d1.depName as dep,p2.posname as posi,e1.empno as empno
+                            d1.depName as dep,p2.posname as posi,e1.empno as empno,e1.emptype
                             from emppersonal e1 
                             inner join pcode p1 on e1.pcode=p1.pcode
                             inner join department d1 on e1.depid=d1.depId
@@ -199,11 +199,11 @@ if ($_SESSION['Status'] != 'USER') {
 <?= $NameDetial['dep']; ?>
                             <br />
                             <?php
-                                 
-                                 
-                                    $sql_total=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno'");
+                                    $sql_total=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$y'");
                                     $leave_total= mysqli_fetch_assoc($sql_total);
-                                    if($date >= $bdate and $date <= $edate){
+                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$Y'");
+                                    $befor_leave_total= mysqli_fetch_assoc($sql_total2);
+                                    /*if($date >= $bdate and $date <= $edate){
                                         $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and 
                                                                 begindate BETWEEN '$y-10-01' and '$Yy-09-30' and statusla='Y' and regis_leave!='N'");   
                                     }else{
@@ -211,9 +211,14 @@ if ($_SESSION['Status'] != 'USER') {
                                                                 begindate BETWEEN '$Y-10-01' and '$y-09-30' and statusla='Y' and regis_leave!='N'");
                                     }
                                     $sum_leave= mysqli_fetch_assoc($sql_leave_t);
-                                    $sum_total=$leave_total['L3']+$sum_leave['sum_leave'];
+                                    $sum_total=$leave_total['L3'];  */  
+                                    if($NameDetial['emptype']=='1' or $NameDetial['emptype']=='2'){
+                                        $cumu_leave = $befor_leave_total['L3'];
+                                    }else{
+                                        $cumu_leave = 0;
+                                    }
                                 ?>
-                            วันลาพักผ่อนปีนี้<u>&nbsp; 10 &nbsp;</u>วัน  วันลาพักผ่อนสะสม<u>&nbsp; <?=$sum_total-10?> &nbsp;</u>รวม<u>&nbsp; <?=$sum_total?> &nbsp;</u>วัน
+                            วันลาพักผ่อนปีนี้<u>&nbsp; 10 &nbsp;</u>วัน  วันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>รวม<u>&nbsp; <?=$cumu_leave+10?> &nbsp;</u>วัน
                             <br />
                             <!--จำนวนวันลาที่เหลือ&nbsp; &nbsp;ลาป่วย<u>&nbsp; <?=$leave_total['L1']?> &nbsp;</u>วัน&nbsp; ลากิจ<u>&nbsp; <?=$leave_total['L2']?> &nbsp;</u>วัน&nbsp;--> ลาพักผ่อน<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วัน
                             <br /><br>

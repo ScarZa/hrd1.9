@@ -14,7 +14,7 @@ if (empty($_POST['leave_id'])) {
 }else{
     $check_id = $_POST["check_id"];
 for ($i = 0; $i < count($_POST['leave_id']); $i++) {
-    if (!empty(trim($_POST['leave_id'][$i]))) {
+    if (!empty($_POST['leave_id'][$i])) {
         $empno[$i] = $_POST['check'][$i];
         $id_l[$i] = $_POST['leave_id'][$i];
         
