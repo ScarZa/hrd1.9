@@ -217,8 +217,13 @@ if ($_SESSION['Status'] != 'USER') {
                                     }else{
                                         $cumu_leave = 0;
                                     }
+                                    if($cumu_leave+10 >30){
+                                        $L3 = 30;
+                                    } else {
+                                        $L3 = $cumu_leave+10;
+                                    }
                                 ?>
-                            วันลาพักผ่อนปีนี้<u>&nbsp; 10 &nbsp;</u>วัน  วันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>รวม<u>&nbsp; <?=$cumu_leave+10?> &nbsp;</u>วัน
+                            วันลาพักผ่อนปีนี้<u>&nbsp; 10 &nbsp;</u>วัน  วันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>รวม<u>&nbsp; <?=$L3?> &nbsp;</u>วัน
                             <br />
                             <!--จำนวนวันลาที่เหลือ&nbsp; &nbsp;ลาป่วย<u>&nbsp; <?=$leave_total['L1']?> &nbsp;</u>วัน&nbsp; ลากิจ<u>&nbsp; <?=$leave_total['L2']?> &nbsp;</u>วัน&nbsp;--> ลาพักผ่อน<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วัน
                             <br /><br>

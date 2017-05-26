@@ -497,7 +497,9 @@ if($date >= $bdate and $date <= $edate){
     $L5=$_POST['L5'];
     $L6=$_POST['L6'];
     $L7=$_POST['L7'];
-    
+    $sel_fiscal = mysqli_query($db, "SELECT fiscal_year FROM leave_day WHERE empno=$empno AND fiscal_year='$year'");
+    $num_row = mysqli_num_rows($sel_fiscal);
+if (empty($num_row)) {
     $insert_leave=  mysqli_query($db,"insert into leave_day set empno='$empno',emptype='$emptype',fiscal_year='$year', L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7' ");
     if ($insert_leave == false) {
         echo "<p>";
@@ -508,7 +510,12 @@ if($date >= $bdate and $date <= $edate){
         echo "	<span class='glyphicon glyphicon-remove'></span>";
         echo "<a href='add_leave.php' >กลับ</a>";
          }else{
-         echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=pre_leave.php'>";}
+         echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_leave.php?id=$empno'>";}
+}else{
+    echo "<script>alert('มีการบันทึกปีงบประมาณ".$_POST['year']."แล้ว กรุณาตรวจสอบอีกครั้ง!!!')</script>";
+    echo "<meta http-equiv='refresh' content='0;url=./add_leave.php?id=$empno'/>";
+    exit();
+}
 }elseif($method=='edit_add_leave'){
     $year = $_POST['year']-543;
     $L1=$_POST['L1'];
@@ -529,7 +536,7 @@ if($date >= $bdate and $date <= $edate){
         echo "	<span class='glyphicon glyphicon-remove'></span>";
         echo "<a href='add_leave.php' >กลับ</a>";
          }
-    echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=pre_leave.php'>";
+    echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_leave.php?id=$empno'>";
 }elseif ($method=='regis_leave') {
     $workid=$_POST['workid'];
     $regis='A';

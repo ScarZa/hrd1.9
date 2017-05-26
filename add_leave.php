@@ -127,7 +127,8 @@ include_once ('option/funcDateThai.php');
                              <input class="btn btn-success" type="submit" name="Submit" id="Submit" value="บันทึก">
          <?php }?>
                 </form>
-                <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">
+                <div class="table-responsive">
+                <table class="table table-responsive" align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">
                             <tr align="center" bgcolor="#898888">
                                 <td align="center" width="6%"><b>ลำดับ</b></td>
                                 <td align="center" width="10%"><b>ปีงบประมาณ</b></td>
@@ -159,6 +160,7 @@ include_once ('option/funcDateThai.php');
                                 </tr>
                         <?php $i++; }?>                
                 </table>
+                </div>
         </div>
     </div>
 </div>
