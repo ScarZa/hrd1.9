@@ -164,6 +164,7 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
         $code3="e1.emptype='$depno'";
         $code4="select TypeName as name from emptype where EmpType='$depno'";
 }
+
     $sql=mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e1.empno as empno, e1.emptype,
 (SELECT COUNT(w.amount)  from `work` w where w.typela='1'and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') amonut_sick,
 (select SUM(w.amount) from `work` w where w.typela='1' and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') sum_sick,
@@ -186,11 +187,11 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
 (SELECT SUM(w.amount) FROM `work` w WHERE $code1 and e1.empno=w.enpid and w.typela='3' and ((w.begindate between '$take_date1' and '$take_month2') or  (w.enddate between '$take_date1' and '$take_month2')) and w.statusla='Y' and w.regis_leave!='N') now_leave ,
 (select ld.L3 from leave_day ld where $code1 and e1.empno=ld.empno and fiscal_year='".($year-1)."') befor_leave,
 (select ld.L3 from leave_day ld where $code1 and e1.empno=ld.empno and fiscal_year='$year') total_leave
-from emppersonal e1
+from `work` w
+LEFT OUTER JOIN emppersonal e1 on w.depId=e1.depid
 LEFT OUTER JOIN leave_day ld ON e1.empno=ld.empno
-LEFT OUTER JOIN `work` w on w.depId=e1.depid
 $code2
-where w.statusla='Y' and $code1 and e1.status ='1'
+where e1.empno=w.enpid and $code1 and ((w.begindate between '$take_date1' and '$take_month2') or  (w.enddate between '$take_date1' and '$take_month2')) and w.statusla='Y' and e1.status ='1'
 GROUP BY e1.empno
 order by e1.empno");
    

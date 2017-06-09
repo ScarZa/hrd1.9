@@ -387,6 +387,10 @@ if($image==''){
              
              $update_out=  mysqli_query($db,"update plan_out set begin_date='$begin_date',end_date='$end_date',amount='$amount'
                  where id_plan=$id_plan");
+             
+            $date_end=date('Y-m-d', strtotime("$end_date+1 days "));
+            $update_event=mysqli_query($db,"update tbl_event set event_start='$begin_date',event_end='$date_end'
+            where workid='$idpo' and process='1' and empno='$empno'");
              if ($update_out == false) {
         echo "<p>";
         echo "Update not complete" . mysqli_error($db);

@@ -132,7 +132,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                     </tr>
                     <tr>
                       <td height="25">รวมค่าใช้จ่ายทั้งสิ้น</td>
-                      <td align="left">เป็นจำนวนเงิน........<?= $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5'])?>...........บาท</td>
+                      <td align="left">เป็นจำนวนเงิน........<?php $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5']); if($total_money==0){echo '...';}else{echo $total_money;}?>...........บาท</td>
                       <td colspan="2">(<?php if(!empty($total_money)){echo '................'.num2wordsThai("$total_money").'บาทถ้วน................';}else{?>.......................................................................................<?php }?>)</td>
                     </tr>
                 </table>
