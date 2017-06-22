@@ -82,6 +82,7 @@ if (empty($_SESSION['user'])) {
                 function page_navigator($before_p, $plus_p, $total, $total_p, $chk_page) {
                     global $e_page;
                     global $querystr;
+                    $empno = isset($_POST['name'])?$_POST['name']:$_GET['name'];
                     $urlfile = "pre_trainout.php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
                     $per_page = 30;
                     $num_per_page = floor($chk_page / $per_page);
@@ -93,19 +94,19 @@ if (empty($_SESSION['user'])) {
                     $pNext = ($pNext >= $total_p) ? $total_p - 1 : $pNext;
                     $lt_page = $total_p - 4;
                     if ($chk_page > 0) {
-                        echo "<a  href='$urlfile?s_page=$pPrev" . $querystr . "' class='naviPN'>Prev</a>";
+                        echo "<a  href='$urlfile?method=empno_search&name=$empno&s_page=$pPrev" . $querystr . "' class='naviPN'>Prev</a>";
                     }
                     for ($i = $total_start_p; $i < $total_end_p; $i++) {
                         $nClass = ($chk_page == $i) ? "class='selectPage'" : "";
                         if ($e_page * $i <= $total) {
-                            echo "<a href='$urlfile?s_page=$i" . $querystr . "' $nClass  >" . intval($i + 1) . "</a> ";
+                            echo "<a href='$urlfile?method=empno_search&name=$empno&s_page=$i" . $querystr . "' $nClass  >" . intval($i + 1) . "</a> ";
                         }
                     }
                     if ($chk_page < $total_p - 1) {
-                        echo "<a href='$urlfile?s_page=$pNext" . $querystr . "'  class='naviPN'>Next</a>";
+                        echo "<a href='$urlfile?method=empno_search&name=$empno&s_page=$pNext" . $querystr . "'  class='naviPN'>Next</a>";
                     }
                 }
-                $method = isset($_POST['method'])?$_POST['method']:'';
+                 if(isset($_POST['method'])){ $method =$_POST['method'];}elseif (isset($_GET['method'])) {$method =$_GET['method'];}else{$method ='';}
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
                 if (empty($_SESSION['check_trainout'])) {
@@ -113,7 +114,7 @@ if($date >= $bdate and $date <= $edate){
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method = 'empno_search') {
-                        $empno = isset($_POST['name'])?$_POST['name']:'';
+                        if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
@@ -185,7 +186,7 @@ if (empty($_SESSION['check_trainout'])) {
                      if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method = 'empno_search') {
-                        $empno = isset($_POST['name'])?$_POST['name']:'';
+                        if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
@@ -221,7 +222,7 @@ order by Beginedate desc";
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method = 'empno_search') {
-                        $empno = isset($_POST['name'])?$_POST['name']:'';
+                        if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
