@@ -109,7 +109,12 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                                  มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$sum_total-10?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$sum_total?> &nbsp;</u>วันทำการ <br> 
                              <?php }?>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขอลา<u> <?= $work['namela']?> </u>เนื่องจาก<u> <?= $work['abnote']?> </u><br>
-                        ตั้งแต่วันที่<u>&nbsp; <?= DateThai2($work['begindate'])?>&nbsp; </u>ถึงวันที่<u>&nbsp; <?= DateThai2($work['enddate'])?>&nbsp; </u>มีกำหนด<u>&nbsp; <?= $work['amount']?> &nbsp;</u>วัน<br>
+                        ตั้งแต่วันที่<u>&nbsp; <?= DateThai2($work['begindate'])?>&nbsp; </u>ถึงวันที่<u>&nbsp; <?= DateThai2($work['enddate'])?>&nbsp; </u>มีกำหนด<u>&nbsp; 
+<?php include_once 'option/functionDateDiv.php';
+$time = dateDiv($work['enddate'],$work['begindate']);
+$amount = $time['D']+1;
+echo $amount;
+?> &nbsp;</u>วัน<br>
                         <?php  if($work['typela']!='3'){?>    
                         ข้าพเจ้าได้ลา<u>&nbsp; <?=$leave_data['nameLa']?> &nbsp;</u>ครั้งสุดท้ายตั้งแต่วันที่
                             <u>&nbsp; <?php if($leave_data['begindate']!=''){ echo DateThai2($leave_data['begindate']);}?> &nbsp;</u>ถึงวันที่
