@@ -20,7 +20,7 @@ var regional ={
         constrainInput: true,
         prevText: 'ก่อนหน้า',
         nextText: 'ถัดไป',
-        yearRange: '-45:+1',
+        yearRange: '-60:+1',
         defaultDate: toDay
               
     };
