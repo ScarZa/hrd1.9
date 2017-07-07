@@ -100,10 +100,10 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
     <b>เรื่อง</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ชี้แจงไม่ลงเวลามา - กลับปฏิบัติราชการ 
 </div>
 <div class="col-lg-12" align="let">
-    <b>เรียน</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้อำนวยการ<?=$hospital['name']?><p>
+    <b>เรียน</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้อำนวยการ<?=$hospital['name']?><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยข้าพเจ้า <?=$exponent['fullname']?> ตำแหน่ง <?=$exponent['posi']?> 
             ปฏิบัติหน้าที่ฝ่าย <?=$exponent['depname']?> งาน <?=$exponent['dep']?> ได้มาปฏิบัติราชการในวันที่ <?= DateThai2($date)?> แต่ไม่ได้ลงเวลามา - กลับปฏิบัติราชการ
-            เนื่องจาก <?=$reason?></p>
+            เนื่องจาก <?=$reason?><br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             จึงเรียนมาเพื่อโปรดทราบและพิจารณา
 </div><br>

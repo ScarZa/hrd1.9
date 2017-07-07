@@ -50,15 +50,17 @@ ty.nameLa as namela,w.tel as telephone
 INNER JOIN `work` w on w.workid=p.befor_workid
 INNER JOIN typevacation ty on w.typela=ty.idla
 where p.empno='$empno' and p.workid='$workid' and (w.begindate  BETWEEN '$y-10-01' and '$Yy-09-30')");
+    $year = date('Y');
      }else{
     $sql_leave=  mysqli_query($db,"select ty.nameLa,w.begindate,w.enddate,w.amount FROM print_leave p
 INNER JOIN `work` w on w.workid=p.befor_workid
 INNER JOIN typevacation ty on w.typela=ty.idla
-where p.empno='$empno' and p.workid='$workid' and (w.begindate  BETWEEN '$Y-10-01' and '$y-09-30')");     
+where p.empno='$empno' and p.workid='$workid' and (w.begindate  BETWEEN '$Y-10-01' and '$y-09-30')");   
+    $year = date('Y')-1;
      }
  $leave_data=mysqli_fetch_assoc($sql_leave); 
  
- $sql_total=  mysqli_query($db,"select L3 from leave_day where empno='$empno'");
+ $sql_total=  mysqli_query($db,"select L3 from leave_day where empno='$empno' and fiscal_year='$year'");
                                     $leave_total= mysqli_fetch_assoc($sql_total);
                                     if($date >= $bdate and $date <= $edate){
                                     $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and statusla='Y' and
@@ -68,7 +70,7 @@ where p.empno='$empno' and p.workid='$workid' and (w.begindate  BETWEEN '$Y-10-0
                                                                 begindate BETWEEN '$Y-10-01' and '$y-09-30'");
                                     }
                                     $sum_leave= mysqli_fetch_assoc($sql_leave_t);
-                                    $sum_total=$leave_total['L3']+$sum_leave['sum_leave'];
+                                    //$sum_total=$leave_total['L3']+$sum_leave['sum_leave'];
 ?>
 <body>
     <?php
@@ -106,14 +108,17 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             <?php
             if($work['typela']=='3'){
                                 ?>
-                                 มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$sum_total-10?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$sum_total?> &nbsp;</u>วันทำการ <br> 
+                                 มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$leave_total['L3']+10?> &nbsp;</u>วันทำการ <br> 
                              <?php }?>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขอลา<u> <?= $work['namela']?> </u>เนื่องจาก<u> <?= $work['abnote']?> </u><br>
                         ตั้งแต่วันที่<u>&nbsp; <?= DateThai2($work['begindate'])?>&nbsp; </u>ถึงวันที่<u>&nbsp; <?= DateThai2($work['enddate'])?>&nbsp; </u>มีกำหนด<u>&nbsp; 
-<?php include_once 'option/functionDateDiv.php';
+<?php 
+if($work['amount']==0.5){ echo $work['amount'];} else {
+   include_once 'option/functionDateDiv.php';
 $time = dateDiv($work['enddate'],$work['begindate']);
 $amount = $time['D']+1;
-echo $amount;
+echo $amount; 
+}
 ?> &nbsp;</u>วัน<br>
                         <?php  if($work['typela']!='3'){?>    
                         ข้าพเจ้าได้ลา<u>&nbsp; <?=$leave_data['nameLa']?> &nbsp;</u>ครั้งสุดท้ายตั้งแต่วันที่
