@@ -1,4 +1,4 @@
-ALTER TABLE hrd.emppersonal ADD regis_date DATE NULL ;
+ALTER TABLE emppersonal ADD regis_date DATE NULL ;
 
 ALTER TABLE `plan_out`
 ADD COLUMN `join_type`  int(1) NULL AFTER `cneu`;
