@@ -33,7 +33,7 @@ INNER JOIN emppersonal e on e.empno=h.manager
 INNER JOIN pcode p on p.pcode=e.pcode");
     $hospital=mysqli_fetch_assoc($sql_hos);
     $sql=  mysqli_query($db,"select w.*,concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,d2.dep_name as depname,p2.posname as posi ,
-ty.nameLa as namela,w.tel as telephone
+ty.nameLa as namela,w.tel as telephone,e1.emptype,CONCAT(TIMESTAMPDIFF(year,e1.regis_date,NOW()))AS age
             from work w 
             inner join emppersonal e1 on w.enpid=e1.empno
             inner join pcode p1 on e1.pcode=p1.pcode
@@ -43,7 +43,7 @@ ty.nameLa as namela,w.tel as telephone
             inner join posid p2 on wh.posid=p2.posId
             INNER JOIN typevacation ty on ty.idla=w.typela
             where w.enpid='$empno' and w.workid='$workid' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
-    $work=  mysqli_fetch_assoc($sql);
+    $work =  mysqli_fetch_assoc($sql);
     
      if($date >= $bdate and $date <= $edate){
     $sql_leave=  mysqli_query($db,"select ty.nameLa,w.begindate,w.enddate,w.amount FROM print_leave p
@@ -107,8 +107,20 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             สังกัดกรมสุขภาพจิต  กระทรวงสาธารณสุข<br>  
             <?php
             if($work['typela']=='3'){
-                                ?>
-                                 มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$leave_total['L3']+10?> &nbsp;</u>วันทำการ <br> 
+                if($work['emptype']=='1' or $work['emptype']=='2'){
+                                        $cumu_leave = $leave_total['L3'];
+                                        if($work['age']<10 and $cumu_leave+10 > 20){
+                                            $L3 = 20;
+                                        }elseif ($work['age']>=10 and $cumu_leave+10 > 30) {
+                                            $L3 = 30;
+                                        }else{
+                                            $L3 = $cumu_leave+10;
+                                        }
+                                    }else{
+                                        $cumu_leave = 0;
+                                        $L3 = $cumu_leave+10;
+                                    } ?>
+                                 มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$L3?> &nbsp;</u>วันทำการ <br> 
                              <?php }?>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขอลา<u> <?= $work['namela']?> </u>เนื่องจาก<u> <?= $work['abnote']?> </u><br>
                         ตั้งแต่วันที่<u>&nbsp; <?= DateThai2($work['begindate'])?>&nbsp; </u>ถึงวันที่<u>&nbsp; <?= DateThai2($work['enddate'])?>&nbsp; </u>มีกำหนด<u>&nbsp; 

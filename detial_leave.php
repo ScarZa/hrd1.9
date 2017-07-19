@@ -63,7 +63,8 @@ if (!empty($_SESSION['emp'])) {
     $empno = $_SESSION['user'];
 }
 $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,
-                            d1.depName as dep,p2.posname as posi,e1.empno as empno,e1.emptype
+                            d1.depName as dep,p2.posname as posi,e1.empno as empno,e1.emptype,
+                            CONCAT(TIMESTAMPDIFF(year,regis_date,NOW()))AS age 
                             from emppersonal e1 
                             inner join pcode p1 on e1.pcode=p1.pcode
                             inner join department d1 on e1.depid=d1.depId
@@ -214,15 +215,17 @@ if ($_SESSION['Status'] != 'USER') {
                                     $sum_total=$leave_total['L3'];  */  
                                     if($NameDetial['emptype']=='1' or $NameDetial['emptype']=='2'){
                                         $cumu_leave = $befor_leave_total['L3'];
+                                        if($NameDetial['age']<10 and $cumu_leave+10 > 20){
+                                            $L3 = 20;
+                                        }elseif ($NameDetial['age']>=10 and $cumu_leave+10 > 30) {
+                                            $L3 = 30;
+                                        }else{
+                                            $L3 = $cumu_leave+10;
+                                        }
                                     }else{
                                         $cumu_leave = 0;
-                                    }
-                                    if($cumu_leave+10 >30){
-                                        $L3 = 30;
-                                    } else {
                                         $L3 = $cumu_leave+10;
-                                    }
-                                ?>
+                                    } ?>
                             วันลาพักผ่อนปีนี้<u>&nbsp; 10 &nbsp;</u>วัน  วันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>รวม<u>&nbsp; <?=$L3?> &nbsp;</u>วัน
                             <br />
                             <!--จำนวนวันลาที่เหลือ&nbsp; &nbsp;ลาป่วย<u>&nbsp; <?=$leave_total['L1']?> &nbsp;</u>วัน&nbsp; ลากิจ<u>&nbsp; <?=$leave_total['L2']?> &nbsp;</u>วัน&nbsp;--> ลาพักผ่อน<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วัน

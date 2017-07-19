@@ -317,9 +317,9 @@ order by Beginedate desc";
                         ?>
                         <tr>
                             <td align="center"><?= ($chk_page * $e_page) + $i ?></td>
-                            <td align="center"><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);"><?= $result['memberbook']; ?></a>
+                            <td align="center"><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,800,500);"><?= $result['memberbook']; ?></a>
                             </td>
-                            <td><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);"><?= $result['projectName']; ?></a></td>
+                            <td><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,800,500);"><?= $result['projectName']; ?></a></td>
                             <td align="center"><?= $result['anProject']; ?></td>
                             <td align="center"><?= DateThai1($result['Beginedate']);?> <b>ถึง</b> <?= DateThai1($result['endDate']);?></td>
                             <td align="center"><?= $result['count']; ?></td>

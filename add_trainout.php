@@ -151,11 +151,12 @@ echo mysqli_error($db);
                             <tr align="center" bgcolor="#898888">
                                 <th align="center" width="5%">ลำดับ</th>
                                 <th align="center" width="5%">เลือก</th>
-                                <th align="center" width="26%">ชื่อ-นามสกุล
+                                <th align="center" width="20%">ชื่อ-นามสกุล
                                 <th align="center" width="20%">ตำแหน่ง</th>
                                 <th align="center" width="20%">หน่วยงาน</th>  
-                                <th align="center" width="7%">ระหว่างวันที่</th>
-                                <th align="center" width="7%">ถึงวันที่</th>
+                                <th align="center" width="10%">เข้าร่วมเป็น</th>
+                                <th align="center" width="5%">ระหว่างวันที่</th>
+                                <th align="center" width="5%">ถึงวันที่</th>
                                 <th align="center" width="10%">จำนวนวัน</th>
                             </tr>
                             
@@ -173,6 +174,17 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 <td align="center"><?=$result['posname'];?></td>
                                 <td align="center"><?=$result['dep'];?></td>
                                 <td align="center">
+                                    <select name="pro_type[]" id="pro_type[]">
+                                        <?php
+                                        $sql = mysqli_query($db, "select * from trainingtype");
+                                        while ($JT= mysqli_fetch_assoc($sql)){
+                                            if($Project_detial['dt']==$JT['tid']){ $select='selected';}else{$select='';}
+                                            echo "<option value='".$JT['tid']."' $select>".$JT['tName']."</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
+                                <td align="center">
                                     <input type="date" name="dates[]" id="dates[]" value='<?=$Project_detial['Beginedate']?>'>
                                 </td>
                                 <td align="center">
@@ -182,7 +194,6 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                     <input type="text" name="amount[]" id="amount[]" value='<?=$Project_detial['amount']?>' size="2">
                                 </td>
                           </tr>
-                          <input type="hidden" name="pro_type[]" id="pro_type[]" value='<?=$Project_detial['dt']?>'>
     <?php $i++;
     $c++; } ?>
                                 

@@ -48,6 +48,7 @@ echo "<div class='alert alert-dismissable alert-success'>
     $statusw = isset($_POST['statusw'])?$_POST['statusw']:'';
     $reason = isset($_POST['reason'])?$_POST['reason']:'';
     $movedate = isset($_POST['movedate'])?$_POST['movedate']:'';
+    $regis_date = isset($_POST['regis_date'])?insert_date($_POST['regis_date']):'';
     $method = isset($_POST['method'])?$_POST['method']:'';
     if ($method == 'add_person') {
         function removespecialchars($raw) {
@@ -67,12 +68,11 @@ if (trim($_FILES["image"]["name"] != "")) {
                 lastname='$lname', sex='$sex', birthdate='$bday', address='$address', baan='$hname', provice='$Province',
                    empure='$Amphur', tambol='$district', zipcode='$postcode', emp_status='$status', telephone='$htell',
                       mobile='$mtell', email='$email', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
-                         education='$educat', dateBegin='$swday', status='$statusw', empnote='$reason', dateEnd='$movedate', photo='$image' ");
+                         education='$educat', dateBegin='$swday', status='$statusw', empnote='$reason', dateEnd='$movedate', photo='$image', regis_date='$regis_date'");
     
-    $select=  mysqli_query($db,"select empno from emppersonal order by empno desc");
-    $select_empno=  mysqli_fetch_assoc($select);
+    $select_empno = mysqli_insert_id($db);
     
-    $add_his= mysqli_query($db,"insert into work_history set empno='$select_empno[empno]', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
+    $add_his= mysqli_query($db,"insert into work_history set empno='".$select_empno."', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
                          education='$educat', dateBegin='$swday'");
     if ($add == false or $add_his==false) {
         echo "<p>";
@@ -109,7 +109,7 @@ if (trim($_FILES["image"]["name"] == "")) {
     $edit = mysqli_query($db,"update emppersonal set pid='$empid', idcard='$cid', pcode='$pname', firstname='$fname',
                 lastname='$lname', sex='$sex', birthdate='$bday', address='$address', baan='$hname', provice='$Province',
                    empure='$Amphur', tambol='$district', zipcode='$postcode', emp_status='$status', telephone='$htell',
-                      mobile='$mtell', email='$email', status='$statusw', empnote='$reason', dateEnd='$movedate'
+                      mobile='$mtell', email='$email', status='$statusw', empnote='$reason', dateEnd='$movedate', emptype='$pertype', regis_date='$regis_date'
                              where empno='$empno'");
     
 }else{
@@ -131,7 +131,7 @@ if (trim($_FILES["image"]["name"] == "")) {
 $edit = mysqli_query($db,"update emppersonal set pid='$empid', idcard='$cid', pcode='$pname', firstname='$fname',
                 lastname='$lname', sex='$sex', birthdate='$bday', address='$address', baan='$hname', provice='$Province',
                    empure='$Amphur', tambol='$district', zipcode='$postcode', emp_status='$status', telephone='$htell',
-                      mobile='$mtell', email='$email', status='$statusw', empnote='$reason', dateEnd='$movedate', photo='$image'
+                      mobile='$mtell', email='$email', status='$statusw', empnote='$reason', dateEnd='$movedate', photo='$image', emptype='$pertype', regis_date='$regis_date'
                              where empno='$empno'");
 
 }

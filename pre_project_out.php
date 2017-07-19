@@ -158,10 +158,17 @@ INNER JOIN emppersonal e ON p.empno=e.empno
                             
                             <?php } }else{
                                 $empno=$_GET['empno'];
-                                $add_emp=  mysqli_query($db,"SELECT id_plan,begin_date,end_date,amount FROM plan_out WHERE empno=$empno AND idpo=$project_id");
+                                $add_emp=  mysqli_query($db,"SELECT id_plan,begin_date,end_date,amount,join_type FROM plan_out WHERE empno=$empno AND idpo=$project_id");
                                 $planout=  mysqli_fetch_assoc($add_emp);
                                 echo "<form action='prctraining.php' method='post' name='form' enctype='multipart/form-data' id='form'>";
-                                echo "<lable for='begin_date'>วันที่เข้าร่วม</lable>";
+                                echo "<select name='pro_type' id='pro_type'>";
+                                        $sql = mysqli_query($db, "select * from trainingtype");
+                                        while ($JT= mysqli_fetch_assoc($sql)){
+                                            if($planout['join_type']==$JT['tid']){ $select='selected';}else{$select='';}
+                                            echo "<option value='".$JT['tid']."' $select>".$JT['tName']."</option>";
+                                        }
+                                echo "</select>";
+                                echo "&nbsp; <lable for='begin_date'>วันที่เข้าร่วม</lable>";
                                 echo "&nbsp; <input type='date' name='begin_date' id='begin_date' value='".$planout['begin_date']."'> &nbsp;";
                                 echo "<lable for='end_date'>ถึง</lable>";
                                 echo "&nbsp; <input type='date' name='end_date' id='end_date' value='".$planout['end_date']."'> &nbsp;";

@@ -165,7 +165,7 @@ $screen= isset($_REQUEST['screen'])?$_REQUEST['screen']:'';
         $code4="select TypeName as name from emptype where EmpType='$depno'";
 }
 
-    $sql=mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e1.empno as empno, e1.emptype,
+    $sql=mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e1.empno as empno, e1.emptype,CONCAT(TIMESTAMPDIFF(year,e1.regis_date,NOW()))AS age,
 (SELECT COUNT(w.amount)  from `work` w where w.typela='1'and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') amonut_sick,
 (select SUM(w.amount) from `work` w where w.typela='1' and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') sum_sick,
 (SELECT COUNT(w.amount)  from `work` w where w.typela='2' and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') amonut_leave,
@@ -282,7 +282,13 @@ $depname = mysqli_fetch_assoc($sql_dep);
                             <td align="center"><?= $result['sum_maternity_total']; ?></td>
                             <?php if($result['emptype']=='1' or $result['emptype']=='2'){
                                 $befor_leave=$result['befor_leave'];
-                                $total = $result['befor_leave']+10;
+                                if($result['age']<10 and $befor_leave+10 > 20){
+                                            $total = 20;
+                                        }elseif ($result['age']>=10 and $befor_leave+10 > 30) {
+                                            $total = 30;
+                                        }else{
+                                            $total = $befor_leave+10;
+                                        }
                             }else{
                                 $befor_leave=0;
                                 $total = 10;

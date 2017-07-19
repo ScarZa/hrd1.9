@@ -252,6 +252,7 @@ INNER JOIN pcode p2 on e1.pcode=p2.pcode $code_inner where 1 $code_dep
                         <td width="40%" align="center"><b>ชื่อ-นามสกุล</b></td>
                         <td width="22%" align="center"><b>จำนวนโครงการ</b></td>
                         <td width="22%" align="center"><b>จำนวนชั่วโมง</b></td>
+                        <td width="22%" align="center"><b>รายละเอียด(ใหม่)</b></td>
                     </tr>
                     <?php
                     $i = 1;
@@ -262,6 +263,7 @@ INNER JOIN pcode p2 on e1.pcode=p2.pcode $code_inner where 1 $code_dep
                             <td><a href="detial_trainin.php?id=<?= $result['empno']; ?>&train=in"><?= $result['fullname']; ?></a></td>
                             <td align="center"><?= $result['project']; ?></td>
                             <td align="center"><?= $result['amount']; ?></td>
+                            <td align="center"><a href="detial_trainin(new).php?id=<?= $result['empno']; ?>&train=in"><img src="images/bookcase.ico" width="20%"></a></td>
                         </tr>
                     <?php $i++;
                 }

@@ -111,7 +111,7 @@ inner join trainingtype t2 on t2.tid=t.dt
     <b>หน่วยงานที่จัด</b> <?=$Project_detial['anProject']?><br>
     <b>ระหว่างวันที่</b> <?= DateThai1($Project_detial['Beginedate']) ?>&nbsp; <b> ถึง &nbsp;</b><?= DateThai1($Project_detial['endDate']) ?><br>
     <b>สถานที่</b> <?= $Project_detial['stantee'] ?> จ. <?= $Project_detial['PROVINCE_NAME'] ?>  <b>ระยะเวลา</b> <?= $Project_detial['amount'] ?><b>&nbsp; วัน</b><br>
-    <?php if($Project_detial['dt']=='3'){?>
+    <?php if($Project_detial['join_type']=='3'){?>
     <div class="form-group"> 
                 <b>จำนวนผู้เข้าร่วมประชุม &nbsp;</b>
                 <input value='<?= isset($person_data['join_amount'])?$person_data['join_amount']:''?>' NAME="join_amount" id="join_amount"  class="form-control" placeholder="จำนวนผู้ที่เข้าร่วมอบรม">
@@ -171,17 +171,17 @@ inner join trainingtype t2 on t2.tid=t.dt
              	</div>
  <?php }?><br>
                 <div class="form-group"> 
-                    <?php if($Project_detial['dt']=='3'){ echo "<label>หัวข้อเรื่อง/สาระสำคัญ คือ &nbsp;</label>";}else{?>
+                    <?php if($Project_detial['join_type']=='3'){ echo "<label>หัวข้อเรื่อง/สาระสำคัญ คือ &nbsp;</label>";}else{?>
                     <label>สรุปสาระสำคัญที่ได้จากการประชุม/อบรม/สัมมนา/ดูงาน(แนบเอกสารเพิ่มเติม) &nbsp;</label><?php }?>
                     <TEXTAREA value='' NAME="abstract" id="abstract"  cols="57" rows="" class="form-control" onkeydown="return nextbox(event, 'movedate')"><?= isset($person_data['abstract'])?$person_data['abstract']:''?></TEXTAREA>
  </div><br>
- <?php if($Project_detial['dt']!='3'){?>
+ <?php if($Project_detial['join_type']!='3'){?>
  <div class="form-group"> 
                 <label>การนำมาใช้ประโยชน์ และข้อเสนอแนะ &nbsp;</label>
                 <TEXTAREA value='' NAME="comment" id="comment"  cols="57" rows="" class="form-control" onkeydown="return nextbox(event, 'movedate')"><?= isset($person_data['comment'])?$person_data['comment']:''?></TEXTAREA>
  </div><?php }?><br><br>
  <b>เอกสารประกอบการประชุม</b><br>
- <?php if($Project_detial['dt']=='3'){ echo "<b>powerpoint : </b>";}else{ ?>
+ <?php if($Project_detial['join_type']=='3'){ echo "<b>powerpoint : </b>";}else{ ?>
  <b>หนังสือ : </b><?php }?>
  <?php if(isset($person_data['book'])?$person_data['book']:''=='มี'){?>
  <input type="radio" name="book" id="book" value="มี" checked="checked"/>

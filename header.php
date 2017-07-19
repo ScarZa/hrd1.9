@@ -177,7 +177,7 @@ if ($resultHos['logo'] != '') {
                     </button>
 
                     <a class="navbar-brand logo-mini" href="index.php?unset=1"><img alt="Brand" src="images/kuser.ico" width='35'> 
-                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.1</font>
+                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.2</font>
                     </a>
                 </div>
             </div>
@@ -289,7 +289,8 @@ if ($resultHos['logo'] != '') {
                                     <li><a href="add_project_out.php?unset=1"><img src='images/add.ico' width='25'></i> บันทึกโครงการฝึกอบรมภายนอก</a></li>
                                     <li><a href="pre_trainout.php?unset=1"><img src='images/kig.ico' width='25'> บันทึกการฝึกอบรมภายนอก</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="detial_trainin.php?unset=1"><img src='images/training.ico' width='25'> ประวัติระบบฝึกอบรม</a></li>
+                                    <li><a href="detial_trainin.php?unset=1"><img src='images/training.ico' width='25'> ประวัติระบบฝึกอบรม(เก่า)</a></li>
+                                    <li><a href="detial_trainin(new).php?unset=1"><img src='images/training.ico' width='25'> ประวัติระบบฝึกอบรม(ใหม่)</a></li>
         <?php if ($_SESSION['Status'] == 'SUSER' or $_SESSION['Status'] == 'USUSER') { ?>
                                         <li class="divider"></li>
                                         <li><a href="statistics_trainout.php?unset=1"><img src='images/kchart.ico' width='25'> รายงานการฝึกอบรมภายนอก</a></li>

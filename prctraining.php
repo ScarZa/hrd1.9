@@ -195,7 +195,7 @@ foreach ($check_ps as $key => $value) {
          }else{
         
         $add = mysqli_query($db,"insert into plan_out set empno='$empno_ID', amount='$Amount', idpo='$project_id', begin_date='$dateS', end_date='$dateE',
-                status_out='N' ");
+                status_out='N',join_type='$Ptype' ");
         
         $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$empno_ID'");
         $Event=mysqli_fetch_assoc($event);
@@ -384,12 +384,13 @@ if($image==''){
              $amount=$_POST['amount'];
              $empno=$_POST['empno'];
              $idpo=$_POST['idpo'];
+             $join_type = $_POST['pro_type'];
              
-             $update_out=  mysqli_query($db,"update plan_out set begin_date='$begin_date',end_date='$end_date',amount='$amount'
+             $update_out=  mysqli_query($db,"update plan_out set begin_date='$begin_date',end_date='$end_date',amount='$amount',join_type='$join_type'
                  where id_plan=$id_plan");
              
             $date_end=date('Y-m-d', strtotime("$end_date+1 days "));
-            $update_event=mysqli_query($db,"update tbl_event set event_start='$begin_date',event_end='$date_end'
+            $update_event=mysqli_query($db,"update tbl_event set event_start='$begin_date',event_end='$date_end',typela='$join_type'
             where workid='$idpo' and process='1' and empno='$empno'");
              if ($update_out == false) {
         echo "<p>";

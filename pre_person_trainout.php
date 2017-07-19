@@ -170,9 +170,10 @@ echo mysqli_error($db);
                             <tr align="center" bgcolor="#898888">
                                 <th align="center" width="7%">ลำดับ</th>
                                 <th align="center" width="10%">เลขที่</td>
-                                <th align="center" width="32%">ชื่อ-นามสกุล</th>
+                                <th align="center" width="17%">ชื่อ-นามสกุล</th>
                                 <th align="center" width="21%">ตำแหน่ง</th>
-                                <th align="center" width="15%">บันทึก</th>
+                                <th align="center" width="15%">บันทึก(เก่า)</th>
+                                <th align="center" width="15%">บันทึก(ใหม่)</th>
                                 <th align="center" width="15%">พิมพ์สรุป</th>
                                 <th align="center" width="15%">แก้ไข</th>
                             </tr>
@@ -188,6 +189,13 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 <td align="center">
 <?php if($result['status_out']=='N'){ ?>    
                                     <a href="person_trainout.php?pro_id=<?=$project_id?>&&id=<?=$result['empno'];?>"><img src='images/save_add.png' width='30'></a>
+<?php }else{ ?>
+                                    <img src="images/Symbol_-_Check.ico" width="20"  title="สรุปแล้ว">
+<?php }?>
+                                </td>
+                                <td align="center">
+<?php if($result['status_out']=='N'){ ?>    
+                                    <a href="person_trainout(new).php?pro_id=<?=$project_id?>&&id=<?=$result['empno'];?>"><img src='images/save_add.png' width='30'></a>
 <?php }else{ ?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="สรุปแล้ว">
 <?php }?>

@@ -1,6 +1,46 @@
 <?php include_once 'header.php';
  if(empty($_SESSION['user'])){echo "<meta http-equiv='refresh' content='0;url=index.php'/>";exit();} ?>
 <script type="text/javascript">
+$(function (){
+       $(function (){
+           $("div#regisDate").hide(0);
+       }); 
+       if($("#pertype").val() ==''){
+       $("#pertype").change(function (){
+           if($("#pertype").val()==1 || $("#pertype").val()==2){
+                    $("#datepicker4").removeAttr("disabled");
+                    $("#regisDate").show("fast"); 
+                }else{
+                    $("div#regisDate").hide(0);
+                }
+       });} else {
+       if($("#pertype").val()==1 || $("#pertype").val()==2){
+       $(function (){
+                    $("#datepicker4").removeAttr("disabled");
+                    $("#regisDate").show("fast"); 
+       });
+       $("#pertype").change(function (){
+           if($("#pertype").val()==1 || $("#pertype").val()==2){
+                    $("#datepicker4").removeAttr("disabled");
+                    $("#regisDate").show("fast"); 
+                }else{
+                    $("div#regisDate").hide(0);
+                }
+       });
+   }else{
+       $("#pertype").change(function (){
+           if($("#pertype").val()==1 || $("#pertype").val()==2){
+                    $("#datepicker4").removeAttr("disabled");
+                    $("#regisDate").show("fast"); 
+                }else{
+                    $("div#regisDate").hide(0);
+                }
+       });
+   }
+       }
+    });
+</script>
+<script type="text/javascript">
 function nextbox(e, id) {
     var keycode = e.which || e.keyCode;
     if (keycode == 13) {
@@ -89,8 +129,10 @@ function nextbox(e, id) {
                 <?php 
  		if(!empty($_GET['method'])){
  			$take_date= $edit_person['birthdate'];
+                        $take_date2= $edit_person['regis_date'];
                         }else{
                          $take_date=date('Y-m-d');   
+                         $take_date2=date('Y-m-d');
                         }
  		?>
                 <script type="text/javascript">
@@ -98,6 +140,7 @@ function nextbox(e, id) {
                 $( "#datepicker" ).datepicker("setDate", new Date('<?=$take_date?>')); //Set ค่าวัน
                 $( "#datepicker2" ).datepicker("setDate", new Date()); //Set ค่าวัน
                 $( "#datepicker3" ).datepicker("setDate", new Date()); //Set ค่าวัน
+                $( "#datepicker4" ).datepicker("setDate", new Date('<?=$take_date2?>')); //Set ค่าวัน
                  });
                 </script>
                 <input name="bday" type="text" id="datepicker"  placeholder='รูปแบบ 22/07/2557' class="form-control"  value="<?= isset($take_date)?$take_date:''?>" required><br>
@@ -148,7 +191,7 @@ function nextbox(e, id) {
 
           </div>
 </div>
-   <?php if(empty($_REQUEST['method'])){?>
+
     <div class="row">
           <div class="col-lg-12">
               <div class="panel panel-primary">
@@ -156,6 +199,7 @@ function nextbox(e, id) {
                     <h3 class="panel-title"><img src='images/work.ico' width='25'> ข้อมูลการปฏิบัติงาน</h3>
                     </div>
                 <div class="panel-body">
+                       <?php if(empty($_REQUEST['method'])){?>
                     <div class="form-group"> 
                 <label>คำสั่งเลขที่ &nbsp;</label>
                 <input value='<?= isset($edit_person['empcode'])?$edit_person['empcode']:''?>' type="text" class="form-control" name="order" id="order" placeholder="เลขที่คำสั่ง" onkeydown="return nextbox(event, 'position')">
@@ -192,6 +236,7 @@ function nextbox(e, id) {
 				 } ?>
 			 </select>
 			 </div>
+                       <?php }?>
                     <div class="form-group">
          			<label>ประเภทพนักงาน &nbsp;</label>
  				<select name="pertype" id="pertype" required  class="form-control"  onkeydown="return nextbox(event, 'educat');"> 
@@ -203,6 +248,11 @@ function nextbox(e, id) {
 				 } ?>
 			 </select>
 			 </div>
+                    <div class="form-group" id="regisDate">
+                        <label>วันที่เข้ารับราชการ &nbsp;</label>
+                        <input name="regis_date" id="datepicker4" type="text" class="form-control" disabled="disable">
+                    </div>
+                       <?php if(empty($_REQUEST['method'])){?>
                     <div class="form-group">
          			<label>วุฒิการศึกษาที่บรรจุ &nbsp;</label>
  				<select name="educat" id="educat" required  class="form-control"  onkeydown="return nextbox(event, 'swday');"> 
@@ -224,10 +274,12 @@ function nextbox(e, id) {
  		?>
                 <input value='<?= isset($dateBegin)?$dateBegin:''?>' type="text" id="datepicker2"  placeholder='รูปแบบ 22/07/2557' class="form-control" name="swday" id="swday" onkeydown="return nextbox(event, 'teducat')">
              	</div>
+                       <?php }?>
                 </div>
               </div>
           </div>
 </div>
+       <?php if(empty($_REQUEST['method'])){?>
     <div class="row">
           <div class="col-lg-12">
               <div class="panel panel-primary">
