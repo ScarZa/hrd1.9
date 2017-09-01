@@ -301,8 +301,7 @@ if($date >= $bdate and $date <= $edate){
 }elseif($method=='edit_leave'){ 
     $Lno=$_POST['Lno'];
     $leave_no=$_POST['leave_no'];
-    $date_reg_conv = $_POST['date_reg'];
-$date_reg=date('Y-m-d');
+$date_reg=insert_date($_POST['date_reg']);
 $date_s=insert_date($_POST['date_s']);
 $date_e=insert_date($_POST['date_e']);
     $typel = $_POST['typel'];
