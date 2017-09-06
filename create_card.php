@@ -1,57 +1,14 @@
 <?php include_once 'header.php';?>
 <?php if(empty($_SESSION['user'])){echo "<meta http-equiv='refresh' content='0;url=index.php'/>";exit();} ?>
-<div class="row">
-          <div class="col-lg-12">
-            <h1><font color='blue'>  ผู้เข้าร่วมโครงการ </font></h1> 
-            <ol class="breadcrumb alert-success">
-              <li><a href="index.php"><i class="fa fa-home"></i> หน้าหลัก</a></li>
-              <li><a href="pre_trainout.php"><i class="fa fa-home"></i> บันทึกการฝึกอบรมภายนอกหน่วยงาน</a></li>
-              <li class="active"><i class="fa fa-edit"></i> ผู้เข้าร่วมโครงการ</li>
-            </ol>
-          </div>
-      </div>
+<br><br>
 <div class="row">
           <div class="col-lg-12">
               <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">โครงการ</h3>
+                    <h3 class="panel-title">สร้างบัตรพนักงาน</h3>
                     </div>
                 <div class="panel-body">
-                    <?php
-                      include_once ('option/funcDateThai.php');
-            $project_id = $_REQUEST['id'];
-            $sql_pro = mysqli_query($db,"SELECT t.*, p.PROVINCE_NAME FROM training_out t
-            inner join province p on t.provenID=p.PROVINCE_ID
-            WHERE tuid='$project_id'");
-            $Project_detial = mysqli_fetch_assoc($sql_pro);
-  
-                    ?>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td><b>เลขที่โครงการ : &nbsp; </b><?= $Project_detial['memberbook'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td><b>ชื่อโครงการ : &nbsp; </b><?= $Project_detial['projectName'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td><b>หน่วยงานที่จัดโครงการ : &nbsp; </b><?= $Project_detial['anProject'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td><b>ตั้งแตวันที่ : &nbsp; </b><?= DateThai1($Project_detial['Beginedate']) ?>&nbsp; <b> ถึง &nbsp;</b><?= DateThai1($Project_detial['endDate']) ?>
-                                    <b> &nbsp; จำนวน : &nbsp; </b><?= $Project_detial['amount'] ?><b>&nbsp; วัน</b>
-                                    <b> &nbsp; ณ. &nbsp; </b><?= $Project_detial['stantee'] ?><b> &nbsp; จ. </b> &nbsp; <?= $Project_detial['PROVINCE_NAME'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td><b>ค่าที่พัก : &nbsp; </b><?= $Project_detial['m1'] ?><b>&nbsp;บาท&nbsp; </b>&nbsp;&nbsp;<b>ค่าลงทะเบียน : &nbsp; </b><?= $Project_detial['m2'] ?><b>&nbsp;บาท&nbsp; </b>&nbsp;&nbsp;
-                                    <b>ค่าเบี้ยเลี้ยง : &nbsp; </b><?= $Project_detial['m3'] ?><b>&nbsp;บาท&nbsp; </b><br><b>ค่าพาหนะเดินทาง : &nbsp; </b><?= $Project_detial['m4'] ?><b>&nbsp;บาท&nbsp; </b>&nbsp;&nbsp;
-                                    <b>ค่าใช้จ่ายอื่นๆ : &nbsp; </b><?= $Project_detial['m5'] ?><b>&nbsp;บาท&nbsp; </b></td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            </table>
-                <div class="panel-body">
-                    <form class="navbar-form navbar-right" name="frmSearch" role="search" method="post" action="add_trainout.php">
+                    <form class="navbar-form navbar-right" name="frmSearch" role="search" method="post" action="create_card.php">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
@@ -75,7 +32,7 @@ function page_navigator($before_p,$plus_p,$total,$total_p,$chk_page){
 	global $e_page;
 	global $querystr;
         $trainin_id = isset($_REQUEST['id'])?$_REQUEST['id']:'';
-	$urlfile="add_trainout.php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
+	$urlfile="create_card.php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
 	$per_page=10;
 	$num_per_page=floor($chk_page/$per_page);
 	$total_end_p=($num_per_page+1)*$per_page;
@@ -143,7 +100,7 @@ $total_p=ceil($total/$e_page);
 $before_p=($chk_page*$e_page)+1;  
 echo mysqli_error($db);
 ?>
-<form action="prctraining.php" method="post" name="form" enctype="multipart/form-data" id="form" >
+                    <form action="card_group.php" method="post" name="form" enctype="multipart/form-data" id="form" target="_blank">
 <br>
 <div align="center"><input type="submit" name="submit" id="submit" class="btn btn-success" value="ตกลง" ></div>
 <br>
@@ -154,10 +111,6 @@ echo mysqli_error($db);
                                 <th align="center" width="20%">ชื่อ-นามสกุล
                                 <th align="center" width="20%">ตำแหน่ง</th>
                                 <th align="center" width="20%">หน่วยงาน</th>  
-                                <th align="center" width="10%">เข้าร่วมเป็น</th>
-                                <th align="center" width="5%">ระหว่างวันที่</th>
-                                <th align="center" width="5%">ถึงวันที่</th>
-                                <th align="center" width="10%">จำนวนวัน</th>
                             </tr>
                             
                             <?php
@@ -173,27 +126,7 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 <td><?=$result['fullname'];?></td>
                                 <td align="center"><?=$result['posname'];?></td>
                                 <td align="center"><?=$result['dep'];?></td>
-                                <td align="center">
-                                    <select name="pro_type[]" id="pro_type[]">
-                                        <?php
-                                        $sql = mysqli_query($db, "select * from trainingtype");
-                                        while ($JT= mysqli_fetch_assoc($sql)){
-                                            if($Project_detial['dt']==$JT['tid']){ $select='selected';}else{$select='';}
-                                            echo "<option value='".$JT['tid']."' $select>".$JT['tName']."</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                                <td align="center">
-                                    <input type="date" name="dates[]" id="dates[]" value='<?=$Project_detial['Beginedate']?>'>
-                                </td>
-                                <td align="center">
-                                    <input type="date" name="datee[]" id="datee[]" value='<?=$Project_detial['endDate']?>'>
-                                </td>
-                                <td align="center" width="11%">
-                                    <input type="text" name="amount[]" id="amount[]" value='<?=$Project_detial['amount']?>' size="2">
-                                </td>
-                          </tr>
+                            </tr>
     <?php $i++;
     $c++; } ?>
                                 
@@ -219,6 +152,6 @@ echo mysqli_error($db);
               </div>
           </div>
 </div>
-          </div>
 </div>
+
     <?php include_once 'footeri.php';?>
