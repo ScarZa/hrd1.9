@@ -217,6 +217,7 @@ if ($resultHos['logo'] != '') {
     <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
                                     <li><a href="add_person.php?unset=1"><img src='images/adduser.ico' width='25'> เพิ่มข้อมูลบุคลากร</a></li>
                                     <li><a href="pre_person.php?unset=1"><img src='images/identity.png' width='25'> ข้อมูลบุคลากร</a></li>
+                                    <li><a href="create_card.php?unset=1"><img src='images/phonebook.ico' width='25'> พิมพ์บัตรพนักงาน</a></li>
                                     <li><a href="pre_educate.php?unset=1"><img src='images/Student.ico' width='25'> ประวัติการศึกษา</a></li>
                                     <li><a href="pre_Whistory.php?unset=1"><img src='images/work.ico' width='25'> ประวัติการทำงาน</a></li>
                                     <li><a href="resign_person.php?unset=1"><img src='images/identity-x.png' width='25'> ข้อมูลบุคลากรย้าย/ลาออก</a></li>

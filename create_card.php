@@ -13,7 +13,7 @@
         <tr>
             <td>
                 <div class="form-group">
-                    <input type="text" placeholder="ค้นหา ชื่อ/ตำแหน่ง/หน่วยงาน" name='txtKeyword' class="form-control" value="<?= isset($Search_word)?$Search_word:''?>" >
+                    <input type="text" placeholder="ค้นหาชื่อ" name='txtKeyword' class="form-control" value="<?= isset($Search_word)?$Search_word:''?>" >
                     <input type='hidden' name='method'  value='txtKeyword'>
                     <input type='hidden' name='id'  value='<?=$project_id?>'>
                 </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
