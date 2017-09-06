@@ -72,8 +72,8 @@ table {
 require_once('option/library/mpdf60/mpdf.php'); //ที่อยู่ของไฟล์ mpdf.php ในเครื่องเรานะครับ
 ob_start(); // ทำการเก็บค่า html นะครับ*/
 ?>
-<table border="1" name="card" background="images/card.png" color="blue">
-    <tr bg="images/card.png">
+<table border="1" name="card" style="background-image: url('images/card.jpg');">
+    <tr>
         <td align="center" width="190" height="295" >
             <img src='<?= $fol . $pic; ?>' width="35"><br>
             <font size="2" color="blue"><p><b><?= $hospital['name']?><br>
