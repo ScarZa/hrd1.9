@@ -79,7 +79,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             <font size="2" color="blue"><p><b><?= $hospital['name']?><br>
                     กรมสุขภาพจิต กระทรวงสาธารณสุข</b></p></font>
             <img src='<?= $folder . $photo ?>' height="120"><br>
-            <p class="small"><b><font size="3"><?= $name?><br>
+            <p class="small"><b><font size="3" color="black"><?= $name?><br>
                 <?= $posion?></font></b></p>
             <p><img src='images/logogrom.png' width="25"> <img src='images/URS.png' width="45">&nbsp;</p>
         </td>

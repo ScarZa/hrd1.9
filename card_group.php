@@ -43,8 +43,8 @@ table {
 require_once('option/library/mpdf60/mpdf.php'); //ที่อยู่ของไฟล์ mpdf.php ในเครื่องเรานะครับ
 ob_start(); // ทำการเก็บค่า html นะครับ*/
 ?>
-<table border="1" width="600">
-    <tr>
+<table border="0" width="600">
+    
 <?php 
 $query=mysqli_query($db,"select * from hospital");
 $hospital=  mysqli_fetch_assoc($query);
@@ -56,16 +56,22 @@ if (!empty($hospital['logo'])) {
                                     $fol = "images/";
                                 }
 $check_ps=$_POST['check_ps'];
+$count = ceil(count($check_ps)/3);
 foreach ($check_ps as $key => $value) {
-        $empno_id[$value] = $_POST['empno'][$value];
-       
-        $empno=$empno_id[$value];
+    
+        $empno_id1[$key] = $_POST['empno'][$value];
+}
+$I=0;
+for($i=1;$i<=$count;$i++){
+echo "<tr>";
+
+for ($ii=0;$ii<=2;$ii++) {
                                
 $sql = $db->prepare("SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,p1.posname as posion,e1.photo as photo FROM emppersonal e1
 inner JOIN work_history wh ON wh.empno=e1.empno
 inner JOIN posid p1 ON p1.posId=wh.posid
 WHERE e1.empno= ?  and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
-$sql->bind_param("i",$empno);
+$sql->bind_param("i",$empno_id1[$I]);
 $sql->execute();
 $sql->bind_result($name,$posion,$photo);
 $sql->fetch();
@@ -87,15 +93,21 @@ if (!empty($photo)) {
             <font size="2" color="blue"><p><b><?= $hospital['name']?><br>
                     กรมสุขภาพจิต กระทรวงสาธารณสุข</b></p></font>
             <img src='<?= $folder . $photo ?>' height="120"><br>
-            <p class="small"><b><font size="3"><?= $name?><br>
+            <p class="small"><b><font size="3" color="black"><?= $name?><br>
                 <?= $posion?></font></b></p>
             <p><img src='images/logogrom.png' width="25"> <img src='images/URS.png' width="45">&nbsp;</p>
         </td>
     </tr>
 </table>
     </td>
-<?php   }?>
-   </tr></table>
+<?php   
+if($I == (count($check_ps)-1)){
+    break;
+}
+$I++;
+     }
+echo "</tr>"; }?>
+   </table>
 <?php
 $time_re=  date('Y_m_d');
 $reg_date=$work['reg_date'];
