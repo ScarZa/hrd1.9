@@ -78,14 +78,14 @@ if (empty($_SESSION['user'])) {
 FROM training_out tro
 INNER JOIN plan_out po on po.idpo=tro.tuid
 WHERE po.status_out='N' and (tro.memberbook LIKE '%$Search_word%' or tro.projectName LIKE '%$Search_word%')
-GROUP BY po.idpo";
+GROUP BY po.idpo order by tuid desc";
                     } else{
                         $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate,  tro.tuid,
 (SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
 FROM training_out tro
 INNER JOIN plan_out po on po.idpo=tro.tuid
 WHERE po.status_out='N'
-GROUP BY po.idpo";
+GROUP BY po.idpo order by tuid desc";
                     }
                 $qr = mysqli_query($db,$q);
                 if ($qr == '') {
