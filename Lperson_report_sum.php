@@ -24,7 +24,7 @@ $screen = isset($_REQUEST['screen']) ? $_REQUEST['screen'] : '';
             <div class="panel-body">
                 <div class="alert alert-info alert-dismissable">
                     <div class="form-group" align="right"> 
-                        <form method="post" action="Lperson_report_sum.php" enctype="multipart/form-data" class="navbar-form navbar-right">
+                        <form name="form1" method="post" action="Lperson_report_sum.php" enctype="multipart/form-data" class="navbar-form navbar-right">
                             <div class="form-group">
                                 <select name="month" id="month"  class="form-control" required=""> 
                                     <?php
@@ -65,22 +65,55 @@ for ($i = 2558; $i <= 2565; $i++) {
 ?>
                                 </select>                        
                             </div>
-                            <input type="hidden"   name='method' class="form-control" value='Lperson_date' >
+                            
                             <input type="hidden"   name='screen' class="form-control" value='<?= $screen ?>' >
                             <button type="submit" class="btn btn-success">ตกลง</button>
 
 
                         </form></div> <br><br></div>
-
                 <?php
+                                    if ($screen == '2') {?>
+                <div class="alert alert-info alert-dismissable">
+                    <div class="form-group" align="right"> 
+                        <form name="form2" method="post" action="Lperson_report_sum.php" enctype="multipart/form-data" class="navbar-form navbar-right">
+                            <div class="form-group">
+                                <select name="dep" id="dep"  class="form-control select2" style="width: 200px" required="">
+                                <?php
+                                         $sql = mysqli_query($db, "SELECT *  FROM emptype order by EmpType");
+                                        echo "<option value=''>--เลือกประเภทบุคลากร--</option>";
+                                        while ($result = mysqli_fetch_assoc($sql)) {
+                                            echo "<option value='" . $result['EmpType'] . "'>" . $result['TypeName'] . " </option>";
+                                        }
+                                    
+                                    ?>
+                                    </select></div>
+                                <script type="text/javascript">
+                $(function() {
+                $( "#datepicker" ).datepicker("setDate", new Date('<?=date('Y-m-d')?>')); //Set ค่าวัน
+                $( "#datepicker2" ).datepicker("setDate", new Date('<?=date('Y-m-d')?>')); //Set ค่าวัน
+                 });
+                </script>
+                <div class="form-group">
+                <input name="year" type="text" id="datepicker"  placeholder='รูปแบบ 22/07/2557' class="form-control" required>
+                </div>
+                <div class="form-group">
+                <input name="eyear" type="text" id="datepicker2"  placeholder='รูปแบบ 22/07/2557' class="form-control" required>
+                </div>
+                            <input type="hidden"   name='method' class="form-control" value='range_date' >
+                            <input type="hidden"   name='screen' class="form-control" value='<?= $screen ?>' >
+                            <button type="submit" class="btn btn-success">ตกลง</button>
+                        </form></div> <br><br></div>
+                <?php }
                 if (!empty($_REQUEST['year'])) {
                     $year = $_POST['year'] - 543;
                 }
                 $year_now = date("Y");
                 include 'option/funcDateThai.php';
-                include 'option/function_date.php';
+                
                 if (!empty($_POST['year']) or ! empty($_GET['year'])) {
-
+                    $method = isset($_POST['method'])?$_POST['method']:'';
+                        if($method != 'range_date'){
+                            include 'option/function_date.php';
                     if ($date >= $bdate and $date <= $edate) {//ถ้าช่วงที่ใช้งานอยู่ปัจจุบันอยู่ในช่วงเดือน ตุลาคม - ธันวาคม
                         $year = date('Y') - 1;
                         $take_month = isset($_POST['month']) ? $_POST['month'] : '';
@@ -147,8 +180,28 @@ for ($i = 2558; $i <= 2565; $i++) {
                             $ago_year = $Y;
                         }
                     }
-                    $date_start = "$Yst-10-01";
-                    $date_end = "$yen-09-30" . "<br>";
+                        }else{
+                            if(empty($year)){
+                                 $y=  date("Y");
+                            } else {
+                                $y=date("Y");
+                            }
+                                 $Y=$y-1;
+                                 $Yy=$y+1;
+                            $this_year = $y;
+                            $ago_year = date('Y')-1;
+                            $next_year = $Yy;
+                    $year = date('Y');
+                    $depno = isset($_POST['dep']) ? $_POST['dep'] : '';
+                    $take_month1 = insert_date($_POST['year']);
+                    $take_month2 = insert_date($_POST['eyear']);
+                    $take_date1 = "$ago_year-10-01";
+                    $take_date2 = "$this_year-09-30";
+                    $date_start = '';
+                    $date_end = ''; 
+                        }
+//                    $date_start = "$Yst-10-01";
+//                    $date_end = "$yen-09-30" . "<br>";
                 } else {
                     $year = '';
                     $depno = '';
@@ -221,7 +274,7 @@ order by e1.empno");
                             <td width="9%" rowspan="3" align="center"><b>ชื่อ-นามสกล</b></td>
                             <th colspan="8" align="center">เดือนนี้ ( <?php if (!empty($take_month)) {
                     echo DateThai2($take_month1) . " ถึง " . DateThai2($take_month2);
-                } ?> )</th>
+                }else{ echo DateThai2($take_month1) . " ถึง " . DateThai2($take_month2);} ?> )</th>
                             <th colspan="8" align="center">ตั้งแต่ต้นปี ( <?= DateThai2($take_date1); ?> ถึง <?= DateThai2($take_date2); ?> )</th>
                             <th width="4%" rowspan="3" align="center">พักผ่อนสะสม</th>
                             <th width="4%" rowspan="3" align="center">พักผ่อนปีนี้</th>
