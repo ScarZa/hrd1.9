@@ -96,8 +96,9 @@ if (empty($_SESSION['user'])) {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method == 'empno_search') {
                         if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
+                        if(!empty($empno)){
                         $sqln = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname  FROM emppersonal where empno=$empno ");
-                        $fullname = mysqli_fetch_array($sqln);
+                        $fullname = mysqli_fetch_array($sqln);}
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
