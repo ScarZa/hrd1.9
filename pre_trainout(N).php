@@ -36,12 +36,37 @@ if (empty($_SESSION['user'])) {
                         </tr>
                     </table>
                 </form>
+                <form class="navbar-form navbar-right" name="frmSearch" role="search" method="post" action="pre_trainout(N).php" enctype="multipart/form-data">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <select name="name" id="name" class="form-control select2" style="width: 100%"> 
+				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
+				 echo "<option value=''> - ค้นหาด้วยชื่อบุคลากร - </option>";
+				 while( $result = mysqli_fetch_assoc( $sql ) ){
+          if($result['empno']==$_POST['name']){$selected='selected';}else{$selected='';}
+				 echo "<option value='".$result['empno']."' $selected>".$result['fullname']."</option>";
+				 } ?>
+			 </select>
+                                    <input type='hidden' name='method'  value='empno_search'>
+                                </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
+
+
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </form>
                 <?php
 
 // สร้างฟังก์ชั่น สำหรับแสดงการแบ่งหน้า   
                 function page_navigator($before_p, $plus_p, $total, $total_p, $chk_page) {
                     global $e_page;
                     global $querystr;
+                    if(isset($_POST['method'])){ $method =$_POST['method'];}elseif (isset($_GET['method'])) {$method =$_GET['method'];}else{$method ='';}
+                    if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
                     $urlfile = "pre_trainout(N).php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
                     $per_page = 30;
                     $num_per_page = floor($chk_page / $per_page);
@@ -53,37 +78,48 @@ if (empty($_SESSION['user'])) {
                     $pNext = ($pNext >= $total_p) ? $total_p - 1 : $pNext;
                     $lt_page = $total_p - 4;
                     if ($chk_page > 0) {
-                        echo "<a  href='$urlfile?s_page=$pPrev" . $querystr . "' class='naviPN'>Prev</a>";
+                        echo "<a  href='$urlfile?s_page=$pPrev&method=$method&name=$empno" . $querystr . "' class='naviPN'>Prev</a>";
                     }
                     for ($i = $total_start_p; $i < $total_end_p; $i++) {
                         $nClass = ($chk_page == $i) ? "class='selectPage'" : "";
                         if ($e_page * $i <= $total) {
-                            echo "<a href='$urlfile?s_page=$i" . $querystr . "' $nClass  >" . intval($i + 1) . "</a> ";
+                            echo "<a href='$urlfile?s_page=$i&method=$method&name=$empno" . $querystr . "' $nClass  >" . intval($i + 1) . "</a> ";
                         }
                     }
                     if ($chk_page < $total_p - 1) {
-                        echo "<a href='$urlfile?s_page=$pNext" . $querystr . "'  class='naviPN'>Next</a>";
+                        echo "<a href='$urlfile?s_page=$pNext&method=$method&name=$empno" . $querystr . "'  class='naviPN'>Next</a>";
                     }
                 }
 
-                $method = isset($_POST['method'])?$_POST['method']:'';
+                if(isset($_POST['method'])){ $method =$_POST['method'];}elseif (isset($_GET['method'])) {$method =$_GET['method'];}else{$method ='';}
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
-                    }
+                    }elseif ($method == 'empno_search') {
+                        if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
+                        $sqln = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname  FROM emppersonal where empno=$empno ");
+                        $fullname = mysqli_fetch_array($sqln);
+        }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate, tro.tuid,
 (SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
-FROM training_out tro
-INNER JOIN plan_out po on po.idpo=tro.tuid
+FROM plan_out po
+INNER JOIN training_out tro on po.idpo=tro.tuid
 WHERE po.status_out='N' and (tro.memberbook LIKE '%$Search_word%' or tro.projectName LIKE '%$Search_word%')
 GROUP BY po.idpo order by tuid desc";
-                    } else{
+                    }elseif (!empty ($empno)) {
+                        $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate, tro.tuid,
+(SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
+FROM plan_out po
+INNER JOIN training_out tro on po.idpo=tro.tuid
+WHERE po.status_out='N' and po.empno = $empno
+GROUP BY po.idpo order by tuid desc";
+        } else{
                         $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate,  tro.tuid,
 (SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
-FROM training_out tro
-INNER JOIN plan_out po on po.idpo=tro.tuid
+FROM plan_out po
+INNER JOIN training_out tro on po.idpo=tro.tuid
 WHERE po.status_out='N'
 GROUP BY po.idpo order by tuid desc";
                     }
@@ -113,7 +149,7 @@ GROUP BY po.idpo order by tuid desc";
                 ?>
 
                     <?php include_once ('option/funcDateThai.php'); ?>
-                แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?>
+                แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?><?= isset($fullname)?$fullname['fullname']:''?>
                 <table align="center" width="100%" border="1">
                     <tr align="center" bgcolor="#898888">
                         <td width="3%" align="center"><b>ลำดับ</b></td>

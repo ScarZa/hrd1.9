@@ -113,7 +113,7 @@ if($date >= $bdate and $date <= $edate){
 
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
-                    }elseif ($method = 'empno_search') {
+                    }elseif ($method == 'empno_search') {
                         if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
