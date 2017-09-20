@@ -51,8 +51,6 @@ if (empty($_SESSION['user'])) {
 			 </select>
                                     <input type='hidden' name='method'  value='empno_search'>
                                 </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
-
-
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
