@@ -45,9 +45,15 @@ $regis='W';
 
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
+    if($date > $date_s and $date > $date_e){
+    $beg_date="$Y-10-01";
+    $en_date="$y-09-30";
+    $year = date('Y'); 
+    } else {
     $beg_date="$y-10-01";
     $en_date="$Yy-09-30";
-    $year = date('Y')-1;
+    $year = date('Y')+1;        
+    }
 }else{
     $beg_date="$Y-10-01";
     $en_date="$y-09-30";
@@ -61,7 +67,7 @@ $sql_leave=  mysqli_query($db,"select workid from work where enpid='$empno' and 
 $befor_leave=  mysqli_fetch_assoc($sql_leave);
 
 $befor_workid=$befor_leave['workid'];
-for($i = 0; $i < count($_POST["typela"]); $i++){
+for($i = 0; $i < count(isset($_POST["typela"])?$_POST["typela"]:''); $i++){
     if (!empty($_POST["typela"][$i])) {
         $typela[$i]= $_POST["typela"][$i];
         $last_amount[$i]= $_POST["leave_type"][$i];

@@ -123,8 +123,9 @@ echo mysqli_error($db);
                                 <td align="center" width="20%"><b>ชื่อ-นามสกุล</b></td>
                                 <td align="center" width="15%"><b>ตำแหน่ง</b></td>
                                 <td align="center" width="10%"><b>บันทึกการลา</b></td>
-                                <td align="center" width="10%"><b>บันทึกการลาชั่วโมง</b></td>
+                                <td align="center" width="10%"><b>บันทึกการลา<p>ชั่วโมง</b></td>
                                 <?php if($_SESSION['Status']=='ADMIN'){?>
+                                <td align="center" width="10%"><b>บันทึกการลา<p>(ย้อนหลัง)</b></td>
                                 <td align="center" width="10%"><b>เพิ่มวันลา</b></td>
                                 <td align="center" width="10%"><b>ลงเวลา</b></td>
                                 <td align="center" width="10%"><b>สาย</b></td>
@@ -142,6 +143,7 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 <td align="center"><a href="main_leave.php?id=<?=$result['empno'];?>"><img src='images/Letter.png' width='30'></a></td>
                                 <td align="center"><a href='time_leave.php?id=<?=$result['empno'];?>'><img src='images/Time.png' width='30'></a></td>
                                 <?php if($_SESSION['Status']=='ADMIN'){?>
+                                <td align="center"><a href="main_leave.php?id=<?=$result['empno'];?>&releave=1"><img src='images/reLeave.ico' width='30'></a></td>
                                 <td align="center"><a href="add_leave.php?id=<?=$result['empno'];?>"><img src='images/edit_add.ico' width='30'></a></td>
                                 <td align="center">
                                     <a href="#" onClick="return popup('add_sign.php?id=<?=$result['empno'];?>&method=sign', popup, 450, 500);" title="ลืมลงเวลา">

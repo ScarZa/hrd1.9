@@ -248,11 +248,17 @@ function nextbox(e, id) {
                     <?php }else{
                         include 'option/function_date.php';
                     if($date >= $bdate and $date <= $edate){
+                        if(empty($_GET['releave'])){
                         $sql_leave=  mysqli_query($db,"select w.typela as typela,ty.nameLa as namela, sum(w.amount) AS leave_type
                                             from work w 
                                             INNER JOIN typevacation ty on ty.idla=w.typela
                                             where w.statusla='Y' and w.enpid='$empno' and begindate BETWEEN '$y-10-01' and '$Yy-09-30' GROUP BY ty.idla");
-                        
+                        } else {
+                            $sql_leave=  mysqli_query($db,"select w.typela as typela,ty.nameLa as namela, sum(w.amount) AS leave_type
+                                            from work w 
+                                            INNER JOIN typevacation ty on ty.idla=w.typela
+                                            where w.statusla='Y' and w.enpid='$empno' and begindate BETWEEN '$Y-10-01' and '$y-09-30' GROUP BY ty.idla");
+                        }
                     }else{
                              $sql_leave=  mysqli_query($db,"select w.typela as typela,ty.nameLa as namela, sum(w.amount) AS leave_type
                                             from work w 
