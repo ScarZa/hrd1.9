@@ -115,7 +115,11 @@ if($date >= $bdate and $date <= $edate){
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method == 'empno_search') {
                         if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
-        }
+                        if(!empty($empno)){
+                        $sqln = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname  FROM emppersonal where empno=$empno ");
+                        $fullname = mysqli_fetch_array($sqln);}
+                        
+                        }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
@@ -149,8 +153,14 @@ order by Beginedate desc";
 
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
-                    }
-                    $Search_word = $_SESSION['txtKeyword'];
+                    }elseif ($method == 'empno_search') {
+                        if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
+                        if(!empty($empno)){
+                        $sqln = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname  FROM emppersonal where empno=$empno ");
+                        $fullname = mysqli_fetch_array($sqln);}
+                        
+                        }
+                    $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
@@ -187,7 +197,11 @@ if (empty($_SESSION['check_trainout'])) {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }elseif ($method = 'empno_search') {
                         if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
-        }
+                        if(!empty($empno)){
+                        $sqln = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname  FROM emppersonal where empno=$empno ");
+                        $fullname = mysqli_fetch_array($sqln);}
+                        
+                        }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
@@ -284,7 +298,7 @@ order by Beginedate desc";
 
                     <?php include_once ('option/funcDateThai.php'); ?>
                 <?php if($_SESSION['Status']=='ADMIN'){ ?>
-                แสดงคำที่ค้นหา : <?= $Search_word; ?>
+                แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?><?= isset($fullname)?$fullname['fullname']:''?>
                 <?php }?>
                 <table align="center" width="100%" border="1">
                     <?php if (isset($_SESSION['check_trainout'])?$_SESSION['check_trainout']:'' == 'check_trainout') { ?>
