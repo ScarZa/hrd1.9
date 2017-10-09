@@ -168,14 +168,15 @@ echo mysqli_error($db);
 <?php if($_SESSION['Status']=='ADMIN'){?>แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?><?php }?>
                         <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">
                             <tr align="center" bgcolor="#898888">
-                                <th align="center" width="7%">ลำดับ</th>
+                                <th align="center" width="5%">ลำดับ</th>
                                 <th align="center" width="10%">เลขที่</td>
-                                <th align="center" width="17%">ชื่อ-นามสกุล</th>
-                                <th align="center" width="21%">ตำแหน่ง</th>
-                                <th align="center" width="15%">บันทึก(เก่า)</th>
-                                <th align="center" width="15%">บันทึก(ใหม่)</th>
-                                <th align="center" width="15%">พิมพ์สรุป</th>
-                                <th align="center" width="15%">แก้ไข</th>
+                                <th align="center" width="15%">ชื่อ-นามสกุล</th>
+                                <th align="center" width="20%">ตำแหน่ง</th>
+                                <th align="center" width="10%">บันทึก(เก่า)</th>
+                                <th align="center" width="10%">บันทึก(ใหม่)</th>
+                                <th align="center" width="10%">พิมพ์สรุป</th>
+                                <th align="center" width="10%">พิมพ์สรุป<p>ยอดเงิน</th>
+                                <th align="center" width="10%">แก้ไข</th>
                             </tr>
                             
                             <?php
@@ -206,6 +207,12 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                     <?php }elseif($result['status_out']!='Y'){ echo '...';}else {?>
                                     <a href="#" onclick="return popup('conclude_page1.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า1</a>.,.
                                     <a href="#" onclick="return popup('conclude_page2.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า2</a>
+<?php }?>
+                                </td>
+                                <td align="center">
+                                    <?php if($result['status_out']!='Y'){ echo '...';}else {?>
+                                    <a href="#" onclick="return popup('concmoney_page1.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า1</a>.,.
+                                    <a href="#" onclick="return popup('concmoney_page2.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า2</a>
 <?php }?>
                                 </td>
                                 <td align="center"><a href="person_trainout.php?method=edit&&id=<?= $result['empno'];?>&&pro_id=<?=$project_id?>"><img src='images/tool.png' width='25'></a></td>
