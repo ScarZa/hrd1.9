@@ -71,7 +71,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
         </tr>
     </table>
     </div><h4 align="center">ใบเบิกค่าใช้จ่ายในการเดินทางไปราชการ</h4>
-    <div align="right">ที่ทำการ <?=$hospital['name']?><br> วันที่ <?= DateThai2($Project_detial['datein'])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <div align="right">ที่ทำการ <?=$hospital['name']?><br> วันที่ <?= DateThai2($person_data['reg_date'])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 <div class="col-lg-12" align="left">
     <b>เรื่อง</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขออนุมัติเบิกค่าใช้จ่ายในเดินทางไปราชการ<br>
     <b>เรียน</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้อำนวยการ<?=$hospital['name']?></div>
