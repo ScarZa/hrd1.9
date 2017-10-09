@@ -86,39 +86,40 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 (&nbsp;&nbsp;) บ้านพัก (&nbsp;&nbsp;) สำนักงาน (&nbsp;&nbsp;) ประเทศไทย ตั้งแต่วันที่...........เดือน ......................พ.ศ................เวลา...............น.<br>
 และกลับถึง (&nbsp;&nbsp;) บ้านพัก (&nbsp;&nbsp;) สำนักงาน (&nbsp;&nbsp;) ประเทศไทย วันที่.........เดือน ...................พ.ศ..............เวลา.............น.<br>
     รวมเวลาไปราชการครั้งนี้.................วัน.................ชั่วโมง<br>    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้าพเจ้าขอเบิกค่าใช้จ่ายในการเดินทางไปราชการสำหรับ (&nbsp;&nbsp;) ข้าพเจ้า (&nbsp;&nbsp;) คณะดังนี้<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ข้าพเจ้าขอเบิกค่าใช้จ่ายในการเดินทางไปราชการสำหรับ (&nbsp;&nbsp;) ข้าพเจ้า (&nbsp;&nbsp;) คณะดังนี้<br>
 <table width="100%" border="0">
     <tr>
-        <td width="70%">ค่าเบี้ยเลี้ยงเดินทางประเภท..................................จำนวน<?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
-        <td width="30%">รวม <?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['m3'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td width="70%" height="30">ค่าเบี้ยเลี้ยงเดินทางประเภท..................................จำนวน<?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
+        <td width="30%" height="30">รวม <?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['m3'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
-        <td>ค่าเช่าที่พักปะเภท................................................จำนวน<?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
-        <td>รวม <?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['m1'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td height="30">ค่าเช่าที่พักปะเภท................................................จำนวน<?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
+        <td height="30">รวม <?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['m1'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
-        <td>ค่าพาหนะ............................................................................................. </td>
-        <td>รวม <?php if(!empty($Project_detial['m4'])){echo "..........".number_format($Project_detial['m4'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td height="30">ค่าพาหนะ............................................................................................. </td>
+        <td height="30">รวม <?php if(!empty($Project_detial['m4'])){echo "..........".number_format($Project_detial['m4'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
-        <td>ค่าใช้จ่ายอื่น.......................................................................................... </td>
-        <td>รวม <?php if(!empty($Project_detial['m5'])){echo "..........".number_format($Project_detial['m5'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td height="30">ค่าใช้จ่ายอื่น.......................................................................................... </td>
+        <td height="30">รวม <?php if(!empty($Project_detial['m5'])){echo "..........".number_format($Project_detial['m5'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
-        <td align="right" colspan="2">รวมเงินทั้งสิ้น .....<?php $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5']); if($total_money==0){echo '...';}else{echo $total_money;}?>......บาท</td>
+        <td align="right" colspan="2" height="30">รวมเงินทั้งสิ้น .....<?php $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5']); if($total_money==0){echo '...';}else{echo $total_money;}?>......บาท</td>
     </tr>
 </table>
 จำนวนเงิน (ตัวอักษร) <?php if(!empty($total_money)){echo '................'.num2wordsThai("$total_money").'บาทถ้วน................';}else{?>.......................................................................................<?php }?><p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             ข้าพเจ้าขอรับรองว่ารายการที่กล่าวมาข้างต้นเป็นความจริง และหลักฐานการจ่าที่ส่งมาด้วย<br>จำนวน ........................ฉบับ รวมทั้งจำนวนเงินที่ขอเบิกถูกต้องตามกฎหมายทุกประการ
             <br>
             <table width="100%" border="0">
                 <tr>
                     <td width="30%" align="center" valign="top">&nbsp;</td>
-                    <td width="40%" align="center" valign="top"><br><b>( ลงชื่อ )</b> ............................................ <br>
+                    <td width="40%" align="center" valign="top"><br><b>( ลงชื่อ )</b> ............................................ <br><br>
 (
   <?=$Person_detial['fullname']?>
-)<br>
+)<br><br>
 ตำแหน่ง
 <?=$Person_detial['posi']?></td>
                 </tr>
@@ -137,8 +138,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/approval1.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/approval1.pdf' />";
+$pdf->Output("MyPDF/concmoney1.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/concmoney1.pdf' />";
 ?>
 </body>
 </html>
