@@ -66,7 +66,7 @@ if (!$db) {
                         <h3 class="panel-title"><i class="fa fa-calendar"></i> ปฏิทินการใช้ห้องประชุมและรถยนต์ </h3>
                     </div>
                     <div class="panel-body">
-                        <div class="col-lg-12"><iframe src="http://rploei.go.th/service&support1.2/fullcalendar1_2(hrd).php" width="100%" height="900" style="border:none;" allowfullscreen></iframe>
+                        <div class="col-lg-12"><iframe src="<?= $resultHos['url']?>service&support1.2/fullcalendar1_2(hrd).php" width="100%" height="900" style="border:none;" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
