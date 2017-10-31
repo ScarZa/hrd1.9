@@ -177,7 +177,7 @@ if ($resultHos['logo'] != '') {
                     </button>
 
                     <a class="navbar-brand logo-mini" href="index.php?unset=1"><img alt="Brand" src="images/kuser.ico" width='35'> 
-                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.2</font>
+                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.3</font>
                     </a>
                 </div>
             </div>
