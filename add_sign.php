@@ -9,8 +9,8 @@ $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.last
                             d1.depName as dep,p2.posname as posi,e1.empno as empno, e2.TypeName as typename,e2.EmpType as emptype
                             from emppersonal e1 
                             inner join pcode p1 on e1.pcode=p1.pcode
-                            inner join department d1 on e1.depid=d1.depId
                             inner JOIN work_history wh ON wh.empno=e1.empno
+                            inner join department d1 on wh.depid=d1.depId
                             inner JOIN posid p2 ON p2.posId=wh.posid
                             inner join emptype e2 on e2.EmpType=wh.emptype
                             where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");

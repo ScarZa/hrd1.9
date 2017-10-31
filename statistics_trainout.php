@@ -97,12 +97,12 @@ if (empty($_SESSION['user'])) {
         $method = isset($_POST['method'])?$_POST['method']:'';
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
-                if ($_SESSION['check_out'] == '') {
+                if (empty($_SESSION['check_out'])) {
 
                     if ($method == 'Keyword_project') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }
-                    $Search_word = $_SESSION['txtKeyword'];
+                    $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT e1.empno as empno,  concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname,
@@ -135,13 +135,13 @@ where e1.status ='1'  and (p.begin_date BETWEEN '$y-10-01' and '$Yy-09-30') and 
 GROUP BY e1.empno";
                     }
                 } else {
-                    $date01 = $_SESSION['check_date01'];
-                    $date02 = $_SESSION['check_date02'];
+                    $date01 = isset($_SESSION['check_date01'])?$_SESSION['check_date01']:'';
+                    $date02 = isset($_SESSION['check_date02'])?$_SESSION['check_date02']:'';
 
                     if ($method == 'Keyword_project') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }
-                    $Search_word = $_SESSION['txtKeyword'];
+                    $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT e1.empno as empno,  concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname,
@@ -158,7 +158,7 @@ INNER JOIN pcode p2 on e1.pcode=p2.pcode
          WHERE (e1.firstname LIKE '%$Search_word%' or e1.empno LIKE '%$Search_word%' or e1.pid LIKE '%$Search_word%') and tout.dt!='9' 
          GROUP BY e1.empno";
                     } else {
-                        $q = "SELECT e1.empno as empno,  concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname,
+                       $q = "SELECT e1.empno as empno,  concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname,
 (SELECT COUNT(p.idpo) FROM plan_out p
 inner join training_out tout on tout.tuid=p.idpo
 WHERE p.empno=e1.empno  and p.status_out='Y'  and (p.begin_date between '$date01' and '$date02') and tout.dt!='9') project,

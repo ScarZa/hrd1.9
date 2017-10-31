@@ -37,9 +37,9 @@ ty.nameLa as namela,w.tel as telephone,e1.emptype,CONCAT(TIMESTAMPDIFF(year,e1.r
             from work w 
             inner join emppersonal e1 on w.enpid=e1.empno
             inner join pcode p1 on e1.pcode=p1.pcode
-            inner join department d1 on e1.depid=d1.depId
-            inner join department_group d2 on d2.main_dep=d1.main_dep
             INNER JOIN work_history wh ON wh.empno=e1.empno
+            inner join department d1 on wh.depid=d1.depId
+            inner join department_group d2 on d2.main_dep=d1.main_dep
             inner join posid p2 on wh.posid=p2.posId
             INNER JOIN typevacation ty on ty.idla=w.typela
             where w.enpid='$empno' and w.workid='$workid' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");

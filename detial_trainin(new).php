@@ -19,16 +19,16 @@
                             where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
-    if($_REQUEST['train']=='in'){
-            $date01=$_SESSION['check_date01'];
-            $date02=$_SESSION['check_date02'];
-            }elseif ($_REQUEST['train']=='out') {
-            $date01=$_SESSION['check_date01'];
-            $date02=$_SESSION['check_date02'];
-        }  else {                    
-            $date01=$_SESSION['check_date01'];
-            $date02=$_SESSION['check_date02'];
-        }
+    //if($_REQUEST['train']=='in'){
+            $date01= isset($_SESSION['check_date01'])?$_SESSION['check_date01']:'';
+            $date02= isset($_SESSION['check_date02'])?$_SESSION['check_date02']:'';
+//            }elseif ($_REQUEST['train']=='out') {
+//            $date01=$_SESSION['check_date01'];
+//            $date02=$_SESSION['check_date02'];
+//        }  else {                    
+//            $date01=$_SESSION['check_date01'];
+//            $date02=$_SESSION['check_date02'];
+//        }
         if ($date01!='' and $date02!='') {
             
             $detial = mysqli_query($db,"SELECT p.*,t.in1,t.in2 from plan p

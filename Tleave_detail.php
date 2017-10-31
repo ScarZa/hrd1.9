@@ -55,10 +55,11 @@ function nextbox(e, id) {
                             $select_det=  mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,p2.posname as posi,e1.empno as empno,t.*
                                                         from emppersonal e1 
                                                         inner join pcode p1 on e1.pcode=p1.pcode
-                                                        inner join department d1 on e1.depid=d1.depId
+                                                        inner JOIN work_history wh ON wh.empno=e1.empno
+                                                        inner join department d1 on wh.depid=d1.depId
                                                         inner join posid p2 on e1.posid=p2.posId
                                                         inner join timela t on e1.empno=t.empno
-                                                        where e1.empno='$empno' and t.id='$Lno'");
+                                                        where e1.empno='$empno' and t.id='$Lno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
                             $detial_l= mysqli_fetch_assoc($select_det);
                             $idAdmin=$detial_l['idAdmin'];
                             $select_admin=mysqli_query($db,"select concat(e.firstname,' ',e.lastname) as adminname

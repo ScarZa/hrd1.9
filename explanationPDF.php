@@ -53,9 +53,9 @@ INNER JOIN pcode p on p.pcode=e.pcode");
     $sql=  mysqli_query($db,"select $code1,concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,d2.dep_name as depname,p2.posname as posi 
             $code2
             inner join pcode p1 on e1.pcode=p1.pcode
-            inner join department d1 on e1.depid=d1.depId
-            inner join department_group d2 on d2.main_dep=d1.main_dep
             INNER JOIN work_history wh ON wh.empno=e1.empno
+            inner join department d1 on wh.depid=d1.depId
+            inner join department_group d2 on d2.main_dep=d1.main_dep
             inner join posid p2 on wh.posid=p2.posId
             $code3  and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
     $exponent=  mysqli_fetch_assoc($sql);

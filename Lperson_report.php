@@ -99,9 +99,10 @@ $sql=mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e
 (SELECT COUNT(t.total)  from timela t WHERE t.`status`='N' and e1.empno=t.empno and t.depId='$depno' and t.datela between '$take_date1' and '$take_date2' and e1.status ='1') amonut_t,
 (select SUM(t.total) from timela t WHERE t.`status`='N' and e1.empno=t.empno and t.depId='$depno'and t.datela between '$take_date1' and '$take_date2' and e1.status ='1') sum_t
 from emppersonal e1
-LEFT OUTER JOIN `work` w on w.depId=e1.depid
-LEFT OUTER JOIN department d on w.depId=d.depId
-where w.statusla='Y' and e1.depid='$depno' and ((w.begindate between '$take_date1' and '$take_date2') or  (w.enddate between '$take_date1' and '$take_date2')) and e1.status ='1'
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN `work` w on w.depId=wh.depid
+LEFT OUTER JOIN department d on wh.depid=d.depId
+where w.statusla='Y' and wh.depid='$depno' and ((w.begindate between '$take_date1' and '$take_date2') or  (w.enddate between '$take_date1' and '$take_date2')) and e1.status ='1'
 GROUP BY e1.empno
 order by e1.empno");	
 $sql_dep=  mysqli_query($db,"select depName as name from department where depId='$depno'");
@@ -132,9 +133,10 @@ $depname = mysqli_fetch_assoc($sql_dep);
 (SELECT COUNT(t.total)  from timela t WHERE t.`status`='N' and e1.empno=t.empno and t.depId='$depno' and t.datela between '$take_date1' and '$take_date2' and e1.status ='1') amonut_t,
 (select SUM(t.total) from timela t WHERE t.`status`='N' and e1.empno=t.empno and t.depId='$depno'and t.datela between '$take_date1' and '$take_date2' and e1.status ='1') sum_t
 from emppersonal e1
-LEFT OUTER JOIN `work` w on w.depId=e1.depid
-LEFT OUTER JOIN department d on w.depId=d.depId
-where w.statusla='Y' and e1.depid='$depno' and ((w.begindate between '$take_date1' and '$take_date2') or  (w.enddate between '$take_date1' and '$take_date2')) and e1.status ='1'
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN `work` w on w.depId=wh.depid
+LEFT OUTER JOIN department d on wh.depid=d.depId
+where w.statusla='Y' and wh.depid='$depno' and ((w.begindate between '$take_date1' and '$take_date2') or  (w.enddate between '$take_date1' and '$take_date2')) and e1.status ='1'
 GROUP BY e1.empno
 order by e1.empno");
 

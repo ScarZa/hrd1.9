@@ -67,8 +67,8 @@ $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.last
                             CONCAT(TIMESTAMPDIFF(year,regis_date,NOW()))AS age 
                             from emppersonal e1 
                             inner join pcode p1 on e1.pcode=p1.pcode
-                            inner join department d1 on e1.depid=d1.depId
                             INNER JOIN work_history wh ON wh.empno=e1.empno
+                            inner join department d1 on wh.depid=d1.depId
                             inner join posid p2 on wh.posid=p2.posId
                             where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) order by wh.his_id desc ");
 if (!empty($_POST['check_date01'])) {

@@ -213,17 +213,16 @@ for ($i = 2558; $i <= 2565; $i++) {
                     $date_end = '';
                 }
                 if ($screen == '1') {
-                    $code1 = "e1.depid='$depno'";
+                    $code1 = "wh.depid='$depno'";
                     $code2 = "LEFT OUTER JOIN department d on w.depId=d.depId";
                     $code3 = "t.depId='$depno'";
                     $code4 = "select depName as name from department where depId='$depno'";
                 } else {
-                    $code1 = "e1.emptype='$depno'";
+                    $code1 = "wh.emptype='$depno'";
                     $code2 = "LEFT OUTER JOIN emptype e2 on e1.emptype=e2.EmpType";
                     $code3 = "e1.emptype='$depno'";
                     $code4 = "select TypeName as name from emptype where EmpType='$depno'";
                 }
-
                 $sql = mysqli_query($db, "SELECT CONCAT(e1.firstname,' ',e1.lastname) as fullname,e1.empno as empno, e1.emptype,CONCAT(TIMESTAMPDIFF(year,e1.regis_date,NOW()))AS age,
 (SELECT COUNT(w.amount)  from `work` w where w.typela='1'and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') amonut_sick,
 (select SUM(w.amount) from `work` w where w.typela='1' and e1.empno=w.enpid and $code1 and ((w.begindate between '$take_month1' and '$take_month2') or  (w.enddate between '$take_month1' and '$take_month2')) and w.statusla='Y' and e1.status ='1') sum_sick,
@@ -248,6 +247,7 @@ for ($i = 2558; $i <= 2565; $i++) {
 (select ld.L3 from leave_day ld where $code1 and e1.empno=ld.empno and fiscal_year='$year') total_leave
 from `work` w
 LEFT OUTER JOIN emppersonal e1 on w.depId=e1.depid
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN leave_day ld ON e1.empno=ld.empno
 $code2
 where e1.empno=w.enpid and $code1 and ((w.begindate between '$take_date1' and '$take_month2') or  (w.enddate between '$take_date1' and '$take_month2')) and w.statusla='Y' and e1.status ='1'

@@ -45,8 +45,8 @@ if (empty($_SESSION['user'])) {
                             $select_det=  mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,p2.posname as posi,e1.empno as empno,w.*
                                                         from emppersonal e1 
                                                         inner join pcode p1 on e1.pcode=p1.pcode
-                                                        inner join department d1 on e1.depid=d1.depId
                                                         INNER JOIN work_history wh ON wh.empno=e1.empno
+                                                        inner join department d1 on wh.depid=d1.depId
                                                         inner join posid p2 on wh.posid=p2.posId
                                                         inner join work w on e1.empno=w.enpid
                                                         where e1.empno='$empno' and w.workid='$Lno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");

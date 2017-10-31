@@ -85,7 +85,7 @@ if (empty($_SESSION['user'])) {
                 $method = isset($_POST['method'])?$_POST['method']:isset($_GET['method']);
                 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
-                if ($_SESSION['check_rec'] != "") {
+                if (!empty($_SESSION['check_rec'])) {
                     $date01=$_SESSION['check_date01'];
                     $date02=$_SESSION['check_date02'];
 //คำสั่งค้นหา
@@ -94,28 +94,33 @@ if($date >= $bdate and $date <= $edate){
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
 where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and regis_leave='$regis'
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where (datela between '$date01' and '$date02') and regis_time='$regis'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where (datela between '$date01' and '$date02') and regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc";
                     
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
                      $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02')
+where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc";  
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where datela between '$date01' and '$date02'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where datela between '$date01' and '$date02' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc";
                      
                     }
@@ -125,27 +130,31 @@ order by w.workid desc";
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and regis_leave='$regis'
+where w.statusla='Y' and regis_leave='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where regis_time='$regis'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc,vstdate desc";
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and begindate BETWEEN '$y-10-01' and '$Yy-09-30'
+where w.statusla='Y' and begindate BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where datela BETWEEN '$y-10-01' and '$Yy-09-30'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where datela BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc,vstdate desc";
                     }
                     
@@ -160,28 +169,34 @@ order by w.workid desc,reg_date desc";
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
 where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and regis_leave='$regis'
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where (datela between '$date01' and '$date02') and regis_time='$regis'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where (datela between '$date01' and '$date02') and regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc";
                     
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
                      $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
 where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02')
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc";  
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where datela between '$date01' and '$date02'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where datela between '$date01' and '$date02' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc";
                      
                     }
@@ -191,26 +206,31 @@ order by w.workid desc";
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and regis_leave='$regis'
+where w.statusla='Y' and regis_leave='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
-                            where regis_time='$regis'
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc,vstdate desc";
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
-LEFT OUTER JOIN department d on w.depId=d.depId
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where  w.statusla='Y'
+where  w.statusla='Y' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
-                            LEFT OUTER JOIN department d on t.depId=d.depId
+                            LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+                            LEFT OUTER JOIN department d on wh.depid=d.depId
+                            where (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
                             order by t.id desc,vstdate desc";
                     }
                     

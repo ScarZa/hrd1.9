@@ -91,16 +91,16 @@ if (empty($_SESSION['user'])) {
                         $code_mdep1 = '';
                         if ($method == 'Lperson_dep') {
                             $depno = $_REQUEST['dep'];
-                            $code_mdep2 = "and e.depid='$depno'";
+                            $code_mdep2 = "and wh.depid='$depno'";
                         } else {
                             $depno = '';
                         }
                     } elseif ($_SESSION['Status'] == 'SUSER') {
                         $code_mdep1 = '';
                         $depno = $_SESSION['dep'];
-                        $code_mdep2 = "and e.depid='$depno'";
+                        $code_mdep2 = "and wh.depid='$depno'";
                     } elseif ($_SESSION['Status'] == 'USUSER') {
-                        $code_mdep1 = "inner join department d1 on d1.depId=e.depid inner join department_group d2 on d2.main_dep=d1.main_dep";
+                        $code_mdep1 = "inner join department d1 on d1.depId=wh.depid inner join department_group d2 on d2.main_dep=d1.main_dep";
                         $depno = $_SESSION['dep'];
                         $mdepno = $_SESSION['main_dep'];
                         $code_mdep2 = "and d1.main_dep='$mdepno'";

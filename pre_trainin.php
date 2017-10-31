@@ -89,7 +89,7 @@ if($date >= $bdate and $date <= $edate){
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }
-                    $Search_word = $_SESSION['txtKeyword'];
+                    $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT * from trainingin 
@@ -105,7 +105,7 @@ if($date >= $bdate and $date <= $edate){
                     if ($method == 'txtKeyword') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
                     }
-                    $Search_word = $_SESSION['txtKeyword'];
+                    $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT * from trainingin 

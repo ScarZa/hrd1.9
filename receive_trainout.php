@@ -84,7 +84,7 @@ if (empty($_SESSION['user'])) {
                 $method = isset($_REQUEST['method'])?$_REQUEST['method']:'';
                 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
-                if ($_SESSION['check_rec'] != "") {
+                if (!empty($_SESSION['check_rec'])) {
                     $date01=$_SESSION['check_date01'];
                     $date02=$_SESSION['check_date02'];
 //คำสั่งค้นหา
@@ -120,12 +120,13 @@ where hboss='$regis'
 GROUP BY t.tuid                                 
 order by tuid desc";
                     }elseif(empty ($method) or $method=='status_app' and $_REQUEST['select_status']==''){
-                    $q = "SELECT t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, p.status_out,COUNT(p.empno) as count, p.status_out as status_out
+                   $q = "SELECT t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, p.status_out,COUNT(p.empno) as count, p.status_out as status_out
 from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 LEFT OUTER JOIN emppersonal e1 on e1.empno=p.empno
-LEFT OUTER JOIN department d on e1.depid=d.depId
-where w.statusla='Y' and Beginedate BETWEEN '$y-10-01' and '$Yy-09-30'
+LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
+LEFT OUTER JOIN department d on wh.depid=d.depId
+where Beginedate BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 GROUP BY t.tuid                                 
 order by tuid desc";
                     }

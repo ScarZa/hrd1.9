@@ -99,7 +99,7 @@ if (empty($_SESSION['user'])) {
         $method = isset($_POST['method'])?$_POST['method']:'';
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
-                if ($_SESSION['check_pro'] == '') {
+                if (empty($_SESSION['check_pro'])) {
 
                     if ($method == 'Keyword_project') {
                         $_SESSION['txtKeyword'] = $_POST['txtKeyword'];
