@@ -160,8 +160,8 @@ if ($resultHos['logo'] != '') {
         <!-- Bottom Left 
         <img src="/images/black_ribbon_bottom_left.png" class="black-ribbon stick-bottom stick-left"/>-->
 
-        <!-- Bottom Right -->
-        <img src="images/black_ribbon_bottom_right.png" class="black-ribbon stick-bottom stick-right"/>
+        <!-- Bottom Right 
+        <img src="images/black_ribbon_bottom_right.png" class="black-ribbon stick-bottom stick-right"/>-->
         <!--<div id="wrapper">-->
         <!-- Sidebar -->
         <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
