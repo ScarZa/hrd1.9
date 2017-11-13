@@ -200,9 +200,23 @@ if ($_SESSION['Status'] != 'USER') {
 <?= $NameDetial['dep']; ?>
                             <br />
                             <?php
-                                    $sql_total=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$y'");
+                            if(!empty($_POST['year'])){
+                            $y = $_POST['year'] - 543;
+                            $Y = $y - 1;
+                            $yearsel = $y;
+                            $yearchk = $Y;
+                            }else{
+                            if($date >= $bdate and $date <= $edate){
+                                $yearsel = $Yy;
+                                $yearchk = $y;
+                            } else {
+                                $yearsel = $y;
+                                $yearchk = $Y;
+                            }
+                            }
+                                    $sql_total=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$yearsel'");
                                     $leave_total= mysqli_fetch_assoc($sql_total);
-                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$Y'");
+                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$yearchk'");
                                     $befor_leave_total= mysqli_fetch_assoc($sql_total2);
                                     /*if($date >= $bdate and $date <= $edate){
                                         $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and 
