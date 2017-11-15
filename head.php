@@ -153,7 +153,7 @@ filter:grayscale(100%);
     <body Onload="bodyOnload();">    
                      <?php }?>
                 <!-- Top Left -->
-<img src="https://goo.gl/Yl6KNg" class="black-ribbon stick-top stick-left"/>
+<!--<img src="https://goo.gl/Yl6KNg" class="black-ribbon stick-top stick-left"/>-->
         <!--<div id="wrapper">-->
             <!--scrip check numberical-->
                 <script type="text/javascript">

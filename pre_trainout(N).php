@@ -20,6 +20,27 @@ if (empty($_SESSION['user'])) {
                 <h3 class="panel-title">ตารางบันทึกการฝึกอบรมภายนอกหน่วยงาน</h3>
             </div>
             <div class="panel-body">
+                <form method="post" action="" enctype="multipart/form-data" class="navbar-form navbar-right">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                            <select name='year'  class="form-control">
+                                <option value=''>กรุณาเลือกปีงบประมาณ</option>
+                                <?php
+                                for ($i = 2558; $i <= 2565; $i++) {
+                                    echo "<option value='$i'>$i</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    <button type="submit" class="btn btn-success">ตกลง</button>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </form>
                 <form class="navbar-form navbar-right" name="frmSearch" role="search" method="post" action="pre_trainout(N).php">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
@@ -28,8 +49,6 @@ if (empty($_SESSION['user'])) {
                                     <input type="text" placeholder="ค้นหา" name='txtKeyword' class="form-control" value="" >
                                     <input type='hidden' name='method'  value='txtKeyword'>
                                 </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
-
-
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -63,6 +82,7 @@ if (empty($_SESSION['user'])) {
                 function page_navigator($before_p, $plus_p, $total, $total_p, $chk_page) {
                     global $e_page;
                     global $querystr;
+                    if(isset($_POST['year'])){ $year =$_POST['year'];}elseif (isset($_GET['year'])) {$year =$_GET['year'];}else{$year ='';}
                     if(isset($_POST['method'])){ $method =$_POST['method'];}elseif (isset($_GET['method'])) {$method =$_GET['method'];}else{$method ='';}
                     if(isset($_POST['name'])){ $empno =$_POST['name'];}elseif (isset($_GET['name'])) {$empno =$_GET['name'];}else{$empno ='';}
                     $urlfile = "pre_trainout(N).php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
@@ -76,16 +96,16 @@ if (empty($_SESSION['user'])) {
                     $pNext = ($pNext >= $total_p) ? $total_p - 1 : $pNext;
                     $lt_page = $total_p - 4;
                     if ($chk_page > 0) {
-                        echo "<a  href='$urlfile?s_page=$pPrev&method=$method&name=$empno" . $querystr . "' class='naviPN'>Prev</a>";
+                        echo "<a  href='$urlfile?s_page=$pPrev&method=$method&name=$empno&year=$year" . $querystr . "' class='naviPN'>Prev</a>";
                     }
                     for ($i = $total_start_p; $i < $total_end_p; $i++) {
                         $nClass = ($chk_page == $i) ? "class='selectPage'" : "";
                         if ($e_page * $i <= $total) {
-                            echo "<a href='$urlfile?s_page=$i&method=$method&name=$empno" . $querystr . "' $nClass  >" . intval($i + 1) . "</a> ";
+                            echo "<a href='$urlfile?s_page=$i&method=$method&name=$empno&year=$year" . $querystr . "' $nClass  >" . intval($i + 1) . "</a> ";
                         }
                     }
                     if ($chk_page < $total_p - 1) {
-                        echo "<a href='$urlfile?s_page=$pNext&method=$method&name=$empno" . $querystr . "'  class='naviPN'>Next</a>";
+                        echo "<a href='$urlfile?s_page=$pNext&method=$method&name=$empno&year=$year" . $querystr . "'  class='naviPN'>Next</a>";
                     }
                 }
 
@@ -99,24 +119,36 @@ if (empty($_SESSION['user'])) {
                         $fullname = mysqli_fetch_array($sqln);}
         }
                     $Search_word = isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
+                    
+                    $year = isset($_POST['year'])?$_POST['year']:(isset($_GET['year'])?$_GET['year']:'');
+                    //$year = $_POST['year'];
                     if (!empty($Search_word)) {
 //คำสั่งค้นหา
                         $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate, tro.tuid,
-(SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
+COUNT(po.empno) count_preson
 FROM plan_out po
 INNER JOIN training_out tro on po.idpo=tro.tuid
 WHERE po.status_out='N' and (tro.memberbook LIKE '%$Search_word%' or tro.projectName LIKE '%$Search_word%')
 GROUP BY po.idpo order by tuid desc";
                     }elseif (!empty ($empno)) {
                         $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate, tro.tuid,
-(SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
+COUNT(po.empno) count_preson
 FROM plan_out po
 INNER JOIN training_out tro on po.idpo=tro.tuid
 WHERE po.status_out='N' and po.empno = $empno
 GROUP BY po.idpo order by tuid desc";
-        } else{
+        }elseif(!empty ($year)){
+        $y = $year - 543;
+        $Y = $y - 1;
+            $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate,  tro.tuid,
+COUNT(po.empno) count_preson
+FROM plan_out po
+INNER JOIN training_out tro on po.idpo=tro.tuid
+WHERE po.status_out='N' and (tro.Beginedate BETWEEN '$Y-10-01' and '$y-09-30') and (tro.endDate BETWEEN '$Y-10-01' and '$y-09-30')
+GROUP BY po.idpo order by tuid desc";
+        }else{
                         $q = "SELECT tro.memberbook, tro.projectName, tro.anProject, tro.Beginedate, tro.endDate,  tro.tuid,
-(SELECT COUNT(po.empno) FROM plan_out po WHERE po.idpo=tro.tuid and po.status_out='N') count_preson
+COUNT(po.empno) count_preson
 FROM plan_out po
 INNER JOIN training_out tro on po.idpo=tro.tuid
 WHERE po.status_out='N'
@@ -148,7 +180,7 @@ GROUP BY po.idpo order by tuid desc";
                 ?>
 
                     <?php include_once ('option/funcDateThai.php'); ?>
-                แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?><?= isset($fullname)?$fullname['fullname']:''?>
+                แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?><?= isset($fullname)?$fullname['fullname']:''?><?= isset($year)?$year:''?>
                 <table align="center" width="100%" border="1">
                     <tr align="center" bgcolor="#898888">
                         <td width="3%" align="center"><b>ลำดับ</b></td>

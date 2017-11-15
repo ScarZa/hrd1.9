@@ -44,12 +44,14 @@ if (!$db) {
         <li class="active"><i class="fa fa-home"></i> หน้าหลัก</li>
     </ol>
     <?php if (isset($_SESSION['user'])) { ?>
-        <div class="col-lg-2 col-xs-6 row">
+<!--    <div class="row">-->
+    <div class="row col-lg-12">
+        <div class="row col-lg-4">
             <a href="<?= $resultHos['url'] ?>service&support1.2/process/from_hrd.php?fullname=<?= $_SESSION['fname'] . ' ' . $_SESSION['lname'] ?>
                &id=<?= $_SESSION['user'] ?>&dep=<?= $_SESSION['dep'] ?>" class="btn btn-warning" target="_blank">โปรมแกรมสนับสนุน</a>      
             <a href="#" class="btn btn-success" onClick="return popup('display.php', popup, 1248, 800);" title="แสดงกราฟ">กราฟ</a>
         </div>
-        <div align="right">
+        <div class="row" align="right">
             <a href="#" class="btn btn-success" onClick="return popup('total_regularity.php', popup, 650, 600);" title="ดูระเบียบ/ข้อบังคับ">ระเบียบ</a>
             <a href="mainpost_page.php" class="btn btn-info" title="ประกาศข่าว/ประชาสัมพันธ์">ประชาสัมพันธ์</a>
             <a href="#" class="btn btn-primary" onClick="return popup('fullcalendar/fullcalendar3.php', popup, 820, 650);" title="ดูวันลาไปราชการ">ปฏิทินไปราชการ</a>
@@ -57,8 +59,9 @@ if (!$db) {
             <a href="#" class="btn btn-warning" onClick="return popup('fullcalendar/fullcalendar2.php', popup, 820, 650);" title="ดูวันลาของบุคลากร">ปฏิทินการลา</a>
             <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
                 <a href="#" class="btn btn-danger" onClick="return popup('fullcalendar/fullcalendar1.php', popup, 820, 650);" title="ดูวันลาของบุคลากร">ปฏิทินการลา</a><?php } ?>
-        </div><br>
-
+        </div>
+<!--    </div>-->
+    </div><br>
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-primary">
