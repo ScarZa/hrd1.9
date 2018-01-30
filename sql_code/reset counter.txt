@@ -1,0 +1,6 @@
+UPDATE `rploeigo_hrd`.`count` SET `count` = '0' WHERE `count`.`count_id` = 1; 
+UPDATE `rploeigo_hrd`.`count` SET `count` = '0' WHERE `count`.`count_id` = 2; 
+UPDATE `rploeigo_hrd`.`count` SET `count` = '0' WHERE `count`.`count_id` = 3; 
+UPDATE `rploeigo_hrd`.`count` SET `count` = '0' WHERE `count`.`count_id` = 4; 
+UPDATE `rploeigo_hrd`.`count` SET `count` = '0' WHERE `count`.`count_id` = 5; 
+UPDATE `rploeigo_hrd`.`count` SET `count` = '0' WHERE `count`.`count_id` = 6;

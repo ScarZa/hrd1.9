@@ -437,7 +437,7 @@ $check_tl = mysqli_fetch_assoc($count_check);
                                                 <td align="center" width="10%"><b>วันที่ลืม</b></td>
                                                 <td align="center" width="10%"><b>ลืมลงมา</b></td>
                                                 <td align="center" width="10%"><b>ลืมลงกลับ</b></td>
-                                                <td align="center" width="10%"><b>ชี้แจง</b></td>
+                                                <!--<td align="center" width="10%"><b>ชี้แจง</b></td>-->
                                                 <td align="center" width="10%"><b>ใบชี้แจง</b></td>
                                                 <td align="center" width="10%"><b>สถานะ</b></td>
                                                 <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
@@ -453,11 +453,11 @@ $check_tl = mysqli_fetch_assoc($count_check);
                                                     <td align="center"><?= DateThai1($result['forget_date'])?></td>
                                                     <td align="center"><?php if(!empty($result['work_scan'])){?><img src="images/Symbol_-_Check.ico" width="30"><?php }?></td>
                                                     <td align="center"><?php if(!empty($result['finish_work_scan'])){?><img src="images/Symbol_-_Check.ico" width="30"><?php }?></td>
-                                                    <td align="center"><?php if(empty($result['exponent'])){?>
+                                                    <!--<td align="center"><?php if(empty($result['exponent'])){?>
                                                     <a href="#" onClick="return popup('add_sign.php?id=<?=$result['empno']?>&scan_id=<?= $result['finger_id']?>&method=exp_sign', popup, 450, 500);" title="เขียนใบชี้แจง">
                                                     <img src="images/exclamation-circle_red.ico" width="30"></a><?php }else{?>
                                                     <a href="#" onClick="window.open('explanationPDF.php?empno=<?= $empno; ?>&amp;id=<?= $result['finger_id']?>&method=exp_sign','','width=700,height=900'); return false;" title="พิมพ์ใบชี้แจง">
-                                                    <img src='images/printer.ico' alt="" width='30' /></a><?php }?></td> 
+                                                    <img src='images/printer.ico' alt="" width='30' /></a><?php }?></td>--> 
                                                     <td align="center"><?php if (!empty($result['explanation'])) {
                                                     echo "<a href='explanation/".$result['explanation']."' target='_blank'><span class='fa fa-download'></span> ใบชี้แจง" . "</a><br />";
                                                         }?></td>
@@ -501,7 +501,7 @@ $check_tl = mysqli_fetch_assoc($count_check);
                                                 <td align="center" width="5%"><b>ลำดับ</b></td>
                                                 <td align="center" width="10%"><b>วันที่สาย</b></td>
                                                 <td align="center" width="10%"><b>เวลาที่ลง</b></td>
-                                                <td align="center" width="10%"><b>ชี้แจง</b></td>
+                                                <!--<td align="center" width="10%"><b>ชี้แจง</b></td>-->
                                                 <td align="center" width="10%"><b>ใบชี้แจง</b></td>
                                                 <td align="center" width="10%"><b>สถานะ</b></td>                                                
                                                 <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
@@ -516,11 +516,11 @@ $check_tl = mysqli_fetch_assoc($count_check);
                                                     <td align="center"><?= $i?></td>
                                                     <td align="center"><?= DateThai1($result['late_date'])?></td>
                                                     <td align="center"><?= substr($result['late_time'], 0,5)?> น.</td>
-                                                    <td align="center"><?php if(empty($result['exponent'])){?>
+                                                    <!--<td align="center"><?php if(empty($result['exponent'])){?>
                                                     <a href="#" onClick="return popup('add_sign.php?id=<?=$result['empno']?>&late_id=<?= $result['late_id']?>&method=exp_late', popup, 450, 500);" title="เขียนใบชี้แจง">
                                                     <img src="images/exclamation-circle_red.ico" width="30"></a><?php }else{?>
                                                     <a href="#" onClick="window.open('explanationPDF.php?empno=<?= $empno; ?>&amp;id=<?= $result['late_id']?>&method=exp_late','','width=700,height=900'); return false;" title="พิมพ์ใบชี้แจง">
-                                                    <img src='images/printer.ico' alt="" width='30' /></a><?php }?></td> 
+                                                    <img src='images/printer.ico' alt="" width='30' /></a><?php }?></td>--> 
                                                     <td align="center"><?php if (!empty($result['explanation'])) {
                                                     echo "<a href='explanation/".$result['explanation']."' target='_blank'><span class='fa fa-download'></span> ใบชี้แจง" . "<br />";
                                                         }?></td>

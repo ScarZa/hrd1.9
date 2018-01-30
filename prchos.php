@@ -8,7 +8,8 @@
  
  
 	if($_POST['method']=='update_hos'){
-                   $name=$_POST['name'];	 	  	 
+                   $name=$_POST['name'];
+                   $name2=$_POST['name2'];
                    $m_name=$_POST['m_name']; 
                    $url=$_POST['url'];
                 function removespecialchars($raw) {
@@ -30,9 +31,9 @@
                 include 'function/delet_file.php';
                 fulldelete($location);
                 }
-		$sqlUpdate=mysqli_query($db,"update hospital  SET name='$name',manager='$m_name', url='$url',logo='$image'  "); 	
+		$sqlUpdate=mysqli_query($db,"update hospital  SET name='$name',manager='$m_name', url='$url',logo='$image',name2='$name2'"); 	
             }else{
-               $sqlUpdate=mysqli_query($db,"update hospital  SET name='$name',manager='$m_name', url='$url'");  
+               $sqlUpdate=mysqli_query($db,"update hospital  SET name='$name',manager='$m_name', url='$url',name2='$name2'");  
             }
 	
  							if($sqlUpdate==false){

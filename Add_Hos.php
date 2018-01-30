@@ -48,8 +48,12 @@ function fncSubmit()
                            <form name='form2' class="navbar-form navbar-left"  action='prchos.php' method='post' enctype="multipart/form-data" OnSubmit="return fncSubmit();">
                     <div class="form-group">	
 			<label>องค์กร </label>
-                        <input type='text' name='name'  id='name' placeholder='องค์กร' class='form-control'  value='<?= $resultGet['name'];?>' size="30" onkeydown="return nextbox(event, 'save');" required>
+                        <input type='text' name='name'  id='name' placeholder='องค์กร' class='form-control'  value='<?= $resultGet['name'];?>' size="30" onkeydown="return nextbox(event, 'name2');">
 			 </div><br><br> 
+                         <div class="form-group">	
+			<label>ชื่อย่อองค์กร </label>
+                        <input type='text' name='name2'  id='name2' placeholder='ชื่อย่อองค์กร' class='form-control'  value='<?= $resultGet['name2'];?>' size="25" onkeydown="return nextbox(event, 'm_name');" required>
+			 </div><br><br>
                     		       <div class="form-group">	
 			<label>ผู้บริหาร </label>
                         <select name="m_name" id="m_name" required  class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'fname');"> 
