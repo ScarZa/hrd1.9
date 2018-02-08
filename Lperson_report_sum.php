@@ -248,9 +248,10 @@ for ($i = 2558; $i <= 2565; $i++) {
 from `work` w
 LEFT OUTER JOIN emppersonal e1 on w.depId=e1.depid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
-LEFT OUTER JOIN leave_day ld ON e1.empno=ld.empno
+LEFT OUTER JOIN leave_day ld ON wh.empno=ld.empno
 $code2
 where e1.empno=w.enpid and $code1 and ((w.begindate between '$take_date1' and '$take_month2') or  (w.enddate between '$take_date1' and '$take_month2')) and w.statusla='Y' and e1.status ='1'
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 GROUP BY e1.empno
 order by e1.empno");
 
