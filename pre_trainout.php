@@ -82,7 +82,7 @@ if (empty($_SESSION['user'])) {
                 function page_navigator($before_p, $plus_p, $total, $total_p, $chk_page) {
                     global $e_page;
                     global $querystr;
-                    $empno = isset($_POST['name'])?$_POST['name']:isset($_GET['name'])?$_GET['name']:'';
+                    $empno = isset($_GET['name'])?$_GET['name']:$_POST['name'];
                     $urlfile = "pre_trainout.php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
                     $per_page = 30;
                     $num_per_page = floor($chk_page / $per_page);
