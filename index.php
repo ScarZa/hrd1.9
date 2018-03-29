@@ -5,7 +5,7 @@ if (isset($_GET['unset'])) {
 }
 ?>
 <?php
-if (!$db) {
+if ($check_conn==FALSE) {
     $check = md5(trim(check));
     ?>
     <center>

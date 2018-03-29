@@ -274,6 +274,7 @@ if ($_SESSION['Status'] != 'USER') {
                                             <td align="center" width="20%"><b>ประเภทการลา</b></td>
                                             <td align="center" width="10%"><b>ตั้งแต่</b></td>
                                             <td align="center" width="10%"><b>ถึง</b></td>
+                                            <td align="center" width="10%"><b>ใบรับรองแพทย์</b></td>
                                             <td align="center" width="6%"><b>จำนวนวัน</b></td>
                                             <td align="center" width="6%"><b>พิมพ์ใบลา</b></td>
                                             <td align="center" width="6%"><b>พิมพ์ใบลากรณีพิเศษ</b></td>
@@ -300,6 +301,7 @@ if ($_SESSION['Status'] != 'USER') {
                                                     </a></td>
                                                 <td align="center"><?= DateThai1($result['begindate']); ?></td>
                                                 <td align="center"><?= DateThai1($result['enddate']); ?></td>
+                                                <td align="center"><?= $result['check_comment']=='2'?"<img src='images/Symbol_-_Check.ico' width='20'>":'-'; ?></td>
                                                 <td align="center"><?= $result['amount']; ?></td>
                                                 <td align="center"><a href="#" onClick="window.open('leave_paper.php?empno=<?= $empno; ?>&amp;work_id=<?= $result['workid']; ?>','','width=700,height=900'); return false;" title="พิมพ์ใบลา"><img src='images/printer.ico' alt="" width='30' /></a></td>
                                                 <td align="center"><a href="#" onClick="window.open('special_leave_paper.php?empno=<?= $empno; ?>&amp;work_id=<?= $result['workid']; ?>','','width=700,height=900'); return false;" title="พิมพ์ใบลากรณีพิเศษ"><img src='images/printer.ico' alt="" width='30' /></a></td>

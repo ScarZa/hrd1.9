@@ -6,7 +6,7 @@ if ($db) {
     $sql = mysqli_query($db, "select * from  hospital");
     $resultHos = mysqli_fetch_assoc($sql);
 }
-if ($resultHos['logo'] != '') {
+if (!empty($resultHos['logo'])) {
     $pic = $resultHos['logo'];
     $fol = "logo/";
 } else {
@@ -245,14 +245,14 @@ if ($resultHos['logo'] != '') {
                                     <li><a href="conclude_cancle.php?unset=1"><img src='images/Cfolder.ico' width='25'> ยกเลิกการลา</a></li>
                                     <li><a href="conclude_transfer.php?unset=1"><img src='images/folder_sent.ico' width='25'> โอนลาชั่วโมง</a></li>
                                     <li class="divider"></li>
+                                    <li><a href="statistics_scan.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลืมลงเวลา</a></li>
+                                    <li><a href="statistics_late.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลงสาย</a></li>
+                                    <li class="divider"></li>
                                     <li><a href="Lperson_report.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลาแยกหน่วยงาน</a></li>
                                     <!--<li><a href="statistics_leave.php"><img src='images/kchart.ico' width='25'> สถิติการลา</a></li>-->
                                     <li><a href="Lperson_report_sum.php?screen=1&unset=1"><img src='images/kchart.ico' width='25'> สรุปวันลาแยกหน่วยงาน</a></li>
                                     <li><a href="Lperson_report_sum.php?screen=2&unset=1"><img src='images/kchart.ico' width='25'> สรุปวันลาแยกประเภทบุคลากร</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="statistics_scan.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลืมลงเวลา</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="statistics_late.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลงสาย</a></li>
+                                    <li><a href="lateforget_report.php?unset=1"><img src='images/kchart.ico' width='25'> สรุปลืมลงเวลา/สายแยกประเภทบุคลากร</a></li>
                                 <?php } else { ?> 
                                     <li><a href="pre_leave.php?unset=1"><img src='images/Lfolder.ico' width='25'> บันทึกการลาบุคลากร</a></li>
     <?php } if ($_SESSION['Status'] == 'SUSER' or $_SESSION['Status'] == 'USUSER') { ?>
@@ -270,7 +270,8 @@ if ($resultHos['logo'] != '') {
                                     <li><a href="pre_trainout.php?unset=1"><img src='images/kig.ico' width='25'> บันทึกการฝึกอบรมภายนอก</a></li>
                                     <li class="divider"></li>
                                     <li><a href="statistics_trainout.php?unset=1"><img src='images/kchart.ico' width='25'> รายงานการฝึกอบรมภายนอก</a></li>
-                                    <li><a href="pre_trainout(N).php?unset=1"><img src='images/kchart.ico' width='25'> รายงานผู้ที่ยังไม่ได้สรุป</a></li>
+                                    <li><a href="pre_trainout(N).php?unset=1"><img src='images/kchart.ico' width='25'> รายงานการฝึกอบรมภายนอกที่ยังไม่ได้สรุป</a></li>
+                                    <li><a href="pre_persontrainout(N).php?unset=1"><img src='images/kchart.ico' width='25'> รายงานผู้ที่ยังไม่ได้สรุป</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">

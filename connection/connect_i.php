@@ -15,10 +15,22 @@ $dbuser = trim($conn_db[1]);
 $dbpass = trim($conn_db[2]);
 $dbname = trim($conn_db[3]);
 $dbport = trim($conn_db[4]);
-
-if($conn_db){
-$db=new mysqli($dbhost,$dbuser,$dbpass,$dbname,$dbport);
-if($db->connect_errno) die ('Connect Failed! :'.mysqli_connect_error ());
-$db->set_charset('utf8');
+try {  
+    $db=new mysqli($dbhost,$dbuser,$dbpass,$dbname,$dbport);
+    if ($db->connect_errno) {
+   die("Connection failed: " . $db->connect_errno);
+        $check_conn=FALSE;
+    } else {
+        $db->set_charset('utf8');
+        $check_conn=TRUE;
+    }
+} catch (Exception $ex) {
+    if($db->connect_errno) die ('Connect Failed! :'.mysqli_connect_error ());
+    $check_conn=FALSE;
 }
+
+
+
+
+
 ?>
