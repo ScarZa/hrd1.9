@@ -59,6 +59,7 @@ if (empty($_SESSION['user'])) {
             }
 
         </script>
+        
 <form class="navbar-form navbar-left" role="form" action='prceval.php' enctype="multipart/form-data" method='post' onsubmit="return confirm('กรุณายืนยันการบันทึกอีกครั้ง !!!')">
     <?php
         $empno=$_GET['id'];
@@ -107,18 +108,18 @@ if (empty($_SESSION['user'])) {
                     <div class="form-group"> 
                 <label>วันที่อนุมัติ &nbsp;</label>
                 <?php
- 		if(!empty($_GET['method'])){
- 			$dateBegin=$edit_person['dateBegin'];
-                        $dateEnd_w=$edit_person['dateEnd_w'];
+ 		if(!empty($method)){
+ 			$dateBegin=$edit_person['app_date'];
+                        //$dateEnd_w=$edit_person['dateEnd_w'];
  			                 }else{
                         $dateBegin=date('Y-m-d');
-                        $dateEnd_w=date('Y-m-d');                   
+                        //$dateEnd_w=date('Y-m-d');                   
                                          }
  		?>
                 <script type="text/javascript">
                 $(function() {
                 $( "#datepicker" ).datepicker("setDate", new Date('<?=$dateBegin?>')); //Set ค่าวัน
-                //$( "#datepicker2" ).datepicker("setDate", new Date('<?=$dateEnd_w?>')); //Set ค่าวัน
+                //$( "#datepicker2" ).datepicker("setDate", new Date('<?//=$dateEnd_w?>')); //Set ค่าวัน
                  });
                 </script>
                 <input type="text" id="datepicker"  placeholder='รูปแบบ 22/07/2557' class="form-control" name="app_date">
@@ -171,11 +172,11 @@ if (empty($_SESSION['user'])) {
                                 <select name="eval_id" id="eval_id" required  class="form-control select2" style="width: 100%;"> 
 				<?php	
                                 if($detial_l['emptype']==1){
-                                    $sql = "eval_group=1 or eval_subgroup=1";
+                                    $sql = "eval_group=1 or eval_group=3 or eval_subgroup=1";
                                 }elseif ($detial_l['emptype']==2) {
-                                    $sql = "eval_group=2";
+                                    $sql = "eval_group=2 or eval_group=3";
                                 } else {
-                                    $sql = "eval_group=1 and eval_subgroup=0";
+                                    $sql = "eval_group=1 and eval_subgroup=0 or eval_group=3";
                                 }
                                 $sql_eval = mysqli_query($db,"SELECT eval_id,eval_value FROM evaluation WHERE ".$sql);
 				 echo "<option value=''>--ผลการประเมิน--</option>";
@@ -184,7 +185,19 @@ if (empty($_SESSION['user'])) {
 				 echo "<option value='".$result['eval_id']."' $selected>".$result['eval_value']." </option>";
 				 } ?>
 			 </select>
-			 </div>
+                  </div><input id="reas_hid" type="hidden" value="<?=$edit_person['reason_id']!=0?$edit_person['reason_id']:''?>">
+                    <div class="form-group" id="reas"> 
+                                <label>เหตุผลที่ไม่ได้รับการประเมิน &nbsp;</label>
+                                <select name="reason_id" id="reason_id" class="form-control select2" style="width: 100%;"> 
+				<?php	
+                                $sql_reas = mysqli_query($db,"SELECT * FROM reason");
+				 echo "<option value=''>--เหตุผล--</option>";
+				 while( $result = mysqli_fetch_assoc( $sql_reas ) ){
+          if($result['reason_id']==$edit_person['reason_id']){$selected='selected';}else{$selected='';}
+				 echo "<option value='".$result['reason_id']."' $selected>".$result['reason_value']." </option>";
+				 } ?>
+			 </select>
+                            </div>
                     <br>
                     <div class="form-group" align="center">
                         <input type="hidden" name="empno" value="<?= $empno?>">
@@ -202,4 +215,18 @@ if (empty($_SESSION['user'])) {
           </div>
 </div>
 </form> 
+        <script type="text/javascript">
+            $(function (){
+                if($("#reas_hid").val()==''){
+                    $("div#reas").hide(0);
+                }
+        $("#eval_id").change(function() {
+                    if($("#eval_id").val()==10){
+                    $("#reas").show("fast");
+                }else {
+                    $("div#reas").hide(0);
+                }
+                });
+            });
+        </script>
 <?php include_once 'footeri.php';?>

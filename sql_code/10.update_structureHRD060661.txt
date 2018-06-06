@@ -1,0 +1,5 @@
+ALTER TABLE `resulteval` 
+ADD COLUMN `reason_id` int(2) AFTER `eval_id`;
+
+INSERT INTO `evaluation`(`eval_group`, `eval_value`) VALUES (3, 'ไม่ได้รับการประเมิน');
+

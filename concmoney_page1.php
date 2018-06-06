@@ -39,7 +39,8 @@ $sql_per = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname
                                                         INNER JOIN work_history wh ON wh.empno=e1.empno
                                                         inner join posid p2 on wh.posid=p2.posId
                                                         where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
-    $sql_pro = mysqli_query($db,"SELECT t.*, p.PROVINCE_NAME,t2.tName as tname FROM training_out t
+    $sql_pro = mysqli_query($db,"SELECT t.*,po.abode,po.reg,po.allow,po.travel,po.other, p.PROVINCE_NAME,t2.tName as tname FROM training_out t
+						inner join plan_out po on po.idpo=t.tuid and po.empno=$empno
             inner join province p on t.provenID=p.PROVINCE_ID
             inner join trainingtype t2 on t2.tid=t.dt
             WHERE tuid='$project_id'");
@@ -91,22 +92,22 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 <table width="100%" border="0">
     <tr>
         <td width="70%" height="30">ค่าเบี้ยเลี้ยงเดินทางประเภท..................................จำนวน<?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
-        <td width="30%" height="30">รวม <?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['m3'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td width="30%" height="30">รวม <?php if(!empty($Project_detial['allow'])){echo "..........".number_format($Project_detial['allow'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
         <td height="30">ค่าเช่าที่พักปะเภท................................................จำนวน<?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
-        <td height="30">รวม <?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['m1'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td height="30">รวม <?php if(!empty($Project_detial['abode'])){echo "..........".number_format($Project_detial['abode'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
         <td height="30">ค่าพาหนะ............................................................................................. </td>
-        <td height="30">รวม <?php if(!empty($Project_detial['m4'])){echo "..........".number_format($Project_detial['m4'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td height="30">รวม <?php if(!empty($Project_detial['travel'])){echo "..........".number_format($Project_detial['travel'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
         <td height="30">ค่าใช้จ่ายอื่น.......................................................................................... </td>
-        <td height="30">รวม <?php if(!empty($Project_detial['m5'])){echo "..........".number_format($Project_detial['m5'])."..........";}else{?>...............................<?php }?> บาท</td>
+        <td height="30">รวม <?php if(!empty($Project_detial['other']) or !empty($Project_detial['reg'])){echo "..........".number_format($Project_detial['other']+$Project_detial['reg'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
-        <td align="right" colspan="2" height="30">รวมเงินทั้งสิ้น .....<?php $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5']); if($total_money==0){echo '...';}else{echo $total_money;}?>......บาท</td>
+        <td align="right" colspan="2" height="30">รวมเงินทั้งสิ้น .....<?php $total_money=number_format($Project_detial['abode']+$Project_detial['reg']+$Project_detial['allow']+$Project_detial['travel']+$Project_detial['other']); if($total_money==0){echo '...';}else{echo $total_money;}?>......บาท</td>
     </tr>
 </table>
 จำนวนเงิน (ตัวอักษร) <?php if(!empty($total_money)){echo '................'.num2wordsThai("$total_money").'บาทถ้วน................';}else{?>.......................................................................................<?php }?><p>

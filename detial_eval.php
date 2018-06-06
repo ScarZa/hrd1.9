@@ -30,10 +30,12 @@ $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.last
 
 
     $detial = mysqli_query($db,"SELECT re.reseval_id,re.numdoc,re.app_date, re.year,re.episode,re.base_salary,re.salary,re.salary_up,re.percent
-,e.eval_value,re.rec_date,CONCAT(em.firstname,' ',em.lastname)fullname
+,e.eval_value,if(re.reason_id!=0,rs.reason_value,'') as reason_value
+,re.rec_date,CONCAT(em.firstname,' ',em.lastname)fullname
 FROM resulteval re
-INNER JOIN emppersonal em on em.empno=re.empno
+INNER JOIN emppersonal em on em.empno=re.recorder
 INNER JOIN evaluation e on e.eval_id=re.eval_id
+LEFT OUTER JOIN reason rs on rs.reason_id=re.reason_id
 WHERE re.empno=$empno ORDER BY re.year ASC,re.episode ASC");
 
 
@@ -116,6 +118,7 @@ if ($_SESSION['Status'] != 'USER') {
                                             <td align="center" width="7%"><b>เงินที่ปรับเพิ่ม</b></td>
                                             <td align="center" width="7%"><b>ร้อยละ</b></td>
                                             <td align="center" width="7%"><b>ผลการประเมิน</b></td>
+                                            <td align="center" width="7%"><b>เหตุผล</b></td>
                                             <?php if($_SESSION['Status']=='ADMIN'){?>
                                             <td align="center" width="7%"><b>วันที่บันทึก</b></td>
                                             <td align="center" width="20%"><b>ผู้บันทึก</b></td>
@@ -127,18 +130,25 @@ if ($_SESSION['Status'] != 'USER') {
                                                     <?php
                                                     $i = 1;
                                                     while ($result = mysqli_fetch_assoc($detial)) {
+                                                        
+                                                        if($result['episode']==1){
+                                                            $episode = '1 เม.ย. '.$result['year'];
+                                                        }else if($result['episode']==2) {
+                                                            $episode = '1 ต.ค. '.($result['year']+1);
+                                            }
                                                         ?>
                                             <tr>
                                                 <td align="center"><?= $i ?></td>
                                                 <td align="center"><?= $result['numdoc']; ?></td>
                                                 <td align="center"><?= DateThai1($result['app_date']); ?></td>
                                                 <td align="center"><?= $result['year']; ?></td>
-                                                <td align="center"><?= $result['episode']; ?></td>
+                                                <td align="center"><?= $episode; ?></td>
                                                 <td align="center"><?= number_format($result['base_salary']); ?></td>
                                                 <td align="center"><?= number_format($result['salary']); ?></td>
                                                 <td align="center"><?= $result['salary_up']; ?></td>
                                                 <td align="center"><?= $result['percent']; ?> %</td>
                                                 <td align="center"><?= $result['eval_value']; ?></td>
+                                                <td align="center"><?= $result['reason_value']; ?></td>
                                                 <?php if($_SESSION['Status']=='ADMIN'){?>
                                                 <td align="center"><?= DateThai1($result['rec_date']) ?></td>
                                                 <td align="center"><?= $result['fullname']; ?></td>

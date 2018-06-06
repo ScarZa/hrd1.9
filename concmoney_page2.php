@@ -34,7 +34,8 @@ $sql_per = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname
                                                         INNER JOIN work_history wh ON wh.empno=e1.empno
                                                         inner join posid p2 on wh.posid=p2.posId
                                                         where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
-             $sql_pro = mysqli_query($db,"SELECT t.*, p.PROVINCE_NAME,t2.tName as tname FROM training_out t
+             $sql_pro = mysqli_query($db,"SELECT t.*,po.abode,po.reg,po.allow,po.travel,po.other, p.PROVINCE_NAME,t2.tName as tname FROM training_out t
+						inner join plan_out po on po.idpo=t.tuid and po.empno=$empno
             inner join province p on t.provenID=p.PROVINCE_ID
             inner join trainingtype t2 on t2.tid=t.dt
             WHERE tuid='$project_id'");   
@@ -67,7 +68,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
     
     <br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ได้รับเงินค่าใช้จ่ายในการทางไปราชการ  
-    จำนวน.........................<?php $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5']); if($total_money==0){echo '...';}else{echo $total_money;}?>.........................บาท<br>
+    จำนวน.........................<?php $total_money=number_format($Project_detial['abode']+$Project_detial['reg']+$Project_detial['allow']+$Project_detial['travel']+$Project_detial['other']); if($total_money==0){echo '...';}else{echo $total_money;}?>.........................บาท<br>
 &nbsp;&nbsp;(<?php if(!empty($total_money)){echo '................'.num2wordsThai("$total_money").'บาทถ้วน................';}else{?>.......................................................................................<?php }?>) ไว้เป็นการถูกต้องแล้ว 
  <table width="100%" border="0">
                 <tr>
