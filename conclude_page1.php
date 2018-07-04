@@ -187,7 +187,7 @@ INNER JOIN work_history wh ON wh.empno=e1.empno
 inner join posid p1 on wh.posid=p1.posId
 inner join pcode p2 on e1.pcode=p2.pcode
 inner join plan_out po on po.empno=e1.empno
-where e1.status ='1' and po.idpo='$project_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+where e1.status ='1'and po.empno !=$empno and po.idpo='$project_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 ORDER BY empno");
 
 ob_start();

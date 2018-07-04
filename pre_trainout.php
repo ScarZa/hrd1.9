@@ -353,8 +353,7 @@ order by tuid desc";
                             <?php }else{?>
                             <td align="center">
                                     <?php if(empty($result['status_out'])){ echo '...';}else {?>
-                                    <a href="#" onclick="return popup('approval_page1.php?id=<?=$_SESSION['user']?>&&pro_id=<?=$result['tuid']?>',popup,700,900);">หน้า1</a>.,.
-                                    <a href="#" onclick="return popup('approval_page2.php?id=<?=$_SESSION['user']?>&&pro_id=<?=$result['tuid']?>',popup,700,900);">หน้า2</a>
+                                <a href="#" onclick="return popup('approval_page1.php?id=<?=$_SESSION['user']?>&&pro_id=<?=$result['tuid']?>',popup,700,900);"><img src="images/printer.ico" width="25"></a>
                             <?php }?>
                             </td>
                             <td align="center"><a href="pre_person_trainout.php?id=<?= $result['tuid']; ?>"><img src='images/Sum.png' width='30'></a></td>

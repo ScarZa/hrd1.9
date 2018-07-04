@@ -164,16 +164,45 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                 
             <br><br><div align="right">F-AD-100-03</div>
     <?php
-$time_re=  date('Y_m_d');
-$reg_date=$work[reg_date];
-$html = ob_get_contents();
+    $html = ob_get_contents();
 ob_clean();
+    $sql_person= mysqli_query($db,"select e1.empno as empno, e1.pid as pid, concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname, p1.posname as posname, po.status_out as status_out 
+from plan_out po
+LEFT OUTER JOIN emppersonal e1 on po.empno=e1.empno
+INNER JOIN work_history wh ON wh.empno=e1.empno
+inner join posid p1 on wh.posid=p1.posId
+inner join pcode p2 on e1.pcode=p2.pcode
+where e1.status ='1' and po.empno !=$empno and po.idpo='$project_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+ORDER BY empno");
+ob_start();
+?>
+<div align="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h4 align="center">รายชื่อคณะเดินทางไปราชการ</h4></div>
+    
+    <table border="0" width="100%">
+  <?php
+                             $i=1;
+while($team=  mysqli_fetch_assoc($sql_person)){?>
+        <tr>
+            <td><b><?= $i?>.</b></td>
+            <td><?= $team['fullname']?></td>
+            <td><b>ตำแหน่ง</b> &nbsp;&nbsp;<?= $team['posname']?></td>
+        </tr>
+        <?php $i++; } ?>
+    </table>
+    <br><br><br>
+    <br><br><br>
+    <div align="right">F-AD-100-03</div>  
+            <?php
+$html2 = ob_get_contents();
+ob_clean();    
 $pdf = new mPDF('tha2','A4','10','');
 $pdf->autoScriptToLang = true;
 $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
+$pdf->AddPage();
+$pdf->WriteHTML($html2,2);
 $pdf->Output("MyPDF/approval1.pdf");
 echo "<meta http-equiv='refresh' content='0;url=MyPDF/approval1.pdf' />";
 ?>
