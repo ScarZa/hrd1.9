@@ -55,7 +55,7 @@ function fncSubmit()
                     <form name='form1' class="navbar-form navbar-left"  action='prcuser.php' method='post' enctype="multipart/form-data" OnSubmit="return fncSubmit();">
                         <b>ชื่อ-นามสกุล </b><br>
                         <div class="form-group">	
-                        <?php if($_SESSION['Status']=='USER'){?>
+                        <?php if($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER'){?>
                         <input type="text" name='names'   id='names' class='form-control' value='<?=$resultGet['fullname']?>'  onkeydown="return nextbox(event, 'save');" readonly >
                             <input type="hidden" name="name" id="name" value="<?=$resultGet['Name']?>">
                             <?php }else{?>

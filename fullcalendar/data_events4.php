@@ -8,13 +8,14 @@ include_once '../connection/connect_calendra.php'; // เรียกใช้�
 if($_GET['gData']){
     $event_array=array();  
     $i_event=0;  
-    $q="SELECT * FROM tbl_event 
-         WHERE date(event_start)>='".$_GET['start']."' AND date(event_end)<='".$_GET['end']."' 
-         and empno='".$_SESSION['user']."' and process!='3' and process!='2' ORDER by event_id";    
+    $q="SELECT * FROM tbl_event t
+        LEFT OUTER JOIN plan p on p.pjid=t.workid AND t.process='6' 
+         WHERE date(t.event_start)>='".$_GET['start']."' AND date(t.event_end)<='".$_GET['end']."' 
+         and (t.empno='".$_SESSION['user']."' or t.process='7'  or (t.process='6' AND p.type_id=".$_SESSION['user'].")) and t.process!='3' and t.process!='2' ORDER by t.event_id";    
     $qr=mysqli_query($db,$q) or die(mysqli_error($db)); 
     
-    $code_color=array("0"=>"#d92727","1"=>"#416cbb","2"=>"#1e6c06","3"=>"#00a6ba","4"=>"purple","5"=>"orange","6"=>"#4e5252");
-    $event= array("0"=>"ลา","1"=>"ไปราชการ","2"=>"","3"=>"","4"=>"ขึ้นเวร","5"=>"อื่นๆ");
+    $code_color=array("0"=>"#d92727","1"=>"#416cbb","2"=>"#1e6c06","3"=>"#00a6ba","4"=>"purple","5"=>"orange","6"=>"#4e5252","7"=>"#ba6f00");
+    $event= array("0"=>"ลา","1"=>"ไปราชการ","2"=>"","3"=>"","4"=>"ขึ้นเวร","5"=>"อื่นๆ","6"=>"อบรมภายใน","7"=>"นักขัตฤกษ์");
     while($rs=mysqli_fetch_array($qr)){  
         for($i=0;$i< count($event);$i++){
         if ($rs['process'] == "$i") {  

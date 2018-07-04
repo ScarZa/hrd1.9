@@ -39,8 +39,17 @@ $sql_per = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname
             inner join trainingtype t2 on t2.tid=t.dt
             WHERE tuid='$project_id'");
     
+//    $sql_join=  mysqli_query($db,"select COUNT(empno)join_plan from plan_out where idpo='$project_id'");
+//            $person_join=mysqli_fetch_assoc($sql_join);
+//            $p_join_plan = $person_join['join_plan'];
+    
+    $sql_cost = mysqli_query($db,"SELECT SUM(abode)abode ,SUM(reg)reg,SUM(allow)allow,SUM(travel)travel,SUM(other)other
+FROM plan_out 
+WHERE idpo='$project_id'");
+    
             $Person_detial = mysqli_fetch_assoc($sql_per);
             $Project_detial = mysqli_fetch_assoc($sql_pro);
+            $Project_cost = mysqli_fetch_assoc($sql_cost);
          
             $sql_trainout=  mysqli_query($db,"select *,
                     (select count(empno) from plan_out where idpo='$project_id') count_person from plan_out where idpo='$project_id' and empno='$empno'");
@@ -58,11 +67,11 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                     ?></u></td>
                         </tr>
                     </table>                   
-    <div align="center"><h4 align="center">แบบฟอร์มสรุปรายงานการเข้าร่วม ประชุม/อบรม/สัมมนาและศึกษาดูงานภายนอกหน่วยงาน</h4></div>
+    <div align="center"><b align="center">แบบฟอร์มสรุปรายงานการเข้าร่วม ประชุม/อบรม/สัมมนาและศึกษาดูงานภายนอกหน่วยงาน</b></div>
     <table border="0" width="100%" height="454" cellpadding="2" cellspacing="2">
         <tr>
             <td height="25">
-    <b>1. ชื่อ-นามสกุล ผู้ได้รับอนุมัติ</b> <?=$Person_detial['fullname']?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ตำแหน่ง</b> <?=$Person_detial['posi']?> <b>พร้อมคณะ</b> <?= $person_data[count_person]-1?>  <b>คน</b><br>
+    <b>1. ชื่อ-นามสกุล ผู้ได้รับอนุมัติ</b> <?=$Person_detial['fullname']?>&nbsp;<b>ตำแหน่ง</b> <?=$Person_detial['posi']?> <b>พร้อมคณะ</b> <?= $person_data[count_person]-1?>  <b>คน</b><br>
             </td>
         </tr>
         <tr>
@@ -107,15 +116,15 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
         </tr>
         <tr>
             <td height="25">
-    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ค่าที่พัก &nbsp;</b><?=$person_data['abode'];?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
-    <b>&nbsp;&nbsp;&nbsp;ค่าลงทะเบียน &nbsp;</b><?=$person_data['reg'];?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
-    <b>&nbsp;&nbsp;&nbsp;ค่าเบี้ยเลี้ยง &nbsp;</b><?=$person_data['allow'];?><b>&nbsp;บาท</b><br>
+    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ค่าที่พัก &nbsp;</b><?=$Project_cost['abode']?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>&nbsp;&nbsp;&nbsp;ค่าลงทะเบียน &nbsp;</b><?=$Project_cost['reg']?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>&nbsp;&nbsp;&nbsp;ค่าเบี้ยเลี้ยง &nbsp;</b><?=$Project_cost['allow']?><b>&nbsp;บาท</b><br>
     </td>
         </tr>
         <tr>
             <td height="25">
-    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ค่าพาหนะเดินทาง &nbsp;</b><?=$person_data['travel'];?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
-    <b>&nbsp;&nbsp;&nbsp;ค่าใช้จ่ายอื่นๆ &nbsp;</b><?=$person_data['other'];?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ค่าพาหนะเดินทาง &nbsp;</b><?=$Project_cost['travel']?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>&nbsp;&nbsp;&nbsp;ค่าใช้จ่ายอื่นๆ &nbsp;</b><?=$Project_cost['other']?><b>&nbsp;บาท</b>&nbsp;&nbsp;&nbsp;&nbsp;
        &nbsp;&nbsp;&nbsp;&nbsp;( <?php if($Project_detial['Hos_car']=='Y'){ echo 'ใช้';}?> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ใช้พาหนะโรงพยาบาล</b><br>
        </td>
         </tr>
@@ -157,7 +166,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
     <br><br><div align="right">
         <b>( ลงชื่อ )</b> ............................................ <b>ผู้รายงาน  &nbsp;&nbsp;&nbsp;ว/ด/ป</b> <?= DateThai2($person_data['reg_date'])?>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
         <b>( ลงชื่อ )</b> ............................................ <b>หัวหน้าฝ่าย/งาน  &nbsp;&nbsp;&nbsp;ว/ด/ป</b> ......................&nbsp;</div><br>
-        <b><u>ความเห็นของผู้อำนวยการ</u></b><br><br> ..................................................................................................................................................................................<br><br><br>
+        <b><u>ความเห็นของผู้อำนวยการ</u></b><br><br> ...................................................................................................................................................................<br><br>
     <div align="right">
         <b>( ลงชื่อ )</b> ........................................&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
     ( <?php $sql_hos=  mysqli_query($db,"SELECT CONCAT(p.pname,e.firstname,' ',e.lastname) as fullname,h.name as name 
@@ -169,18 +178,56 @@ INNER JOIN pcode p on p.pcode=e.pcode");
      ............/.............../........... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
     F-AD-111-04</div>
     <?php
-$time_re=  date('Y_m_d');
-$reg_date=$work[reg_date];
-$html = ob_get_contents();
+    $html = ob_get_contents();
 ob_clean();
-$pdf = new mPDF('tha2','A4','10','');
+
+$sql_person=  mysqli_query($db,"select e1.empno as empno, e1.pid as pid, concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname, p1.posname as posname, po.status_out as status_out 
+        from emppersonal e1 
+INNER JOIN work_history wh ON wh.empno=e1.empno
+inner join posid p1 on wh.posid=p1.posId
+inner join pcode p2 on e1.pcode=p2.pcode
+inner join plan_out po on po.empno=e1.empno
+where e1.status ='1' and po.idpo='$project_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+ORDER BY empno");
+
+ob_start();
+?>
+     <div align="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h4 align="center">รายชื่อคณะเดินทางไปราชการ</h4></div>
+    
+    <table border="0" width="100%">
+  <?php
+                             $i=1;
+while($team=  mysqli_fetch_assoc($sql_person)){?>
+        <tr>
+            <td><b><?= $i?>.</b></td>
+            <td><?= $team['fullname']?></td>
+            <td><b>ตำแหน่ง</b> &nbsp;&nbsp;<?= $team['posname']?></td>
+        </tr>
+        <?php $i++; } ?>
+    </table>
+    <br><br><br>
+    <b>
+        <u>หมายเหตุ</u><br>&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. ให้ส่งรายงานนี้ภายใน 15 วัน หลังเสร็จสิ้นการประชุม/อบรม/สัมมนา/ดูงาน<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. โปรดสรุปสาระสำคัญเพื่อเป็น<u>สาระสำคัญ</u>สำหรับเผยแพร่แก่ จนท. อื่น ตามแบบฟอร์ม One Page Information<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. กรณีมีเอกสารแจกที่น่าสนใจ ขอโปรดอนบมาด้วยเพื่อนำเสนอผู้อำนายการ และอาจสำเนาส่งฝ่าย/งานที่เกี่ยวข้องเพิ่มเติม (ตัวจริงจะคืนเจ้าของ)<br>
+    </b>
+    <br><br><br>
+    <div align="right">F-AD-111-04</div>
+       
+<?php        
+$html2 = ob_get_contents();
+ob_clean();    
+$pdf = new mPDF('tha2','A4','11','');
 $pdf->autoScriptToLang = true;
 $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/conclude1$empno$Code.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/conclude1$empno$Code.pdf' />";
+$pdf->AddPage();
+$pdf->WriteHTML($html2,2);
+$pdf->Output("MyPDF/conclude.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/conclude.pdf' />";
 ?>
 </body>
 </html>

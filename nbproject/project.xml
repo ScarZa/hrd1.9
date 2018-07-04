@@ -5,5 +5,9 @@
         <data xmlns="http://www.netbeans.org/ns/php-project/1">
             <name>hrd1.9</name>
         </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>น</word>
+            <word>รวม</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

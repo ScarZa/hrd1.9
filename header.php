@@ -177,7 +177,7 @@ if (!empty($resultHos['logo'])) {
                     </button>
 
                     <a class="navbar-brand logo-mini" href="index.php?unset=1"><img alt="Brand" src="images/kuser.ico" width='35'> 
-                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.3</font>
+                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.4</font>
                     </a>
                 </div>
             </div>
@@ -337,7 +337,9 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="#" onClick="window.open('openDB.php', '', 'width=400,height=350'); return false;" title="ข้อมูลสำรอง"><img src='images/database.ico' width='25'> ข้อมูลสำรอง</a></li>
                                     <li class="divider"></li> <?php } ?>
                                 <li><a href="#" onClick="return popup('fullcalendar/fullcalendar4.php', popup, 820, 710);" title="ดูกิจกรรมส่วนตัว"><img src='images/calendar-clock.ico' width='25'> ปฏิทินกิจกรรมส่วนตัว</a></li>
-
+                                 <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
+                                <li><a href="#" onClick="return popup('add_holiday_calendra.php', popup, 800, 710);" title="เพิ่มวันหยุดนักขัตฤกษ์"><img src='images/Add_calendar.ico' width='25'> เพิ่มวันหยุดนักขัตฤกษ์</a></li>
+                                <?php } ?>
                                 <li class="divider"></li>
                                 <li><a href="#" onClick="return popup('about.php', popup, 550, 700);" title="เกี่ยวกับเรา"><img src='images/Paper Mario.ico' width='25'> เกี่ยวกับเรา</a></li>
                                 <li class="divider"></li> 

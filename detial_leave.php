@@ -364,7 +364,7 @@ $check_tl = mysqli_fetch_assoc($count_check);
                                             <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
                                                     <td width="6%" align="center"><b>แก้ไข</b></td>
                                                     <th align="center" width="6%"><b>ลบ</b></th>
-    <?php if ($check_tl['sum'] >= 8) { ?>
+    <?php if ($check_tl['sum'] >= 8 and $_SESSION['Status'] == 'ADMIN') { ?>
                                                         <td align="center" width="10%"><b>โอนการลา</b></td>
                                                             <?php } ?>
 <?php } ?>

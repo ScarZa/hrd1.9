@@ -171,7 +171,7 @@ while ($topic_post = mysqli_fetch_assoc($qr)) {
                                 }else{
                                     echo "</a>";
                                 }
-                                if(isset($empno_poster)?$empno_poster:''==$topic_post['empno_post'] or $_SESSION['Status']=='ADMIN'){?> 
+                                if((isset($empno_poster) and $empno_poster==$topic_post['empno_post']) or $_SESSION['Status']=='ADMIN'){?> 
                                 <div align='right'>
                                 <a href='mainpost_page.php?edit_id=<?=$topic_post['topic_id']?>' title='แก้ไขประชาสัมพันธ์'><img src='images/file_edit.ico' width='20'></a>
                                 <a href='mainpost_page.php?del_id=<?= $topic_post['topic_id']?>' title='ลบประชาสัมพันธ์' onClick="return confirm('กรุณายืนยันการลบอีกครั้ง !!!')"><img src='images/file_delete.ico' width='20'></a>

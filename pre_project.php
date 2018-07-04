@@ -126,6 +126,8 @@ INNER JOIN emppersonal e ON p.type_id=e.empno
         $url=  mysqli_fetch_assoc($select_url);
         if($method=='back'){?><center>
                    <a href="fullcalendar/fullcalendar5.php"><img src="images/undo.ico" width="20"  title="ย้อนกลับ"> กลับไปปฏิทินอบรมภายใน</a>
+                   <br>หรือ<br>
+                <a href="fullcalendar/fullcalendar4.php"><img src="images/undo.ico" width="20"  title="ย้อนกลับ"> กลับไปปฏิทินกิจกรรมส่วนตัว</a>
 </center>
         <?php }?>
     </div>

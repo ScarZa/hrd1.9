@@ -270,14 +270,9 @@ $edit_po = mysqli_query($db,"update plan_out set begin_date='$Pdates' where idpo
     
         
     }elseif ($method == 'add_planout') {
-        $empno=$_POST['empno'];
+        //$empno=$_POST['empno'];
         $idpo=$_POST['idpo'];
         $pj_obj=$_POST['project_obj'];
-        $abode=$_POST['cost'];
-        $reg=$_POST['meals'];
-        $allow=$_POST['expert'];
-        $travel=$_POST['travel'];
-        $other=$_POST['material'];
         $abstract=isset($_POST['abstract'])?$_POST['abstract']:'';
         $comment= isset($_POST['comment'])?$_POST['comment']:'';
         $book=$_POST['book'];
@@ -288,10 +283,28 @@ $edit_po = mysqli_query($db,"update plan_out set begin_date='$Pdates' where idpo
         $amount=$_POST['amount'];
         $join_amount= isset($_POST['join_amount'])?$_POST['join_amount']:'';
         $complacency= isset($_POST['complacency'])?$_POST['complacency']:'';
-
+        
         function removespecialchars($raw) {
     return preg_replace('#[^ก-ฮะ-็่-๋์a-zA-Z0-9.-]#u', '', $raw);
 }
+        
+        $check_ps=$_POST['check_ps'];
+foreach ($check_ps as $key => $value) {
+        $empno_[$value] = $_POST['empno'][$value];
+        $abode_[$value]=$_POST['cost'][$value];
+        $reg_[$value]=$_POST['meals'][$value];
+        $allow_[$value]=$_POST['expert'][$value];
+        $travel_[$value]=$_POST['travel'][$value];
+        $other_[$value]=$_POST['material'][$value];
+       
+        $empno=$empno_[$value];
+        $abode=$abode_[$value];
+        $reg=$reg_[$value];
+        $allow=$allow_[$value];
+        $travel=$travel_[$value];  
+        $other=$other_[$value];
+
+        
 
 if (trim($_FILES["image"]["name"] != "")) {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], "OPI/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
@@ -307,6 +320,7 @@ if (trim($_FILES["image"]["name"] != "")) {
                       comment='$comment', book='$book', paper='$paper', cd='$cd', OPI='$image', reg_date='$reg_date',
                             status_out='Y', join_amount='$join_amount', complacency='$complacency' 
                                 where empno='$empno' and idpo='$idpo'");
+}
     if ($add == false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);

@@ -95,8 +95,18 @@ inner join province p on t.provenID=p.PROVINCE_ID
 inner join trainingtype t2 on t2.tid=t.dt 
             WHERE tuid='$project_id' AND po.empno=$empno");
     
+$sql_joiner = mysqli_query($db,"SELECT CONCAT(e.firstname,' ',e.lastname)fullname,po.empno,t.m1,t.m2,t.m3,t.m4,t.m5
+FROM training_out t 
+INNER JOIN plan_out po on po.idpo=t.tuid
+INNER JOIN emppersonal e on e.empno=po.empno
+WHERE tuid='$project_id'");    
+    
             $Person_detial = mysqli_fetch_assoc($sql_per);
             $Project_detial = mysqli_fetch_assoc($sql_pro);
+            
+            $sql_join=  mysqli_query($db,"select COUNT(empno)join_plan from plan_out where idpo='$project_id'");
+            $person_join=mysqli_fetch_assoc($sql_join);
+            $p_join_plan = $person_join['join_plan'];
          
             if($method=='edit') {
             $sql_trainout=  mysqli_query($db,"select * from plan_out where empno='$empno' and idpo='$project_id'");
@@ -126,8 +136,9 @@ inner join trainingtype t2 on t2.tid=t.dt
                 <TEXTAREA value='' NAME="project_obj" id="project_obj"  cols="57" rows="" class="form-control" onkeydown="return nextbox(event, 'movedate')"><?= isset($person_data['pj_obj'])?$person_data['pj_obj']:''?></TEXTAREA>
  </div><br>
  <b>รุปแบบการจัดโครงการ/กิจกรรม </b><?= $Project_detial['tname'] ?><br>
+ <b>ค่าใช้จ่าย </b>
  <?php if($method=='edit') {?>
- <div class="form-group"> 
+ <div class="form-group">
                 <label>ค่าที่พัก &nbsp;</label>
                 <input value='<?=$person_data['abode'];?>' type="text" class="form-control" name="cost" id="cost" placeholder="ค่าที่พัก" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
@@ -148,28 +159,33 @@ inner join trainingtype t2 on t2.tid=t.dt
                 <input value='<?=$person_data['other'];?>' type="text" class="form-control" name="material" id="material" placeholder="ค่าใช้จ่ายอื่นๆ" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
 
- <?php }else{?>
-  <div class="form-group"> 
+ <?php }else{ $c=0; while ($row_joiner = mysqli_fetch_assoc($sql_joiner)) { ?>     
+ <div class="row col-lg-12">
+             <div class="form-group col-lg-2"><u><b><?=$row_joiner['fullname']?></b></u>
+                 <input type="hidden" name="empno[]" id="empno[]" value="<?=$row_joiner['empno']?>">
+                 <input type="hidden" name="check_ps[]" id="check_ps[]" value="<?=$c?>"></div>
+                <div class="form-group col-lg-2"> 
                 <label>ค่าที่พัก &nbsp;</label>
-                <input value='<?=$Project_detial['m1'];?>' type="text" class="form-control" name="cost" id="cost" placeholder="ค่าที่พัก" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
+                <input value='<?=round($row_joiner['m1']/$p_join_plan);?>' type="text" class="form-control" name="cost[]" id="cost[]" placeholder="ค่าที่พัก" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
-                    <div class="form-group"> 
+                    <div class="form-group col-lg-2"> 
                 <label>ค่าลงทะเบียน &nbsp;</label>
-                <input value='<?=$Project_detial['m2'];?>' type="text" class="form-control" name="meals" id="meals" placeholder="ค่าลงทะเบียน" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
+                <input value='<?= round($row_joiner['m2']/$p_join_plan);?>' type="text" class="form-control" name="meals[]" id="meals[]" placeholder="ค่าลงทะเบียน" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
-                    <div class="form-group"> 
+                    <div class="form-group col-lg-2"> 
                 <label>ค่าเบี่ยเลี้ยง &nbsp;</label>
-                <input value='<?=$Project_detial['m3'];?>' type="text" class="form-control" name="expert" id="expert" placeholder="ค่าเบี่ยเลี้ยง" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
+                <input value='<?=round($row_joiner['m3']/$p_join_plan);?>' type="text" class="form-control" name="expert[]" id="expert[]" placeholder="ค่าเบี่ยเลี้ยง" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
-                    <div class="form-group"> 
+                    <div class="form-group col-lg-2"> 
                 <label>ค่าพาหนะเดินทาง &nbsp;</label>
-                <input value='<?=$Project_detial['m4'];?>' type="text" class="form-control" name="travel" id="travel" placeholder="ค่าพาหนะเดินทาง" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
+                <input value='<?=round($row_joiner['m4']/$p_join_plan);?>' type="text" class="form-control" name="travel[]" id="travel[]" placeholder="ค่าพาหนะเดินทาง" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
-                    <div class="form-group"> 
+                    <div class="form-group col-lg-2"> 
                 <label>ค่าใช้จ่ายอื่นๆ &nbsp;</label>
-                <input value='<?=$Project_detial['m5'];?>' type="text" class="form-control" name="material" id="material" placeholder="ค่าใช้จ่ายอื่นๆ" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
+                <input value='<?=round($row_joiner['m5']/$p_join_plan);?>' type="text" class="form-control" name="material[]" id="material[]" placeholder="ค่าใช้จ่ายอื่นๆ" onkeydown="return nextbox(event, 'position')" onKeyUp="javascript:inputDigits(this);">
              	</div>
- <?php }?><br>
+             </div><p>
+ <?php $c++; }}?><br>
                 <div class="form-group"> 
                     <?php if($Project_detial['join_type']=='3'){ echo "<label>หัวข้อเรื่อง/สาระสำคัญ คือ &nbsp;</label>";}else{?>
                     <label>สรุปสาระสำคัญที่ได้จากการประชุม/อบรม/สัมมนา/ดูงาน(แนบเอกสารเพิ่มเติม) &nbsp;</label><?php }?>
@@ -234,7 +250,7 @@ inner join trainingtype t2 on t2.tid=t.dt
     <input type="hidden" name="method" id="method" value="add_planout">
     <input type="hidden" name="amount" id="amount" value="<?= $Project_detial['amount'] ?>">
     <input type="hidden" name="begin_date" id="begin_date" value="<?=$Project_detial['Beginedate']?>">
-    <input type="hidden" name="empno" id="empno" value="<?=$empno?>">
+<!--    <input type="hidden" name="empno" id="empno" value="<?=$empno?>">-->
     <input type="hidden" name="idpo" id="idpo" value="<?=$project_id?>">
    <input class="btn btn-success" type="submit" name="Submit" id="Submit" value="บันทึก">
                     <?php }?>

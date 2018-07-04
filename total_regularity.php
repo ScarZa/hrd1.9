@@ -96,7 +96,7 @@ echo mysqli_error($db);
                                     ?>
                                     <p><h4><b><font color='red'>ระเบียบที่ <?= $topic_regu['regu_id'] ?></font></b></h4><b>ผู้ประกาศ</b> คุณ<?= $topic_regu['fullname'] ?>  <b>ประกาศเมื่อ</b> <?= DateThai1($topic_regu['regu_date']) ?>
                                     <a href="<?= $folder_file . $regu_file ?>" target="_blank"><font color='blue'><h5><li><?= $topic_regu['topic_regu'] ?></li></h5></font></a> 
-                                    <?php if(isset($_SESSION['Status'])=='ADMIN'){?>
+                                    <?php if($_SESSION['Status']=='ADMIN'){?>
                                     <div align='right'>
                                         <a href="regularity.php?method=edit&regu_id=<?= $topic_regu['regu_id']?>"><img src="images/file_edit.ico" width="20"></a> 
                                         <a href="regularity.php?method=delete&regu_id=<?= $topic_regu['regu_id']?>"  title="ลบระเบียบ" onclick="if(confirm('ยืนยันการลบ ระเบียบที่ <?= $topic_regu['regu_id'] ?>&nbsp;ออกจากรายการ ')) return true; else return false;">   

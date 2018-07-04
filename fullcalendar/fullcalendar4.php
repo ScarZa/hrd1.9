@@ -53,16 +53,16 @@
 <?php
 include '../connection/connect_calendra.php';
 if($_SESSION['Status']=='ADMIN'){
-$event= array("0"=>"ลา","1"=>"ไปราชการ","2"=>"","3"=>"","4"=>"ขึ้นเวร","5"=>"อื่นๆ");
-$code_color=array("0"=>"#d92727","1"=>"#416cbb","2"=>"#1e6c06","3"=>"#00a6ba","4"=>"purple","5"=>"orange","6"=>"#4e5252");
+$code_color=array("0"=>"#d92727","1"=>"#416cbb","2"=>"","3"=>"","4"=>"purple","5"=>"orange","6"=>"#4e5252","7"=>"#ba6f00");
+$event= array("0"=>"ลา","1"=>"ไปราชการ","2"=>"","3"=>"","4"=>"ขึ้นเวร","5"=>"อื่นๆ","6"=>"อบรมภายใน","7"=>"นักขัตฤกษ์");
 }  else {
-$event= array("0"=>"ลา","1"=>"ไปราชการ");
-$code_color=array("0"=>"#d92727","1"=>"#416cbb");
+$event= array("0"=>"ลา","1"=>"ไปราชการ","2"=>"อบรมภายใน","3"=>"นักขัตฤกษ์");
+$code_color=array("0"=>"#d92727","1"=>"#416cbb","2"=>"#4e5252","3"=>"#ba6f00");
     
 }
-for($i=0;$i<=count($event);$i++){  ?>
-    <a style="background-color:<?= @$code_color[$i]?>; color: white"><?= @$event[$i]?></a> 
-<?php }?>
+for($i=0;$i<=count($event);$i++){  if(@$code_color[$i]!=''){ ?>
+    &nbsp;<a style="background-color:<?= @$code_color[$i]?>; color: white"> <?= @$event[$i]?> </a>&nbsp; 
+<?php }}?>
 </div>
 <?php if($_SESSION['Status']=='ADMIN'){?>
 <div align="center">

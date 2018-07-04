@@ -5,12 +5,12 @@ if (isset($_GET['unset'])) {
 }
 ?>
 <?php
-if ($check_conn==FALSE) {
+if ($check_conn===FALSE) {
     $check = md5(trim(check));
     ?>
     <center>
         <h3>ยังไม่ได้ตั้งค่า Config <br>กรุณาตั้งค่า Config เพื่อเชื่อมต่อฐานข้อมูล</h3>
-        <a href="#" class="btn btn-danger" onClick="return popup('set_conn_db.php?method=<?= $check ?>', popup, 400, 515);" title="Config Database">Config Database</a>
+        <a href="#" class="btn btn-danger" onClick="return popup('set_conn_db.php?method=//<?= $check ?>', popup, 400, 515);" title="Config Database">Config Database</a>
 
     </center>
     <?php
@@ -92,7 +92,7 @@ if ($check_conn==FALSE) {
         ?>
         <div class="row">
             <div class="col-lg-2 col-xs-6">
-                <a href="<?= $resultHos['url'] ?>service&support" class="btn btn-warning" target="_blank">โปรมแกรมสนับสนุน</a>       
+                <a href="<?= $resultHos['url'] ?>service&support1.2" class="btn btn-warning" target="_blank">โปรมแกรมสนับสนุน</a>       
             </div>
             <div class="col-lg-8"></div>
             <div class="col-lg-2 col-xs-6" align="right">

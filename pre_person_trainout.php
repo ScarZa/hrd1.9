@@ -176,6 +176,7 @@ echo mysqli_error($db);
                                 <th align="center" width="10%">บันทึก(ใหม่)</th>
                                 <th align="center" width="10%">พิมพ์สรุป</th>
                                 <th align="center" width="10%">พิมพ์สรุป<p>ยอดเงิน</th>
+                                <th align="center" width="10%">พิมพ์สรุป<p>ยอดเงินกลุ่ม</th>
                                 <th align="center" width="10%">แก้ไข</th>
                             </tr>
                             
@@ -203,19 +204,22 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 </td>
                                 <td align="center">
                                     <?php if($result['status_out']=='Y' and $result['dt']=='3'){ ?>
-                                    <a href="#" onclick="return popup('conclude_page3.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">พิมพ์สรุป</a>
+                                    <a href="#" onclick="return popup('conclude_page3.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);"><img src="images/printer.ico" width="30"></a>
                                     <?php }elseif($result['status_out']!='Y'){ echo '...';}else {?>
-                                    <a href="#" onclick="return popup('conclude_page1.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า1</a>.,.
-                                    <a href="#" onclick="return popup('conclude_page2.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า2</a>
+                                    <a href="#" onclick="return popup('conclude_page1.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);"><img src="images/printer.ico" width="30"></a>
 <?php }?>
                                 </td>
                                 <td align="center">
                                     <?php if($result['status_out']!='Y'){ echo '...';}else {?>
-                                    <a href="#" onclick="return popup('concmoney_page1.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า1</a>.,.
-                                    <a href="#" onclick="return popup('concmoney_page2.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);">หน้า2</a>
+                                    <a href="#" onclick="return popup('concmoney_page1.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,700,900);"><img src="images/printer.ico" width="30"></a>
 <?php }?>
                                 </td>
-                                <td align="center"><a href="person_trainout.php?method=edit&&id=<?= $result['empno'];?>&&pro_id=<?=$project_id?>"><img src='images/tool.png' width='25'></a></td>
+                                <td align="center">
+                                    <?php if($result['status_out']!='Y'){ echo '...';}else {?>
+                                    <a href="#" onclick="return popup('concmoney_group.php?id=<?=$result['empno']?>&&pro_id=<?=$project_id?>',popup,1200,700);"><img src="images/printer.ico" width="30"></a>
+<?php }?>
+                                </td>
+                                <td align="center"><a href="person_trainout.php?method=edit&&id=<?= $result['empno'];?>&&pro_id=<?=$project_id?>"><img src='images/tool.png' width='30'></a></td>
         </tr>
     <?php $i++; } ?>
                                 

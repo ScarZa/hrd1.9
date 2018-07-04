@@ -73,7 +73,7 @@
 							 		 	 echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=fullcalendar/fullcalendar4.php'>";
 								}
    
-   }if($method=='edit_event'){
+   }else if($method=='edit_event'){
                    $event_id=$_POST['event_id'];
                    $event_title=$_POST['massege'];	 	  	 
                    $event_start=$_POST['event_start_date'].' '.$_POST['event_start_time']; 
@@ -137,6 +137,93 @@
 								               <a class='alert-link' target='_blank' href='#'><center>ลบข้อมูลเรียบร้อย</center></a> 
 								            </div>";								
 							 		 	 echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=fullcalendar/fullcalendar4.php'>";
+								}
+}else if($method=='add_holidayevent'){
+                   $event_title=$_POST['massege'];	 	  	 
+                   $event_start=$_POST['event_start_date']; 
+                   $event_allDay = 'true';
+                   $event_end=date('Y-m-d', strtotime($event_start."+1 days "));
+                   
+		$insert_event=mysqli_query($db,"insert into tbl_event set event_title='$event_title',event_start='$event_start',event_end='$event_end',event_url='',event_allDay='$event_allDay',
+                        workid='0',process='7'"); 	
+ 							if($insert_event==false){
+											 echo "<p>";
+											 echo "Update not complete".mysqli_error($db);
+											 echo "<br />";
+											 echo "<br />";
+
+											 echo "	<span class='glyphicon glyphicon-remove'></span>";
+											 echo "<a href='add_holiday_calendra.php' >กลับ</a>";
+		
+								}else{
+								    echo	 "<p>&nbsp;</p>	";
+								    echo	 "<p>&nbsp;</p>	";
+									echo " <div class='bs-example'>
+									              <div class='progress progress-striped active'>
+									                <div class='progress-bar' style='width: 100%'></div>
+									              </div>";
+										echo "<div class='alert alert-success alert-dismissable'>
+								              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+								               <a class='alert-link' target='_blank' href='#'><center>บันทึกข้อมูลเรียบร้อย</center></a> 
+								            </div>";								
+							 		 	 echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_holiday_calendra.php'>";
+								}
+   
+   }else if($method=='edit_holidayevent'){
+                   $event_id=$_POST['event_id'];
+                   $event_title=$_POST['massege'];	 	  	 
+                   $event_start=$_POST['event_start_date']; 
+                   $event_end=date('Y-m-d', strtotime($event_start."+1 days "));
+                   
+		$update_holidayevent=mysqli_query($db,"update tbl_event set event_title='$event_title',event_start='$event_start',event_end='$event_end'
+                        where event_id='$event_id'"); 	
+								if($update_holidayevent==false){
+											 echo "<p>";
+											 echo "Update not complete".mysqli_error($db);
+											 echo "<br />";
+											 echo "<br />";
+
+											 echo "	<span class='glyphicon glyphicon-remove'></span>";
+											 echo "<a href='add_holiday_calendra.php' >กลับ</a>";
+		
+								}else{
+								    echo	 "<p>&nbsp;</p>	";
+								    echo	 "<p>&nbsp;</p>	";
+									echo " <div class='bs-example'>
+									              <div class='progress progress-striped active'>
+									                <div class='progress-bar' style='width: 100%'></div>
+									              </div>";
+										echo "<div class='alert alert-info alert-dismissable'>
+								              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+								               <a class='alert-link' target='_blank' href='#'><center>แก้ไขข้อมูลเรียบร้อย</center></a> 
+								            </div>";								
+							 		 	echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_holiday_calendra.php'>";
+								}
+   
+   }elseif ($method=='delete_holidayevent') {
+                $event_id=$_GET['event_id'];
+                $del_event=  mysqli_query($db,"delete from tbl_event where event_id='$event_id'");
+                if($del_event==false){
+											 echo "<p>";
+											 echo "Update not complete".mysqli_error($db);
+											 echo "<br />";
+											 echo "<br />";
+
+											 echo "	<span class='glyphicon glyphicon-remove'></span>";
+											 echo "<a href='add_holiday_calendra.php' >กลับ</a>";
+		
+								}else{
+								    echo	 "<p>&nbsp;</p>	";
+								    echo	 "<p>&nbsp;</p>	";
+									echo " <div class='bs-example'>
+									              <div class='progress progress-striped active'>
+									                <div class='progress-bar' style='width: 100%'></div>
+									              </div>";
+										echo "<div class='alert alert-danger alert-dismissable'>
+								              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+								               <a class='alert-link' target='_blank' href='#'><center>ลบข้อมูลเรียบร้อย</center></a> 
+								            </div>";								
+							 		 	 echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_holiday_calendra.php'>";
 								}
 }
 include_once 'footeri.php'; ?>

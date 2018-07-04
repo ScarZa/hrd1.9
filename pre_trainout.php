@@ -82,7 +82,7 @@ if (empty($_SESSION['user'])) {
                 function page_navigator($before_p, $plus_p, $total, $total_p, $chk_page) {
                     global $e_page;
                     global $querystr;
-                    $empno = isset($_GET['name'])?$_GET['name']:$_POST['name'];
+                    $empno = isset($_GET['name'])?$_GET['name']:'';
                     $urlfile = "pre_trainout.php"; // ส่วนของไฟล์เรียกใช้งาน ด้วย ajax (ajax_dat.php)
                     $per_page = 30;
                     $num_per_page = floor($chk_page / $per_page);
@@ -127,25 +127,25 @@ if($date >= $bdate and $date <= $edate){
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
          WHERE (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%') and  t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30'
              GROUP BY t.tuid
-         order by Beginedate desc";
+         order by tuid desc";
                     }elseif (!empty ($empno)) {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
          WHERE p.empno = $empno and  t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30'
              GROUP BY t.tuid
-         order by Beginedate desc";
+         order by tuid desc";
         } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 where (p.empno='".$_SESSION['user']."' or t.nameAdmin='".$_SESSION['user']."') and  (t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30')
 GROUP BY t.tuid 
-order by Beginedate desc";
+order by tuid desc";
                     }elseif($_SESSION['Status']=='ADMIN'){
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 where t.Beginedate  BETWEEN '$y-10-01' and '$Yy-09-30'
 GROUP BY t.tuid 
-order by Beginedate desc";
+order by tuid desc";
                     }
                 } else {
                     $date01 = $_SESSION['check_date01'];
@@ -168,7 +168,7 @@ order by Beginedate desc";
                                 where (Beginedate between '$date01' and '$date02') and (endDate between '$date01' and '$date02')
                                 and (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%')
                                 GROUP BY t.tuid
-                                order by Beginedate desc";
+                                order by tuid desc";
                     }elseif (!empty($empno)) {
 //คำสั่งค้นหา
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
@@ -176,20 +176,20 @@ order by Beginedate desc";
                                 where (Beginedate between '$date01' and '$date02') and (endDate between '$date01' and '$date02')
                                 and p.empno = $empno
                                 GROUP BY t.tuid
-                                order by Beginedate desc";
+                                order by tuid desc";
                     } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
                                 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo 
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02') and (p.empno='".$_SESSION['user']."'
                                     or t.nameAdmin='".$_SESSION['user']."')
                                 GROUP BY t.tuid                                 
-                                order by Beginedate desc";
+                                order by tuid desc";
                     }elseif($_SESSION['Status']=='ADMIN'){
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
                                 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo 
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02')
                                 GROUP BY t.tuid                                 
-                                order by Beginedate desc";
+                                order by tuid desc";
                     }
 }}else{
 if (empty($_SESSION['check_trainout'])) {
@@ -209,25 +209,25 @@ if (empty($_SESSION['check_trainout'])) {
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
          WHERE (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%') and  t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30'
              GROUP BY t.tuid
-         order by Beginedate desc";
+         order by tuid desc";
                     }elseif (!empty ($empno)) { 
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
          WHERE p.empno = $empno and  t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30'
              GROUP BY t.tuid
-         order by Beginedate desc";
+         order by tuid desc";
         } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 where (p.empno='".$_SESSION['user']."' or t.nameAdmin='".$_SESSION['user']."') and  (t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30') 
 GROUP BY t.tuid 
-order by Beginedate desc";
+order by tuid desc";
                     }elseif($_SESSION['Status']=='ADMIN'){
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count from training_out t 
 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo
 where t.Beginedate  BETWEEN '$Y-10-01' and '$y-09-30'
 GROUP BY t.tuid 
-order by Beginedate desc";
+order by tuid desc";
                     }
                 } else {
                     $date01 = $_SESSION['check_date01'];
@@ -246,7 +246,7 @@ order by Beginedate desc";
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02')
                                 and (memberbook LIKE '%$Search_word%' or projectName LIKE '%$Search_word%')
                                 GROUP BY t.tuid
-                                order by Beginedate desc";
+                                order by tuid desc";
                     }elseif (!empty($empno)) {
 //คำสั่งค้นหา
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count, p.status_out as status_out from training_out t 
@@ -254,20 +254,20 @@ order by Beginedate desc";
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02')
                                 and p.empno = $empno
                                 GROUP BY t.tuid
-                                order by Beginedate desc";
+                                order by tuid desc";
                     } elseif($_SESSION['Status']=='USER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USUSER') {
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count, p.status_out as status_out from training_out t 
                                 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo 
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02') and (p.empno='".$_SESSION['user']."'
                                 or t.nameAdmin='".$_SESSION['user']."') 
                                 GROUP BY t.tuid                                 
-                                order by Beginedate desc";
+                                order by tuid desc";
                     }elseif($_SESSION['Status']=='ADMIN'){
                         $q = "SELECT p.status_out, t.*,COUNT(p.empno) as count, p.status_out as status_out from training_out t 
                                 LEFT OUTER JOIN plan_out p on t.tuid=p.idpo 
                                 where (t.Beginedate between '$date01' and '$date02') and (t.endDate between '$date01' and '$date02')
                                 GROUP BY t.tuid                                 
-                                order by Beginedate desc";
+                                order by tuid desc";
                     }
 }    
 }
