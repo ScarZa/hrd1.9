@@ -172,7 +172,7 @@ echo mysqli_error($db);
                                 <th align="center" width="10%">เลขที่</td>
                                 <th align="center" width="15%">ชื่อ-นามสกุล</th>
                                 <th align="center" width="20%">ตำแหน่ง</th>
-                                <th align="center" width="10%">บันทึก(เก่า)</th>
+<!--                                <th align="center" width="10%">บันทึก(เก่า)</th>-->
                                 <th align="center" width="10%">บันทึก(ใหม่)</th>
                                 <th align="center" width="10%">พิมพ์สรุป</th>
                                 <th align="center" width="10%">พิมพ์สรุป<p>ยอดเงิน</th>
@@ -188,13 +188,13 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 <td align="center"><?=$result['pid'];?></td>
                                 <td><?=$result['fullname'];?></td>
                                 <td align="center"><?=$result['posname'];?></td>
-                                <td align="center">
-<?php if($result['status_out']=='N'){ ?>    
-                                    <a href="person_trainout.php?pro_id=<?=$project_id?>&&id=<?=$result['empno'];?>"><img src='images/save_add.png' width='30'></a>
-<?php }else{ ?>
+<!--                                <td align="center">
+<?php //if($result['status_out']=='N'){ ?>    
+                                    <a href="person_trainout.php?pro_id=<?//=$project_id?>&&id=<?//=$result['empno'];?>"><img src='images/save_add.png' width='30'></a>
+<?php //}else{ ?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="สรุปแล้ว">
-<?php }?>
-                                </td>
+<?php //}?>
+                                </td>-->
                                 <td align="center">
 <?php if($result['status_out']=='N'){ ?>    
                                     <a href="person_trainout(new).php?pro_id=<?=$project_id?>&&id=<?=$result['empno'];?>"><img src='images/save_add.png' width='30'></a>
