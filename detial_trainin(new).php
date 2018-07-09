@@ -213,10 +213,11 @@ where p0.empno='$empno' and p0.status_out='Y' and (p0.begin_date between '$date0
                         where type_id='$empno' and p.bdate BETWEEN '$Y-10-01' and '$y-09-30' order by p.bdate desc");
 
             $detiatl = mysqli_query($db,"SELECT p.*,t.projectName,t.anProject,t.Beginedate,t.endDate,t.stantee,p2.PROVINCE_NAME,
-                t.stdate,t.etdate
-    from plan_out p 
-        inner join training_out t on t.tuid=p.idpo
-        inner join province p2 on p2.PROVINCE_ID=t.provenID
+                t.stdate,t.etdate,tt.tName
+                from plan_out p 
+                inner join training_out t on t.tuid=p.idpo
+		inner join trainingtype tt on tt.tid=t.dt
+                inner join province p2 on p2.PROVINCE_ID=t.provenID
         where p.empno='$empno' and p.status_out='Y' and t.dt!='9'  and p.begin_date BETWEEN '$Y-10-01' and '$y-09-30' order by t.memberbook desc");
             $detiatl2 = mysqli_query($db,"SELECT p.*,t.projectName,t.anProject,t.Beginedate,t.endDate,t.stantee,p2.PROVINCE_NAME 
     from plan_out p 
@@ -376,9 +377,10 @@ $Count_pj = mysqli_fetch_assoc($count_pj);
                                     <h4 align='center'>ไปราชการ(ฝึกอบรม/ประชุม/สัมมนา)</h4>
                                      <table align="center" width="100%" border="1" cellspacing="0" cellpadding="0" class="" rules="" frame="">
                                         <tr align="center" bgcolor="#898888">
-                                            <td width="4%" rowspan="2" align="center"><b>ลำดับ</b></td>
-                                            <td width="25%" rowspan="2" align="center"><b>โครงการ</b></td>
+                                            <td width="3%" rowspan="2" align="center"><b>ลำดับ</b></td>
+                                            <td width="20%" rowspan="2" align="center"><b>โครงการ</b></td>
                                             <td width="20%" rowspan="2" align="center" bgcolor="#898888"><b>หน่วยงานที่จัด/สถานที่</b></td>
+                                            <td width="10%" rowspan="2" align="center" bgcolor="#898888"><b>รูปแบบ</b></td>
                                             <td width="10%" rowspan="2" align="center"><b>ตั้งแต่</b></td>
                                             <td width="10%" rowspan="2" align="center"><b>วันเดินทาง</b></td>
                                             <td colspan="5" align="center"><b>ค่าใช้จ่าย</b><b></b></td>
@@ -400,6 +402,7 @@ while ($result = mysqli_fetch_assoc($detiatl)) {
                                                 <td align="center"><?= $i ?></td>
                                                 <td><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['idpo'] ?>', popup, 700, 450);"><?= $result['projectName']; ?></a></td>
                                                 <td align="center"><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['idpo'] ?>', popup, 700, 450);"><?= $result['anProject']; ?> / <?= $result['stantee']; ?> จ. <?= $result['PROVINCE_NAME']; ?></a></td>
+                                                <td align="center"><a href="#" onclick="return popup('pre_project_out.php?id=<?= $result['idpo'] ?>', popup, 700, 450);"><?= $result['tName']; ?></a></td>
                                                 <td align="center"><?= DateThai1($result['Beginedate']); ?><br> ถึง <br><?= DateThai1($result['endDate']); ?></td>
                                                 <td align="center"><?= DateThai1($result['stdate']); ?><br> ถึง <br><?= DateThai1($result['etdate']); ?></td>
                                                 <td align="center"><?= $result['abode']; ?></td>
