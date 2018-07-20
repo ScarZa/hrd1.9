@@ -142,12 +142,11 @@ INNER JOIN emppersonal e ON p.empno=e.empno
                 }
                 ?>
                             </table>
-                            <?php if($Project_detial['hboss']=='A' and $_SESSION['Status']=='ADMIN'){?>
+                            <?php if($Project_detial['hboss']=='W' and $_SESSION['Status']=='ADMIN'){?>
                             <form class="navbar-form navbar-center" role="form" action='prctraining.php' enctype="multipart/form-data" method='post' onSubmit="return Check_txt()">
                                 <center>
-                                    <div class="alert alert-info">
-                                        <input type="radio" name="hboss" value="Y" required=""> : อนุมัติ&nbsp;&nbsp;&nbsp; <br>
-                                        <input type="radio" name="hboss" value="N" required=""> : ไม่อนุมัติ <br>
+                                    <div class="alert alert-success">
+                                        <input type="radio" name="hboss" value="A" required=""> : ลงทะเบียนรับ
                                     </div>
                                     <input type="hidden" name="popup" value="true">
                                   <input type="hidden" name="method" value="approve_trainout">

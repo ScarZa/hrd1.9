@@ -340,7 +340,10 @@ order by tuid desc";
                             <td align="center"><a href="add_trainout.php?id=<?= $result['tuid']; ?>"><img src='images/save_add.png' width='30'></a></td>
                             <td align="center">
                            <?php if($result['hboss']=='W'){ ?>
-                            <a href="#" onClick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รออนุมัติ"><i class="fa fa-spinner fa-spin"></i></a>
+                                <a href="#" onClick="return popup('pre_recproject_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รอลงทะเบียนรับ"><i class="fa fa-spinner fa-spin"></i></a>
+                            <?php } elseif($result['hboss']=='A'){ ?>
+                            <a href="#" onClick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รออนุมัติ">
+                                    <img src="images/email.ico" width="20"></a>
                             <?php } elseif ($result['hboss']=='Y') {?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="อนุมัติ">
                                      <?php } elseif ($result['hboss']=='N') {?>

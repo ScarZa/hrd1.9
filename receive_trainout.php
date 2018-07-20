@@ -221,7 +221,7 @@ order by tuid desc";
                         <td width="5%" align="center"><b>ถึง</b></td>
                         <td width="40%" align="center"><b>เรื่อง</b></td>
                         <td width="12%" align="center"><b>การปฏิบัติ</b></td>
-                        <td width="3%" align="center"><b>อนุมัติ</b></td>
+                        <td width="3%" align="center"><b>สถานะ</b></td>
 
                     </tr>
 
@@ -240,7 +240,10 @@ order by tuid desc";
                             <td align="center"><?= DateThai1($result['Beginedate']); ?> <b>ถึง</b> <?= DateThai1($result['endDate']); ?></td>
                             <td align="center">
                                 <?php if($result['hboss']=='W'){ ?>
-                            <i class="fa fa-spinner fa-spin"></i>
+                                <a href="#" onClick="return popup('pre_recproject_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รอลงทะเบียนรับ"><i class="fa fa-spinner fa-spin"></i></a>
+                            <?php } elseif($result['hboss']=='A'){ ?>
+                            <a href="#" onClick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รออนุมัติ">
+                                    <img src="images/email.ico" width="20"></a>
                             <?php } elseif ($result['hboss']=='Y') {?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="อนุมัติ">
                                      <?php } elseif ($result['hboss']=='N') {?>
