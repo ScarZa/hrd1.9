@@ -244,6 +244,8 @@ order by tuid desc";
                             <?php } elseif($result['hboss']=='A'){ ?>
                             <a href="#" onClick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รออนุมัติ">
                                     <img src="images/email.ico" width="20"></a>
+                            <?php } elseif ($result['hboss']=='C') {?>
+                                    <img src="images/close.ico" width="20" title="ไม่รับ/ซ้ำซ้อน">
                             <?php } elseif ($result['hboss']=='Y') {?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="อนุมัติ">
                                      <?php } elseif ($result['hboss']=='N') {?>

@@ -146,7 +146,8 @@ INNER JOIN emppersonal e ON p.empno=e.empno
                             <form class="navbar-form navbar-center" role="form" action='prctraining.php' enctype="multipart/form-data" method='post' onSubmit="return Check_txt()">
                                 <center>
                                     <div class="alert alert-success">
-                                        <input type="radio" name="hboss" value="A" required=""> : ลงทะเบียนรับ
+                                        <input type="radio" name="hboss" value="A" required=""> : ลงทะเบียนรับ&nbsp;&nbsp;&nbsp; <br>
+                                        <input type="radio" name="hboss" value="C" required=""> : ไม่ลงทะเบียนรับ <br>
                                     </div>
                                     <input type="hidden" name="popup" value="true">
                                   <input type="hidden" name="method" value="approve_trainout">

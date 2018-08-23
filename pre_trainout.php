@@ -344,22 +344,34 @@ order by tuid desc";
                             <?php } elseif($result['hboss']=='A'){ ?>
                             <a href="#" onClick="return popup('pre_project_out.php?id=<?= $result['tuid']; ?>',popup,700,500);" title="รออนุมัติ">
                                     <img src="images/email.ico" width="20"></a>
+                            <?php } elseif ($result['hboss']=='C') {?>
+                                    <img src="images/close.ico" width="20" title="ไม่รับ/ซ้ำซ้อน">
                             <?php } elseif ($result['hboss']=='Y') {?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="อนุมัติ">
                                      <?php } elseif ($result['hboss']=='N') {?>
                                     <img src="images/button_cancel.ico" width="20" title="ไม่อนุมัติ">
                                      <?php }?>
                                         </td>
-                                <?php if($_SESSION['Status']=='ADMIN'){?>
+                                <?php if($_SESSION['Status']=='ADMIN'){
+                                    if($result['hboss']=='C' or $result['hboss']=='N'){?>
+                                    <td align="center">...</td>
+                                    <?php }else{ ?>
                             <td align="center"><a href="pre_person_trainout.php?id=<?= $result['tuid']; ?>"><img src='images/Sum.png' width='30'></a></td>
+                                    <?php }?>
                             <td align="center"><a href="add_project_out.php?method=edit&&id=<?=$result['tuid'];?>"><img src='images/tool.png' width='30'></a></td>
                             <?php }else{?>
                             <td align="center">
-                                    <?php if(empty($result['status_out'])){ echo '...';}else {?>
+                                    <?php
+                                    if($result['hboss']=='C' or $result['hboss']=='N'){?>
+                            ...</td>
+                            <td align="center">...</td>    
+                                    <?php }else{
+                                    if(empty($result['status_out'])){ echo '...';}else {?>
                                 <a href="#" onclick="return popup('approval_page1.php?id=<?=$_SESSION['user']?>&&pro_id=<?=$result['tuid']?>',popup,700,900);"><img src="images/printer.ico" width="25"></a>
                             <?php }?>
                             </td>
                             <td align="center"><a href="pre_person_trainout.php?id=<?= $result['tuid']; ?>"><img src='images/Sum.png' width='30'></a></td>
+                                    <?php }?>
                             <td align="center">
                             <?php if($result['status_out']!='Y'){ ?>
                                 <i class="fa fa-2x fa-spinner fa-spin" title="รอการสรุป"></i>

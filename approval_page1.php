@@ -64,7 +64,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 </div><br>
 <div class="col-lg-12">
     <b>ส่วนราชการ</b> &nbsp;&nbsp;&nbsp;<?=$hospital['name']?> &nbsp;&nbsp;&nbsp;ฝ่ายทรัพยากรบุคคล โทร.๐-๔๒๘๐-๘๑๔๔ <br>
-    <b>ที่</b> &nbsp;&nbsp;&nbsp;สธ ๐๘๑๘.๑.๒/<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $Project_detial['memberbook']?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>ที่</b> &nbsp;&nbsp;&nbsp;สธ ๐๘๓๘.๑.๒/<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $Project_detial['memberbook']?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     วันที่ <b><?= DateThai2($Project_detial['datein'])?></b><br>
     <b>เรื่อง</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขออนุมัติเดินทางไปราชการ
