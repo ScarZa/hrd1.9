@@ -134,7 +134,7 @@ if ($_SESSION['Status'] != 'USER') {
                                                         if($result['episode']==1){
                                                             $episode = '1 เม.ย. '.$result['year'];
                                                         }else if($result['episode']==2) {
-                                                            $episode = '1 ต.ค. '.($result['year']+1);
+                                                            $episode = '1 ต.ค. '.($result['year']);
                                             }
                                                         ?>
                                             <tr>

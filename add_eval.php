@@ -59,6 +59,13 @@ if (empty($_SESSION['user'])) {
             }
 
         </script>
+        <script type="text/javascript">
+            function salaryPercent(){
+                var res = ($('#salary_up').val()*100)/$('#base_salary').val();
+                console.log(res)
+                $('#percent').attr("value",res.toFixed(2));
+            }
+        </script>
         
 <form class="navbar-form navbar-left" role="form" action='prceval.php' enctype="multipart/form-data" method='post' onsubmit="return confirm('กรุณายืนยันการบันทึกอีกครั้ง !!!')">
     <?php
@@ -140,32 +147,39 @@ if (empty($_SESSION['user'])) {
                                 <?php }?>
                             </div>
                     <div class="form-group"> 
-                                <label>รอบการประเมิน &nbsp;</label>
+                                <label>รอบการประเมิน/สาเหตุการปรับ &nbsp;</label>
                                 <?php if($method == 'edit_eval'){
-                            echo "<input type='text' class='form-control' size='1' readonly value='รอบที่ ".$edit_person['episode']."'><input type='hidden' name='episode' value='".$edit_person['episode']."'>";        
+                                    if($edit_person['episode']==3){
+                                        $text = 'กรณีเยียวยาอายุงาน';
+                                    }else{
+                                        $text = "รอบที่ ".$edit_person['episode'];
+                                    }
+                            echo "<input type='text' class='form-control' size='1' readonly value='".$text."'><input type='hidden' name='episode' value='".$edit_person['episode']."'>";        
                                 }else{ ?>
                                 <select name='episode' class="form-control select2" required>
-                                <option value=''>กรุณาเลือกรอบการประเมิน</option>
+                                <option value=''>กรุณาเลือกรอบการประเมิน/สาเหตุการปรับ</option>
                                 <option value='1'>รอบที่ 1</option>
                                 <option value='2'>รอบที่ 2</option>
+                                <option value='3'>กรณีเยียวยาอายุงาน</option>
                            </select>
                                 <?php }?>
                             </div>
                     <div class="form-group"> 
                                 <label>ฐานการคำนวณ &nbsp;</label>
-                                <input type="text" class="form-control" name="base_salary" value="<?= isset($edit_person['base_salary'])?$edit_person['base_salary']:''?>" onKeyUp="javascript:inputDigits(this);">
+                                <input type="text" class="form-control" id='base_salary' name="base_salary" value="<?= isset($edit_person['base_salary'])?$edit_person['base_salary']:''?>" onKeyUp="javascript:inputDigits(this);">
                             </div>
                     <div class="form-group"> 
                                 <label>เงินเดือน &nbsp;</label>
-                                <input type="text" class="form-control" name="salary" value="<?=isset($edit_person['salary'])?$edit_person['salary']:''?>" onKeyUp="javascript:inputDigits(this);">
+                                <input type="text" class="form-control" id='salary' name="salary" value="<?=isset($edit_person['salary'])?$edit_person['salary']:''?>" onKeyUp="javascript:inputDigits(this);">
                             </div>
                     <div class="form-group"> 
                                 <label>เงินเดือนที่ปรับขึ้น &nbsp;</label>
-                                <input type="text" class="form-control" name="salary_up" value="<?=isset($edit_person['salary_up'])?$edit_person['salary_up']:''?>" onKeyUp="javascript:inputDigits(this);">
+                                <input type="text" class="form-control" id='salary_up' name="salary_up" value="<?=isset($edit_person['salary_up'])?$edit_person['salary_up']:''?>" 
+                                onKeyUp="javascript:inputDigits(this);salaryPercent();">
                             </div>
                     <div class="form-group"> 
                                 <label>ขึ้นร้อยละ &nbsp;</label>
-                                <input type="text" class="form-control" name="percent" value="<?=isset($edit_person['percent'])?$edit_person['percent']:''?>" onKeyUp="javascript:inputDigits(this);">
+                                <input type="text" class="form-control" id='percent' name="percent" value="<?=isset($edit_person['percent'])?$edit_person['percent']:''?>" onKeyUp="javascript:inputDigits(this);">
                             </div>
                   <div class="form-group">
          			<label>ผลการประเมิน &nbsp;</label>

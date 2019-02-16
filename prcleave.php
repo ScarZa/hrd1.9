@@ -46,12 +46,12 @@ $regis='W';
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
     if($date > $date_s and $date > $date_e){
-    $beg_date="$Y-10-01";
-    $en_date="$y-09-30";
-    $year = date('Y'); 
+        $beg_date="$y-10-01";
+        $en_date="$Yy-09-30";
+    $year = date('Y')+1; 
     } else {
-    $beg_date="$y-10-01";
-    $en_date="$Yy-09-30";
+        $beg_date="$Y-10-01";
+        $en_date="$y-09-30";
     $year = date('Y')+1;        
     }
 }else{
@@ -117,7 +117,7 @@ $leave_no="$Y/$Ln";
     $date_end=date('Y-m-d', strtotime("$date_e+1 days "));
     $insert_event=mysqli_query($db,"insert into tbl_event set event_title='".$Event['fullname']."',event_start='$date_s',event_end='$date_end',event_allDay='true',
             empno='$empno',workid='$Workid[workid]',typela='$typel',process='0'");
-    
+        echo $year;
         $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno' and fiscal_year='$year'");
         $L_Day=  mysqli_fetch_assoc($L_day);
     if($typel=='1'){
@@ -457,7 +457,7 @@ if (trim($_FILES["image"]["name"] != "")) {
     $delete_print_leave=mysqli_query($db,"delete from print_leave where empno='$empno' and workid='$Lno'");
     include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
-    $year = date('Y')-1;
+    $year = date('Y')+1;
 }else{
     $year = date('Y');
 }    

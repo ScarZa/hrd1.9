@@ -160,7 +160,7 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                 <td align="center"><?=($chk_page*$e_page)+$i?></td>
                                 <td align="center">
                                     <input type="checkbox" name="check_ps[]" id="check_ps[]" value="<?=$c?>" />
-                                    <input type="hidden" name="empno[]" id="empno[]" value="<?=$result['empno']?>"
+                                    <input type="hidden" name="empno[]" id="empno[]" value="<?=$result['empno']?>">
                                 </td>
                                 <td><?=$result['fullname'];?></td>
                                 <td align="center"><?=$result['posname'];?></td>

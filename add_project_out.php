@@ -90,7 +90,7 @@ function nextbox(e, id) {
              	</div>
                     <div class="form-group">
          			<label>จังหวัด &nbsp;</label>
-                                <select name="province" id="province" class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'fname');"> 
+                                <select name="province" id="province" class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'fname');" required> 
 				<?php	$sql = mysqli_query($db,"SELECT *  FROM province order by PROVINCE_NAME  ");
 				 echo "<option value=''>--เลือกจังหวัด--</option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
