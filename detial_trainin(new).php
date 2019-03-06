@@ -420,7 +420,7 @@ while ($result = mysqli_fetch_assoc($detiatl)) {
                                             }
                                             ?>
                                         <tr>
-                                            <td colspan="5" align="center" bgcolor="#898888"><b>รวม</b></td>
+                                            <td colspan="6" align="center" bgcolor="#898888"><b>รวม</b></td>
 <?php
 $Sum = mysqli_fetch_assoc($sum_abode);
 ?>
