@@ -1,0 +1,4 @@
+ALTER TABLE `training_out` 
+ADD COLUMN `traveler` int(7) AFTER `empno`;
+
+UPDATE `training_out` set traveler = empno;

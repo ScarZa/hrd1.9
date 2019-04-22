@@ -24,7 +24,7 @@ if($_SESSION['Status']=='ADMIN'){
     $reg_date = date('Y-m-d');
     $check='1';
 }
-   
+    $traveler = isset($_POST['traveler'])?$_POST['traveler']:'';
     $project_name = isset($_POST['project_name'])?$_POST['project_name']:'';
     $project_dep = isset($_POST['project_dep'])?$_POST['project_dep']:'';
     $project_obj = isset($_POST['project_obj'])?$_POST['project_obj']:'';
@@ -225,11 +225,20 @@ $Ln=$Regis_po['count']+1;
 $Y=date('y')+43;
 $project_no="$Y/$Ln";
 $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_projectout'"); 
-    $add = mysqli_query($db,"insert into training_out set datein='$reg_date', memberbook='$project_no', projectName='$project_name', anProject='$project_dep',
+    $add = mysqli_query($db,"insert into training_out set datein='$reg_date', memberbook='$project_no', traveler='$traveler', projectName='$project_name', anProject='$project_dep',
                 stantee='$project_place', provenID='$province', Beginedate='$Pdates', endDate='$Pdatee', stdate='$stdate', etdate='$etdate', Hos_car='$Hoscar', amount='$amountd',
                    dt='$format', m1='$cost', m2='$meals', m3='$expert', m4='$travel', m5='$material', budget='$source',
                          material='$type_know', nameAdmin='$admin',hboss='W', empno='$admin',chek='$check'");
     $insert_id=mysqli_insert_id($db);
+    $add = mysqli_query($db,"insert into plan_out set empno='$traveler', amount='$amountd', idpo='$insert_id', begin_date='$Pdates', end_date='$Pdatee',
+                status_out='N',join_type='$format' ");
+        
+        $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$traveler'");
+        $Event=mysqli_fetch_assoc($event);
+        $date_end=date('Y-m-d', strtotime("$Pdatee+1 days "));
+        $insert_event=mysqli_query($db,"insert into tbl_event set event_title='".$Event['fullname']."',event_start='$Pdates',event_end='$date_end',event_allDay='true',
+            empno='$traveler',workid='$insert_id',typela='$format',process='1', event_url='../pre_project_out.php?id=$insert_id&method=back'");
+
     if ($add == false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);
@@ -243,17 +252,31 @@ $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name=
           <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_trainout.php?id=<?=$insert_id?>&popup=true&project_place=<?= $project_place?>&province=<?=$province?>
                 &stdate=<?=$stdate?>&etdate=<?=$etdate?>&amount=<?=$amountd?>'>  
        <?php }else{
-            echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_trainout.php?id=$insert_id'>";
+            echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_trainout.php?approval=1&id=$insert_id&empno=$traveler'>";
     }}
     }else if ($method == 'edit_trainout') {
+
         $project_no=$_POST['project_no'];
         $idpi=$_REQUEST['edit_id'];
-$edit = mysqli_query($db,"update training_out set datein='$reg_date', memberbook='$project_no', projectName='$project_name', anProject='$project_dep',
+        $old_traveler = $_POST['old_traveler'];
+
+        $event_sql=  mysqli_query($db,"select event_id from tbl_event where workid='$idpi' and process=1");
+        $Event_id=mysqli_fetch_assoc($event_sql);
+$edit = mysqli_query($db,"update training_out set datein='$reg_date', memberbook='$project_no', traveler='$traveler', projectName='$project_name', anProject='$project_dep',
                 stantee='$project_place', provenID='$province', Beginedate='$Pdates', endDate='$Pdatee', stdate='$stdate', etdate='$etdate', Hos_car='$Hoscar', amount='$amountd',
                    dt='$format', m1='$cost', m2='$meals', m3='$expert', m4='$travel', m5='$material', budget='$source',
                          material='$type_know', nameAdmin='$admin', empno='$admin'
                              where tuid='$idpi'");
-$edit_po = mysqli_query($db,"update plan_out set begin_date='$Pdates' where idpo='$idpi'");
+
+ $edit_po = mysqli_query($db,"update plan_out set empno='$traveler', amount='$amountd', begin_date='$Pdates', end_date='$Pdatee',
+                join_type='$format' where idpo='$idpi' and empno='$old_traveler'");
+        
+        $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$traveler'");
+        $Event=mysqli_fetch_assoc($event);
+        $date_end=date('Y-m-d', strtotime("$Pdatee+1 days "));
+        $insert_event=mysqli_query($db,"update tbl_event set event_title='".$Event['fullname']."',event_start='$Pdates',event_end='$date_end',event_allDay='true',
+            empno='$traveler',workid='$idpi',typela='$format' where workid='$idpi' and event_id='".$Event_id['event_id']."'");
+
 
     if ($edit == false or $edit_po == false) {
         echo "<p>";

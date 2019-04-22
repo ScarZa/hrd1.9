@@ -31,21 +31,21 @@
 FROM hospital h
 INNER JOIN emppersonal e on e.empno=h.manager
 INNER JOIN pcode p on p.pcode=e.pcode");
-    $hospital=mysqli_fetch_assoc($sql_hos);       
+    $hospital=mysqli_fetch_assoc($sql_hos);  
+    $sql_pro = mysqli_query($db,"SELECT t.*, p.PROVINCE_NAME,t2.tName as tname FROM training_out t
+    inner join province p on t.provenID=p.PROVINCE_ID
+    inner join trainingtype t2 on t2.tid=t.dt
+    WHERE tuid='$project_id'");
+$Project_detial = mysqli_fetch_assoc($sql_pro);
 $sql_per = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,p2.posname as posi,e1.empno as empno
                                                         from emppersonal e1 
                                                         inner join pcode p1 on e1.pcode=p1.pcode
                                                         inner join department d1 on e1.depid=d1.depId
                                                         INNER JOIN work_history wh ON wh.empno=e1.empno
                                                         inner join posid p2 on wh.posid=p2.posId
-                                                        where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
-    $sql_pro = mysqli_query($db,"SELECT t.*, p.PROVINCE_NAME,t2.tName as tname FROM training_out t
-            inner join province p on t.provenID=p.PROVINCE_ID
-            inner join trainingtype t2 on t2.tid=t.dt
-            WHERE tuid='$project_id'");
-    
+                                                        where e1.empno='".$Project_detial['traveler']."' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
             $Person_detial = mysqli_fetch_assoc($sql_per);
-            $Project_detial = mysqli_fetch_assoc($sql_pro);
+            
          
             $sql_trainout=  mysqli_query($db,"select *,
                     (select count(empno) from plan_out where idpo='$project_id') count_person from plan_out where idpo='$project_id' and empno='$empno'");
@@ -172,7 +172,7 @@ LEFT OUTER JOIN emppersonal e1 on po.empno=e1.empno
 INNER JOIN work_history wh ON wh.empno=e1.empno
 inner join posid p1 on wh.posid=p1.posId
 inner join pcode p2 on e1.pcode=p2.pcode
-where e1.status ='1' and po.empno !=$empno and po.idpo='$project_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+where e1.status ='1' and po.empno !=".$Project_detial['traveler']." and po.idpo='$project_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 ORDER BY po.empno asc");
 ob_start();
 ?>

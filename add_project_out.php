@@ -77,6 +77,22 @@ function nextbox(e, id) {
                 <input value='<?= isset($edit_person['memberbook'])?$edit_person['memberbook']:''?>' type="text" class="form-control" name="project_no" id="project_no" placeholder="เลขที่หนังสือ" onkeydown="return nextbox(event, 'cidid')" required>
                     </div><br> <?php }}?>
                     <div class="form-group"> 
+                    <label>ผู้เดินทางไปราชการ &nbsp;</label>
+                    <select name="traveler" id="traveler" required  class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'project_name');"> 
+				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
+				 echo "<option value=''>-เลือกผู้เดินทางไปราชการ-</option>";
+				 while( $result = mysqli_fetch_assoc( $sql ) ){
+                    if($method=='edit'){
+                        if($edit_person['traveler']==$result['empno']){$selected='selected';}else{$selected='';}
+                        
+                    }else{
+                        if($_SESSION['user']==$result['empno']){$selected='selected';}else{$selected='';}
+                    }
+				 echo "<option value='".$result['empno']."' $selected>".$result['fullname']."</option>";
+				 } ?>
+			 </select>
+             	</div><br>
+                    <div class="form-group"> 
                     <label>โครงการ &nbsp;</label>
                     <input value='<?= isset($edit_person['projectName'])?$edit_person['projectName']:''?>' type="text" class="form-control" size="100" name="project_name" id="project_name" placeholder="โครงการ" onkeydown="return nextbox(event, 'pname')" required>
              	</div><br>
@@ -208,6 +224,7 @@ function nextbox(e, id) {
       <?php if($method=='edit'){?>
     <input type="hidden" name="method" id="method" value="edit_trainout">
     <input type="hidden" name="edit_id" id="edit_id" value="<?=$edit_person['tuid']?>">
+    <input type='hidden' name='old_traveler' value='<?=$edit_person['traveler']?>'>
    <input class="btn btn-warning" type="submit" name="Submit" id="Submit" value="แก้ไข">
    <?php }else{?> 
    <input type="hidden" name="method" id="method" value="add_trainout">

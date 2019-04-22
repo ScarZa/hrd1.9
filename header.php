@@ -148,6 +148,11 @@ if (!empty($resultHos['logo'])) {
         <body onload="return popup('popup_request_car.php?project_place=<?= $project_place ?>&province=<?= $province ?>&stdate=<?= $stdate ?>&etdate=<?= $etdate ?>&amount=<?= $amount ?>', popup, 600, 650);">
         <?php } elseif (!empty($_POST['popup'])) { ?>
         <body onLoad="KillMe();self.focus();window.opener.location.reload();">
+        <?php } elseif (!empty($_GET['approval'])) { 
+        $pro_id = $_GET['id'];
+        $id = $_GET['empno'];
+        ?>
+        <body onload="return popup('approval_page1.php?id=<?= $id ?>&pro_id=<?= $pro_id ?>', popup, 800,500);">
         <?php } else { ?>
         <body Onload="bodyOnload();">    
 <?php } ?>
