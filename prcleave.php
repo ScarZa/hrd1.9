@@ -48,17 +48,18 @@ if($date >= $bdate and $date <= $edate){
     if($date > $date_s and $date > $date_e){
         $beg_date="$y-10-01";
         $en_date="$Yy-09-30";
-    $year = date('Y')+1; 
+    //$year = date('Y')+1; 
     } else {
         $beg_date="$Y-10-01";
         $en_date="$y-09-30";
-    $year = date('Y')+1;        
+    //$year = date('Y')+1;        
     }
 }else{
     $beg_date="$Y-10-01";
     $en_date="$y-09-30";
-    $year = date('Y');
+    //$year = date('Y');
 }
+$year = ($_POST['fiscal_year']-543);
 
 $check_leave_date=  mysqli_query($db,"select begindate from work where enpid='$empno' and begindate='$date_s' and statusla='Y'");
 $num_row = mysqli_num_rows($check_leave_date);
@@ -175,6 +176,16 @@ $leave_no="$Y/$Ln";
 }
 }elseif ($method=='time_leave'){
 //$leave_no=$_POST[leave_no]; 
+$check_tleave = mysqli_query($db,"SELECT count(empno) amount
+FROM timela
+WHERE (SUBSTR(datela,1,7) = SUBSTR(NOW(),1,7))
+and empno = $empno");
+$Check_tleave=  mysqli_fetch_assoc($check_tleave);
+if($Check_tleave['amount']>=5){
+    echo "	<span class='glyphicon glyphicon-remove'> มีการลาครบกำหนด5ครั้งต่อเดือนแล้วครับ </span>";
+    echo " <a href='pre_leave.php' >กลับ</a>";
+}else{
+
         if($_SESSION['Status']=='ADMIN'){
 $date_reg=insert_date($_POST['date_reg']);
     }else{
@@ -245,7 +256,8 @@ $leave_no="$Y/$Ln";
     }else{
     
     echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=pre_leave.php'>";
-    }}}}elseif ($method=='transfer') {
+    }}}}
+}elseif ($method=='transfer') {
     $leave_no=$_POST['leave_no'];
     $date_reg = insert_date($_POST['date_reg']);
     $typel = $_POST['typel'];

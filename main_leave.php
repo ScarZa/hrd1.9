@@ -10,6 +10,7 @@ function nextbox(e, id) {
 }
 </script>
 <?php
+include 'option/function_date.php';
     $empno=$_REQUEST['id'];
     $method = isset($_POST['method'])?$_POST['method']:isset($_GET['method'])?$_GET['method']:'';
     if($method=='edit'){
@@ -59,6 +60,12 @@ function nextbox(e, id) {
                                                         inner JOIN posid p2 ON p2.posId=wh.posid
                                                         where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
                             $detial_l= mysqli_fetch_assoc($select_det);
+
+                            // $date = (date("Y")+543)."-".date("m-d");
+                            // $Tyear = date("Y");
+                            // $Oyear = date("Y")-1;
+                            // $Fyear = date("Y")+1;
+                            // if($date)
                      ?>
                         <table align="center" width='100%'>
                         <thead>
@@ -103,6 +110,25 @@ function nextbox(e, id) {
                       <input type="text" id="datepicker"  placeholder='รูปแบบ 22/07/2557' name="date_reg" class="form-control" required>
                       </div></td></tr>
               <?php }?>
+              <tr>
+                <th align="right">&nbsp;</th>
+                <td>&nbsp;</td>
+              </tr>  
+              <tr>
+                <td align="right"><b>เลือกปีงบประมาณ : &nbsp;</b></td>
+                <td><div class="form-group">
+                                <select name='fiscal_year'  class="form-control">
+                                    <option value=''>กรุณาเลือกปีงบประมาณ</option>
+<?php
+
+for ($i = 2558; $i <= 2565; $i++) {
+  if((date("Y")+543)==$i){$selected='selected';}else{$selected='';}
+    echo "<option value='$i' $selected>$i</option>";
+}
+?>
+                                </select>                        
+                            </div></td>
+              </tr>
               <tr>
                 <th align="right">&nbsp;</th>
                 <td>&nbsp;</td>
@@ -246,7 +272,7 @@ function nextbox(e, id) {
                     <input class="btn btn-warning" type="submit" name="submit" value="แก้ไข">
                     </div>
                     <?php }else{
-                        include 'option/function_date.php';
+                        
                     if($date >= $bdate and $date <= $edate){
                         if(empty($_GET['releave'])){
                         $sql_leave=  mysqli_query($db,"select w.typela as typela,ty.nameLa as namela, sum(w.amount) AS leave_type

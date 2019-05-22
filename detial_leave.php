@@ -85,7 +85,14 @@ if (!empty($_POST['check_date01'])) {
 LEFT JOIN `work` w ON f.empno=w.enpid AND f.forget_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y'
 LEFT JOIN plan_out p ON f.empno=p.empno AND f.forget_date BETWEEN p.begin_date AND p.end_date
 WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_date between '$date01' and '$date02') order by f.finger_id desc");
-    $detiallate = mysqli_query($db,"SELECT * from late where empno='$empno' and (late_date between '$date01' and '$date02') order by late_id desc");
+    $detiallate = mysqli_query($db,"SELECT * from late l
+    LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
+    LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
+    WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$date01' and '$date02')) order by l.late_id desc;");
+    $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
+    from work w1
+    inner join typevacation t1 on w1.typela=t1.idla
+    where enpid='$empno' AND w1.typela=3 AND statusla='Y' and w1.begindate BETWEEN '$date01' and '$date02' order by workid desc;");
 } elseif(!empty($_POST['year'])){
         $y = $_POST['year'] - 543;
         $Y = $y - 1;
@@ -98,7 +105,14 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
 LEFT JOIN `work` w ON f.empno=w.enpid AND f.forget_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y'
 LEFT JOIN plan_out p ON f.empno=p.empno AND f.forget_date BETWEEN p.begin_date AND p.end_date
 WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_date between '$Y-10-01' and '$y-09-30') order by f.finger_id desc");
-    $detiallate = mysqli_query($db,"SELECT * from late where empno='$empno' and (late_date between '$Y-10-01' and '$y-09-30') order by late_id desc");
+    $detiallate = mysqli_query($db,"SELECT * from late l
+    LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
+    LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
+    WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$Y-10-01' and '$y-09-30')) order by l.late_id desc;");
+    $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
+    from work w1
+    inner join typevacation t1 on w1.typela=t1.idla
+    where enpid='$empno' AND w1.typela=3 AND statusla='Y' and w1.begindate BETWEEN '$Y-10-01' and '$y-09-30' order by workid desc;");
     }else{
         if($date >= $bdate and $date <= $edate){
     $detial = mysqli_query($db,"SELECT * from work w1
@@ -110,7 +124,14 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
 LEFT JOIN `work` w ON f.empno=w.enpid AND f.forget_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y'
 LEFT JOIN plan_out p ON f.empno=p.empno AND f.forget_date BETWEEN p.begin_date AND p.end_date
 WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_date between '$y-10-01' and '$Yy-09-30') order by f.finger_id desc");
-    $detiallate = mysqli_query($db,"SELECT * from late where empno='$empno' and (late_date between '$y-10-01' and '$Yy-09-30') order by late_id desc");
+    $detiallate = mysqli_query($db,"SELECT * from late l
+    LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
+    LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
+    WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$y-10-01' and '$Yy-09-30')) order by l.late_id desc;");
+    $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
+    from work w1
+    inner join typevacation t1 on w1.typela=t1.idla
+    where enpid='$empno' AND w1.typela=3 AND statusla='Y' and w1.begindate BETWEEN '$y-10-01' and '$Yy-09-30' order by workid desc;");
     }else{
     $detial = mysqli_query($db,"SELECT * from work w1
                         inner join typevacation t1 on w1.typela=t1.idla
@@ -121,7 +142,14 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
 LEFT JOIN `work` w ON f.empno=w.enpid AND f.forget_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y'
 LEFT JOIN plan_out p ON f.empno=p.empno AND f.forget_date BETWEEN p.begin_date AND p.end_date
 WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_date between '$Y-10-01' and '$y-09-30') order by f.finger_id desc");
-    $detiallate = mysqli_query($db,"SELECT * from late where empno='$empno' and (late_date between '$Y-10-01' and '$y-09-30') order by late_id desc");
+    $detiallate = mysqli_query($db,"SELECT * from late l
+    LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
+    LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
+    WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$Y-10-01' and '$y-09-30')) order by l.late_id desc;");
+    $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
+    from work w1
+    inner join typevacation t1 on w1.typela=t1.idla
+    where enpid='$empno' AND w1.typela=3 AND statusla='Y' and w1.begindate BETWEEN '$Y-10-01' and '$y-09-30' order by workid desc;");
 }}
 $NameDetial = mysqli_fetch_assoc($name_detial);
 
@@ -218,6 +246,7 @@ if ($_SESSION['Status'] != 'USER') {
                                     $leave_total= mysqli_fetch_assoc($sql_total);
                                     $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$yearchk'");
                                     $befor_leave_total= mysqli_fetch_assoc($sql_total2);
+                                    $AmountL3= mysqli_fetch_assoc($amountL3);
                                     /*if($date >= $bdate and $date <= $edate){
                                         $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and 
                                                                 begindate BETWEEN '$y-10-01' and '$Yy-09-30' and statusla='Y' and regis_leave!='N'");   
@@ -236,13 +265,21 @@ if ($_SESSION['Status'] != 'USER') {
                                         }else{
                                             $L3 = $cumu_leave+10;
                                         }
+                                    }else if($NameDetial['emptype']=='3' or $NameDetial['emptype']=='4'){
+                                        $cumu_leave = $befor_leave_total['L3'];
+                                        if($cumu_leave>=5){
+                                            $L3 = 5+10;
+                                        }else{
+                                            $L3 = $cumu_leave+10;
+                                        }
                                     }else{
                                         $cumu_leave = 0;
                                         $L3 = $cumu_leave+10;
                                     } ?>
                             วันลาพักผ่อนปีนี้<u>&nbsp; 10 &nbsp;</u>วัน  วันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>รวม<u>&nbsp; <?=$L3?> &nbsp;</u>วัน
                             <br />
-                            <!--จำนวนวันลาที่เหลือ&nbsp; &nbsp;ลาป่วย<u>&nbsp; <?=$leave_total['L1']?> &nbsp;</u>วัน&nbsp; ลากิจ<u>&nbsp; <?=$leave_total['L2']?> &nbsp;</u>วัน&nbsp;--> ลาพักผ่อน<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วัน
+                            <!--จำนวนวันลาที่เหลือ&nbsp; &nbsp;ลาป่วย<u>&nbsp; <?=$leave_total['L1']?> &nbsp;</u>วัน&nbsp; ลากิจ<u>&nbsp; <?=$leave_total['L2']?> &nbsp;</u>วัน&nbsp;--> 
+                            ลาไปแล้ว<u>&nbsp; <?=$AmountL3['amount']?> &nbsp;</u>วัน&nbsp; ลาพักผ่อนคงเหลือ<u>&nbsp; <?=$leave_total['L3']?> &nbsp;</u>วัน
                             <br /><br>
                             </font></td>
                     </tr>

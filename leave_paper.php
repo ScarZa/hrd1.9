@@ -64,13 +64,17 @@ where p.empno='$empno' and p.workid='$workid' and (w.begindate  BETWEEN '$Y-10-0
                                     $leave_total= mysqli_fetch_assoc($sql_total);
                                     if($date >= $bdate and $date <= $edate){
                                     $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and statusla='Y' and
-                                                                begindate BETWEEN '$y-10-01' and '$Yy-09-30'");   
+                                                                begindate BETWEEN '$y-10-01' and '$Yy-09-30'");  
+                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$y'"); 
                                     }else{
                                     $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and statusla='Y' and 
                                                                 begindate BETWEEN '$Y-10-01' and '$y-09-30'");
+                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$Y'");                           
                                     }
                                     $sum_leave= mysqli_fetch_assoc($sql_leave_t);
                                     //$sum_total=$leave_total['L3']+$sum_leave['sum_leave'];
+                                    
+                                    $befor_leave_total= mysqli_fetch_assoc($sql_total2);
 ?>
 <body>
     <?php
@@ -107,19 +111,26 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             สังกัดกรมสุขภาพจิต  กระทรวงสาธารณสุข<br>  
             <?php
             if($work['typela']=='3'){
-                if($work['emptype']=='1' or $work['emptype']=='2'){
-                                        $cumu_leave = $leave_total['L3'];
-                                        if($work['age']<10 and $cumu_leave+10 > 20){
-                                            $L3 = 20;
-                                        }elseif ($work['age']>=10 and $cumu_leave+10 > 30) {
-                                            $L3 = 30;
-                                        }else{
-                                            $L3 = $cumu_leave+10;
-                                        }
-                                    }else{
-                                        $cumu_leave = 0;
-                                        $L3 = $cumu_leave+10;
-                                    } ?>
+              if($work['emptype']=='1' or $work['emptype']=='2'){
+                $cumu_leave = $befor_leave_total['L3'];
+                if($work['age']<10 and $cumu_leave+10 > 20){
+                    $L3 = 20;
+                }elseif ($work['age']>=10 and $cumu_leave+10 > 30) {
+                    $L3 = 30;
+                }else{
+                    $L3 = $cumu_leave+10;
+                }
+            }else if($work['emptype']=='3' or $work['emptype']=='4'){
+                $cumu_leave = $befor_leave_total['L3'];
+                if($cumu_leave>=5){
+                    $L3 = 5+10;
+                }else{
+                    $L3 = $cumu_leave+10;
+                }
+            }else{
+                $cumu_leave = 0;
+                $L3 = $cumu_leave+10;
+            } ?>
                                  มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$L3?> &nbsp;</u>วันทำการ <br> 
                              <?php }?>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขอลา<u> <?= $work['namela']?> </u>เนื่องจาก<u> <?= $work['abnote']?> </u><br>
