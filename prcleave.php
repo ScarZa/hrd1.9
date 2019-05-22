@@ -182,7 +182,7 @@ WHERE (SUBSTR(datela,1,7) = SUBSTR(NOW(),1,7))
 and empno = $empno");
 $Check_tleave=  mysqli_fetch_assoc($check_tleave);
 if($Check_tleave['amount']>=5){
-    echo "	<span class='glyphicon glyphicon-remove'> มีการลาครบกำหนด5ครั้งต่อเดือนแล้วครับ </span>";
+    echo "	<span class='glyphicon glyphicon-remove'> มีการลาครบกำหนด5ครั้งต่อเดือนแล้วครับ กรุณาติดต่อ 68144 (^_^) </span>";
     echo " <a href='pre_leave.php' >กลับ</a>";
 }else{
 
