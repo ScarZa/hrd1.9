@@ -339,16 +339,25 @@ order by e1.empno");
                                 <td align="center"><?= $result['amonut_maternity_total']; ?></td>
                                 <td align="center"><?= $result['sum_maternity_total']; ?></td>
                                 <?php
-                                if ($result['emptype'] == '1' or $result['emptype'] == '2') {
+                                if($result['emptype']=='1' or $result['emptype']=='2'){
                                     $befor_leave = $result['befor_leave'];
-                                    if ($result['age'] < 10 and $befor_leave + 10 > 20) {
+                                    if($result['age']<10 and $befor_leave+10 > 20){
                                         $total = 20;
-                                    } elseif ($result['age'] >= 10 and $befor_leave + 10 > 30) {
+                                    }elseif ($result['age']>=10 and $befor_leave+10 > 30) {
                                         $total = 30;
-                                    } else {
-                                        $total = $befor_leave + 10;
+                                    }else{
+                                        $total = $befor_leave+10;
                                     }
-                                } else {
+                                }else if($result['emptype']=='3' or $result['emptype']=='4'){
+                                    $befor_leave = $result['befor_leave'];
+                                    if($befor_leave>=5){
+                                        $total = 5+10;
+                                    }else{
+                                        $total = $befor_leave+10;
+                                    }
+                                }
+
+                                else {
                                     $befor_leave = 0;
                                     $total = 10;
                                 }
