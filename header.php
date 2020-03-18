@@ -344,6 +344,8 @@ if (!empty($resultHos['logo'])) {
                                 <li><a href="#" onClick="return popup('fullcalendar/fullcalendar4.php', popup, 820, 710);" title="ดูกิจกรรมส่วนตัว"><img src='images/calendar-clock.ico' width='25'> ปฏิทินกิจกรรมส่วนตัว</a></li>
                                  <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
                                 <li><a href="#" onClick="return popup('add_holiday_calendra.php', popup, 800, 710);" title="เพิ่มวันหยุดนักขัตฤกษ์"><img src='images/Add_calendar.ico' width='25'> เพิ่มวันหยุดนักขัตฤกษ์</a></li>
+                                <li class="divider"></li>
+                                <li><a href="reset_counter.php" onclick="return confirm('ต่อไปนี้จะเป็นการ รีเซทการนับเลขเอกสารต่าง กรุณายืนยันอีกครั้ง !!!')"><img src='images/Bomb.ico' width='25'> Reset Counter.</a></li>
                                 <?php } ?>
                                 <li class="divider"></li>
                                 <li><a href="#" onClick="return popup('about.php', popup, 550, 700);" title="เกี่ยวกับเรา"><img src='images/Paper Mario.ico' width='25'> เกี่ยวกับเรา</a></li>

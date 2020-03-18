@@ -49,18 +49,25 @@ if($date >= $bdate and $date <= $edate){
         $beg_date="$y-10-01";
         $en_date="$Yy-09-30";
     //$year = date('Y')+1; 
+    echo '1/';
     } else {
-        $beg_date="$Y-10-01";
-        $en_date="$y-09-30";
-    //$year = date('Y')+1;        
+        ////ช่วง 1ต.ค.-31 ธ.ค.
+        $beg_date="$y-10-01";
+        $en_date="$Yy-09-30";
+        // $beg_date="$Y-10-01";
+        // $en_date="$y-09-30";
+    //$year = date('Y')+1;  
+    echo '2/';      
     }
 }else{
     $beg_date="$Y-10-01";
     $en_date="$y-09-30";
     //$year = date('Y');
+    echo '3/';
 }
 $year = ($_POST['fiscal_year']-543);
-
+echo $beg_date;
+echo $en_date;
 $check_leave_date=  mysqli_query($db,"select begindate from work where enpid='$empno' and begindate='$date_s' and statusla='Y'");
 $num_row = mysqli_num_rows($check_leave_date);
 if (empty($num_row)) {

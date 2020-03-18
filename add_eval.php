@@ -235,7 +235,7 @@ if (empty($_SESSION['user'])) {
                     $("div#reas").hide(0);
                 }
         $("#eval_id").change(function() {
-                    if($("#eval_id").val()==10){
+                    if(($("#eval_id").val()==10)||($("#eval_id").val()==11)){
                     $("#reas").show("fast");
                 }else {
                     $("div#reas").hide(0);

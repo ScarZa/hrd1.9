@@ -108,7 +108,7 @@ if ($_SESSION['Status'] != 'USER') {
                                             </tr>
 <?php } ?>
                                         <tr align="center" bgcolor="#898888">
-                                            <td align="center" width="5%"><b>ลำดับ</b></td>
+                                            <td align="center" width="3%"><b>ลำดับ</b></td>
                                             <td align="center" width="7%"><b>เลขที่คำสั่ง</b></td>
                                             <td align="center" width="7%"><b>วันที่อนุมัติ</b></td>
                                             <td align="center" width="7%"><b>ปีงบประมาณ</b></td>
@@ -118,6 +118,7 @@ if ($_SESSION['Status'] != 'USER') {
                                             <td align="center" width="7%"><b>เงินที่ปรับเพิ่ม</b></td>
                                             <td align="center" width="7%"><b>ร้อยละ</b></td>
                                             <td align="center" width="7%"><b>ผลการประเมิน</b></td>
+                                            <td align="center" width="7%"><b>หมายเหตุ</b></td>
                                             <td align="center" width="7%"><b>เหตุผล</b></td>
                                             <?php if($_SESSION['Status']=='ADMIN'){?>
                                             <td align="center" width="7%"><b>วันที่บันทึก</b></td>
@@ -133,9 +134,14 @@ if ($_SESSION['Status'] != 'USER') {
                                                         
                                                         if($result['episode']==1){
                                                             $episode = '1 เม.ย. '.$result['year'];
+                                                            $comment = '';
                                                         }else if($result['episode']==2) {
                                                             $episode = '1 ต.ค. '.($result['year']);
-                                            }
+                                                            $comment = '';
+                                                        }else{
+                                                            $episode = '';
+                                                            $comment = 'กรณีเยียวยาอายุงาน';
+                                                        }
                                                         ?>
                                             <tr>
                                                 <td align="center"><?= $i ?></td>
@@ -148,6 +154,7 @@ if ($_SESSION['Status'] != 'USER') {
                                                 <td align="center"><?= $result['salary_up']; ?></td>
                                                 <td align="center"><?= $result['percent']; ?> %</td>
                                                 <td align="center"><?= $result['eval_value']; ?></td>
+                                                <td align="center"><?= $comment; ?></td>
                                                 <td align="center"><?= $result['reason_value']; ?></td>
                                                 <?php if($_SESSION['Status']=='ADMIN'){?>
                                                 <td align="center"><?= DateThai1($result['rec_date']) ?></td>
