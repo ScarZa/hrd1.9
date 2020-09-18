@@ -72,7 +72,7 @@ function page_navigator($before_p,$plus_p,$total,$total_p,$chk_page){
  if(isset($_POST['method'])=='txtKeyword'){
 $_SESSION['txtKeyword']=$_POST['txtKeyword'];
  }
-$Search_word=($_SESSION['txtKeyword']);
+$Search_word=isset($_SESSION['txtKeyword'])?$_SESSION['txtKeyword']:'';
  if(!empty($Search_word)){
 //คำสั่งค้นหา
      $q="select e1.empno as empno, e1.pid as pid, concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname, p1.posname as posname from emppersonal e1 

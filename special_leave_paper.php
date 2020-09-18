@@ -117,7 +117,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                                  </div>
                                      
                                  </div><br><br><br><br><br>
-<div class="col-lg-12" align="right">F-AD-012-01</div>
+<div class="col-lg-12" align="right">F-HR-008</div>
 <?php
 $time_re=  date('Y_m_d');
 $reg_date=$work['reg_date'];

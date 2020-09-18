@@ -74,13 +74,13 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 ?>
 <table border="1" name="card" style="background-image: url('images/card.jpg');">
     <tr>
-        <td align="center" width="190" height="295" >
+    <td align="center" width="190" height="295" >
             <img src='<?= $fol . $pic; ?>' width="35"><br>
             <font size="2" color="blue"><p><b><?= $hospital['name']?><br>
-                    กรมสุขภาพจิต กระทรวงสาธารณสุข</b></p></font>
-            <img src='<?= $folder . $photo ?>' height="120"><br>
-            <p class="small"><b><font size="3" color="black"><?= $name?><br>
-                <?= $posion?></font></b></p>
+                    กรมสุขภาพจิต กระทรวงสาธารณสุข</b></p></font><br>
+            <img src='<?= $folder . $photo ?>' height="110"><br><br>
+            <p class="small"><b><font size="3" color="black"><?= $name?></font><br>
+            <font size="2" color="black"><?= $posion?></font></b></p>
             <p><img src='images/logogrom.png' width="25"> <img src='images/URS.png' width="45">&nbsp;</p>
         </td>
     </tr>

@@ -55,11 +55,11 @@ if (!empty($hospital['logo'])) {
                                     $pic = 'agency.ico';
                                     $fol = "images/";
                                 }
-$check_ps=$_POST['check_ps'];
+$check_ps=$_POST['gn-val'];
 $count = ceil(count($check_ps)/3);
 foreach ($check_ps as $key => $value) {
     
-        $empno_id1[$key] = $_POST['empno'][$value];
+        $empno_id1[$key] = $value;
 }
 $I=0;
 for($i=1;$i<=$count;$i++){

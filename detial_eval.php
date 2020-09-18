@@ -108,15 +108,16 @@ if ($_SESSION['Status'] != 'USER') {
                                             </tr>
 <?php } ?>
                                         <tr align="center" bgcolor="#898888">
-                                            <td align="center" width="3%"><b>ลำดับ</b></td>
+                                            <td align="center" width="2%"><b>ลำดับ</b></td>
                                             <td align="center" width="7%"><b>เลขที่คำสั่ง</b></td>
                                             <td align="center" width="7%"><b>วันที่อนุมัติ</b></td>
                                             <td align="center" width="7%"><b>ปีงบประมาณ</b></td>
                                             <td align="center" width="7%"><b>รอบที่</b></td>
-                                            <td align="center" width="10%"><b>ฐานในการคำนวณ</b></td>
-                                            <td align="center" width="10%"><b>เงินเดือน</b></td>
-                                            <td align="center" width="7%"><b>เงินที่ปรับเพิ่ม</b></td>
-                                            <td align="center" width="7%"><b>ร้อยละ</b></td>
+                                            <td align="center" width="7%"><b>ฐานคำนวณ</b></td>
+                                            <td align="center" width="10%"><b>เงินเดือนเดิม</b></td>
+                                            <td align="center" width="5%"><b>เงินเพิ่ม</b></td>
+                                            <td align="center" width="7%"><b>เงินเดือน</b></td>
+                                            <td align="center" width="5%"><b>ร้อยละ</b></td>
                                             <td align="center" width="7%"><b>ผลการประเมิน</b></td>
                                             <td align="center" width="7%"><b>หมายเหตุ</b></td>
                                             <td align="center" width="7%"><b>เหตุผล</b></td>
@@ -150,8 +151,9 @@ if ($_SESSION['Status'] != 'USER') {
                                                 <td align="center"><?= $result['year']; ?></td>
                                                 <td align="center"><?= $episode; ?></td>
                                                 <td align="center"><?= number_format($result['base_salary']); ?></td>
-                                                <td align="center"><?= number_format($result['salary']); ?></td>
+                                                <td align="center"><?= number_format($result['salary']-$result['salary_up']); ?></td>
                                                 <td align="center"><?= $result['salary_up']; ?></td>
+                                                <td align="center"><?= number_format($result['salary']); ?></td>
                                                 <td align="center"><?= $result['percent']; ?> %</td>
                                                 <td align="center"><?= $result['eval_value']; ?></td>
                                                 <td align="center"><?= $comment; ?></td>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+        <title>ระบบข้อมูลบุคคลากรโรงพยาบาล</title>
+        <LINK REL="SHORTCUT ICON" HREF="images/logo.png">
+        <!-- Bootstrap core CSS -->
+        <link href="option/css/bootstrap.css" rel="stylesheet">
+        <!--<link href="option/css2/templatemo_style.css" rel="stylesheet">-->
+        <!-- Add custom CSS here -->
+        <link href="option/css/sb-admin.css" rel="stylesheet">
+        <link rel="stylesheet" href="option/font-awesome/css/font-awesome.min.css">
+        <!-- Page Specific CSS -->
+        <link rel="stylesheet" href="option/css/morris-0.4.3.min.css">
+        <link rel="stylesheet" href="option/css/stylelist.css">
+        <script src="option/js/excellentexport.js"></script>
+        <script src="option/jQuery/jQuery-2.1.4.min.js"></script>
+        <!--select2-->
+        <link rel="stylesheet" href="option/select2/select2.min.css">
+        <script src="option/select2/select2.full.min.js" type="text/javascript"></script>
+        <script src="option/js/bootstrap.js"></script>
+    </head>
+<style type="text/css">
+    .qr-code-generator {
+        width: 500px;
+        margin: 0 auto;
+    }
+
+    .qr-code-generator * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    #qrcode {
+        width: 128px;
+        height: 128px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    #qrcode a {
+        font-size: 0.8em;
+    }
+
+    .qr-url,
+    .qr-size {
+        padding: 0.5em;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .qr-url {
+        width: 79%;
+    }
+
+    .qr-size {
+        width: 20%;
+    }
+
+    .generate-qr-code {
+        display: block;
+        width: 100%;
+        margin: 0.5em 0 0;
+        padding: 0.25em;
+        font-size: 1.2em;
+        border: none;
+        cursor: pointer;
+        background-color: #e5554e;
+        color: #fff;
+    }
+</style>
+<style type="text/css">
+    @media print {
+        header,footer,.sidebar, aside,.sidebar,.navbar,.main-sidebar,.qr-code-generator,#div_print,#head-title {
+display: none;
+}
+}
+</style>
+<style type="text/css">
+    .blockQR {
+        width: 60px;
+        height: 60px;
+        margin: 2px;
+        background: #FFFFFF;
+        float: left;
+    }
+</style>
+<div id="head-title"><h3 align='center'>ทำบัตรบุคลากร</h3></div>
+        <div class="qr-code-generator">
+            <a href='#' class="btn btn-success" id="plus-btn"><i class='fa fa-plus-circle'></i> เพิ่มบุคลากร</a>
+            <a href='#' class="btn btn-danger" id="minus-btn"><i class='fa fa-minus-circle'></i> ลบบุคลากร</a>
+            <p>
+                <form id="frmgenCG">
+                    <div id="qr-input">
+                        <select name="gn-val[]" class='form-control select2' id="gn-val[]" required></select>
+                    </div><p><p>
+                    <!-- <input type="number" class="qr-size" value="70" min="20" max="500"><b> : ขนาด</b> -->
+                    <input type="submit" class="generate-qr-code" value="สร้างบัตร" id="gn-btn" />
+                </form><p><p>
+                <span id='div_print'></span><p>
+        </div>
+        <div id="genQRCode"></div>
+<!-- End My JS script-->
+<script type="text/javascript">
+function DataProds(content) {
+$.getJSON('data_emp.php', function (GD) {
+                    var option="<option value=''> เลือกบุคลากร </option>";
+                    for (var key in GD) {
+                        option += "$('<option value='"+GD[key].empno+"'> " + GD[key].dep + " : " + GD[key].fullname + " (" + GD[key].posi + ") </option>'),";
+                    } 
+                    $(content).empty().append(option);
+                    $(".select2").select2();
+                });
+            }
+            DataProds("select"); 
+
+    $('#plus-btn').click(function () {
+        $("#qr-input").append("<select name='gn-val[]' class='form-control select2' id='gn-val[]' required></select>")
+        DataProds("select:last"); 
+    });
+    $('#minus-btn').click(function () {
+        $("div >select:last").select2('destroy').remove();
+        // $("div >select:last").select2().remove();
+     });
+
+    //$(window).load(function () {
+        
+        $("#frmgenCG").on('submit', (function (e) {
+           
+            //var val = $("#frmgenQR").serializeArray();console.log(val);
+           
+            $.ajax({
+					   type: "POST",
+					   url: "card_group2.php",
+                        data: new FormData(this),
+                        contentType: false, 
+                        cache: false, 
+                        processData: false,
+                        
+					   success: function(result) {
+						
+                        popup('card/card.pdf', popup, 900, 1440);
+					   }
+					 });e.preventDefault();
+            
+            
+
+        }));
+
+</script>
+</div><!-- /#wrapper -->
+     
+<!-- Bootstrap core JavaScript -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<!--<script type="text/javascript" src="DatePicker/js/jquery-1.4.4.min.js"></script>
+<script src="option/js/bootstrap.js" type="text/javascript"></script>
+<!-- Page Specific Plugins
+<script src="js/raphael-min.js"></script>
+<script src="js/morris-0.4.3.min.js"></script>
+<script src="js/morris/chart-data-morris.js"></script>
+<script src="js/tablesorter/jquery.tablesorter.js"></script>
+<script src="js/tablesorter/tables.js"></script> 
+<script type="text/javascript" src="report_rm/jquery.js"></script>
+<script type="text/javascript" src="report_rm/jquery.js"></script>-->
+
+
+<script type="text/javascript">
+    function popup(url,name,windowWidth,windowHeight){    
+            myleft=(screen.width)?(screen.width-windowWidth)/2:100;	
+            mytop=(screen.height)?(screen.height-windowHeight)/2:100;	
+            properties = "width="+windowWidth+",height="+windowHeight;
+            properties +=",scrollbars=yes, top="+mytop+",left="+myleft;   
+            window.open(url,name,properties);
+}
+</script>
+</body>
+</html>
+

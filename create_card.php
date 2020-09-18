@@ -13,7 +13,7 @@
         <tr>
             <td>
                 <div class="form-group">
-                    <input type="text" placeholder="ค้นหาชื่อ" name='txtKeyword' class="form-control" value="<?= isset($Search_word)?$Search_word:''?>" >
+                    <input type="text" placeholder="ค้นหา ชื่อ/ตำแหน่ง/หน่วยงาน" name='txtKeyword' class="form-control" value="<?= isset($Search_word)?$Search_word:''?>" >
                     <input type='hidden' name='method'  value='txtKeyword'>
                     <input type='hidden' name='id'  value='<?=$project_id?>'>
                 </div> <button type="submit" class="btn btn-warning"><i class="fa fa-search"></i> Search</button> </td>
@@ -67,7 +67,7 @@ inner JOIN work_history wh ON wh.empno=e1.empno
 inner JOIN posid p1 ON p1.posId=wh.posid
 inner join pcode p2 on e1.pcode=p2.pcode
 inner join department d on d.depId=e1.depid
-         WHERE wh.posid=p1.posId and (firstname LIKE '%$Search_word%' or e1.empno LIKE '%$Search_word%' or pid LIKE '%$Search_word%')
+         WHERE wh.posid=p1.posId and (firstname LIKE '%$Search_word%' or e1.empno LIKE '%$Search_word%' or pid LIKE '%$Search_word%' or d.depName LIKE '%$Search_word%' or p1.posname LIKE '%$Search_word%')
              and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) and e1.status ='1' order by empno"; 
  }else{
  $q="select e1.empno as empno, e1.pid as pid, concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname, p1.posname as posname,d.depName as dep from emppersonal e1 

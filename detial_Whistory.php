@@ -39,7 +39,7 @@ INNER JOIN department d1 on d1.depId=wh.depid
 INNER JOIN empstuc et on et.Emstuc=wh.empstuc
 INNER JOIN emptype etp on etp.EmpType=wh.emptype
 INNER JOIN education ed on ed.education=wh.education
-WHERE wh.empno='$empno' ORDER BY wh.his_id DESC");
+WHERE wh.empno='$empno' ORDER BY wh.dateBegin DESC");
 
 
 $NameDetial = mysqli_fetch_assoc($name_detial);
