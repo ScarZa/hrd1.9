@@ -16,7 +16,7 @@ echo "<div class='alert alert-dismissable alert-success'>
 	  <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
 	  <a class='alert-link' target='_blank' href='#'><center>กำลังดำเนินการ</center></a> 
 </div>";
-$sql = $db->prepare("select m1.Name as id,e1.firstname as fname,e1.lastname as lname,wh.depid as dep,d1.main_dep as main_dep,m1.Status as Status from member m1 
+$sql = $db->prepare("select m1.UserID, m1.Name as id,e1.firstname as fname,e1.lastname as lname,wh.depid as dep,d1.main_dep as main_dep,m1.Status as Status from member m1 
            inner join emppersonal e1 on m1.Name=e1.empno
            INNER JOIN work_history wh ON wh.empno=e1.empno
            inner join department d1 on wh.depid=d1.depId
@@ -24,7 +24,7 @@ $sql = $db->prepare("select m1.Name as id,e1.firstname as fname,e1.lastname as l
            where   m1.Username= ? && m1.Password= ? and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))") ;
 $sql->bind_param("ss", $user_account,$user_pwd);
 $sql->execute();
-$sql->bind_result($id, $fname, $lname, $dep,$main_dep,$Status);
+$sql->bind_result($UserID,$id, $fname, $lname, $dep,$main_dep,$Status);
 $sql->fetch();
 if (empty($id)) {
     echo "<script>alert('ชื่อหรือรหัสผ่านผิด กรุณาตรวจสอบอีกครั้ง!')</script>";
@@ -34,6 +34,7 @@ if (empty($id)) {
     $date_login = date("Y-m-d");
     $time_login = date('H:i:s');
     $sql = mysqli_query($db,"update member  set date_login='$date_login' , time_login='$time_login' where   Username='$user_account' && Password='$user_pwd'");
+    $_SESSION['UserID'] = $UserID;
     $_SESSION['user'] = $id;
     $_SESSION['fname'] = $fname;
     $_SESSION['lname'] = $lname;
