@@ -113,7 +113,7 @@ if (empty($_SESSION['user'])) {
                                 <input type="text" class="form-control" name="numdoc" value="<?= isset($edit_person['numdoc'])?$edit_person['numdoc']:''?>">
                             </div>
                     <div class="form-group"> 
-                <label>วันที่อนุมัติ &nbsp;</label>
+                <label>วันที่มีผล &nbsp;</label>
                 <?php
  		if(!empty($method)){
  			$dateBegin=$edit_person['app_date'];
@@ -161,6 +161,7 @@ if (empty($_SESSION['user'])) {
                                 <option value='1'>รอบที่ 1</option>
                                 <option value='2'>รอบที่ 2</option>
                                 <option value='3'>กรณีเยียวยาอายุงาน</option>
+                                <option value='4'>การเพิ่มค่าจ้างประจำปี</option>
                            </select>
                                 <?php }?>
                             </div>

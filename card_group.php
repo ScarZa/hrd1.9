@@ -86,16 +86,14 @@ if (!empty($photo)) {
 
 ?>
 <td width="190">
-<table border="1" name="card" style="background-image: url('images/card.jpg');">
+<table border="" name="card" bordercolor="#26ED56" style="background-image: url('images/card.jpg');">
     <tr>
-        <td align="center" width="190" height="295" >
-            <img src='<?= $fol . $pic; ?>' width="35"><br>
-            <font size="2" color="blue"><p><b><?= $hospital['name']?><br>
-                    กรมสุขภาพจิต กระทรวงสาธารณสุข</b></p></font><br>
+        <td align="center"  width="192" height="301" >
+        <br><br><br>
             <img src='<?= $folder . $photo ?>' height="110"><br><br>
             <p class="small"><b><font size="3" color="black"><?= $name?></font><br>
             <font size="2" color="black"><?= $posion?></font></b></p>
-            <p><img src='images/logogrom.png' width="25"> <img src='images/URS.png' width="45">&nbsp;</p>
+            
         </td>
     </tr>
 </table>

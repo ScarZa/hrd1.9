@@ -110,7 +110,7 @@ if ($_SESSION['Status'] != 'USER') {
                                         <tr align="center" bgcolor="#898888">
                                             <td align="center" width="2%"><b>ลำดับ</b></td>
                                             <td align="center" width="7%"><b>เลขที่คำสั่ง</b></td>
-                                            <td align="center" width="7%"><b>วันที่อนุมัติ</b></td>
+                                            <td align="center" width="7%"><b>วันที่มีผล</b></td>
                                             <td align="center" width="7%"><b>ปีงบประมาณ</b></td>
                                             <td align="center" width="7%"><b>รอบที่</b></td>
                                             <td align="center" width="7%"><b>ฐานคำนวณ</b></td>
@@ -139,9 +139,12 @@ if ($_SESSION['Status'] != 'USER') {
                                                         }else if($result['episode']==2) {
                                                             $episode = '1 ต.ค. '.($result['year']);
                                                             $comment = '';
-                                                        }else{
+                                                        }else if($result['episode']==3) {
                                                             $episode = '';
                                                             $comment = 'กรณีเยียวยาอายุงาน';
+                                                        }else if($result['episode']==4) {
+                                                            $episode = '';
+                                                            $comment = 'การเพิ่มค่าจ้างประจำปี';
                                                         }
                                                         ?>
                                             <tr>
