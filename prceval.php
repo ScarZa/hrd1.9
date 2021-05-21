@@ -64,6 +64,7 @@ include 'connection/connect_i.php';
     $salary_up = $_POST['salary_up'];
     $percent = $_POST['percent'];
     $eval_id =$_POST['eval_id'];
+    $numdoc_edit = $_POST['numdoc_edit'];
     $reason_id = isset($_POST['reason_id'])?$_POST['reason_id']:'';
     $rec_date = date("Y-m-d H:i:s");
     $recorder = $_SESSION['user'];
@@ -71,7 +72,7 @@ include 'connection/connect_i.php';
     if ($method == 'add_eval') {
     
     $evaluation= mysqli_query($db,"insert into resulteval set empno='$empno',numdoc='$numdoc',app_date='$app_date', year='$year', episode='$episode', base_salary='$base_salary', salary='$salary', salary_up='$salary_up',
-                         percent='$percent', eval_id='$eval_id',reason_id='$reason_id', rec_date='$rec_date', recorder='$recorder'");
+                         percent='$percent', eval_id='$eval_id',numdoc_edit = '$numdoc_edit',reason_id='$reason_id', rec_date='$rec_date', recorder='$recorder'");
     if ($evaluation==false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);
@@ -85,7 +86,7 @@ include 'connection/connect_i.php';
 }else if ($method == 'update_eval') {
     $reseval_id=$_REQUEST['reseval_id'];
     $edit_eval=  mysqli_query($db,"update resulteval set empno='$empno',numdoc='$numdoc',app_date='$app_date', year='$year', episode='$episode', base_salary='$base_salary', salary='$salary', salary_up='$salary_up',
-                         percent='$percent', eval_id='$eval_id',reason_id='$reason_id', rec_date='$rec_date', recorder='$recorder' where reseval_id='$reseval_id' and empno='$empno'");
+                         percent='$percent', eval_id='$eval_id',numdoc_edit = '$numdoc_edit',reason_id='$reason_id', rec_date='$rec_date', recorder='$recorder' where reseval_id='$reseval_id' and empno='$empno'");
     if ($edit_eval == false) {
         echo "<p>";
         echo "Update not complete" . mysqli_error($db);

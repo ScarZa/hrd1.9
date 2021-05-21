@@ -113,7 +113,7 @@ if (empty($_SESSION['user'])) {
                                 <input type="text" class="form-control" name="numdoc" value="<?= isset($edit_person['numdoc'])?$edit_person['numdoc']:''?>">
                             </div>
                     <div class="form-group"> 
-                <label>วันที่มีผล &nbsp;</label>
+                <label>วันที่สั่ง &nbsp;</label>
                 <?php
  		if(!empty($method)){
  			$dateBegin=$edit_person['app_date'];
@@ -170,11 +170,11 @@ if (empty($_SESSION['user'])) {
                                 <input type="text" class="form-control" id='base_salary' name="base_salary" value="<?= isset($edit_person['base_salary'])?$edit_person['base_salary']:''?>" onKeyUp="javascript:inputDigits(this);">
                             </div>
                     <div class="form-group"> 
-                                <label>เงินเดือน &nbsp;</label>
+                                <label>เงินเดือนที่ปรับแล้ว &nbsp;</label>
                                 <input type="text" class="form-control" id='salary' name="salary" value="<?=isset($edit_person['salary'])?$edit_person['salary']:''?>" onKeyUp="javascript:inputDigits(this);">
                             </div>
                     <div class="form-group"> 
-                                <label>เงินเดือนที่ปรับขึ้น &nbsp;</label>
+                                <label>จำนวนเงินที่ปรับขึ้น &nbsp;</label>
                                 <input type="text" class="form-control" id='salary_up' name="salary_up" value="<?=isset($edit_person['salary_up'])?$edit_person['salary_up']:''?>" 
                                 onKeyUp="javascript:inputDigits(this);salaryPercent();">
                             </div>
@@ -201,6 +201,10 @@ if (empty($_SESSION['user'])) {
 				 } ?>
 			 </select>
                   </div><input id="reas_hid" type="hidden" value="<?=$edit_person['reason_id']!=0?$edit_person['reason_id']:''?>">
+                  <div class="form-group"> 
+                                <label>แก้ไขคำสั่ง &nbsp;</label>
+                                <textarea type="text" class="form-control" id='numdoc_edit' name="numdoc_edit" value=""><?=isset($edit_person['numdoc_edit'])?$edit_person['numdoc_edit']:''?></textarea>
+                            </div>
                     <div class="form-group" id="reas"> 
                                 <label>เหตุผลที่ไม่ได้รับการประเมิน &nbsp;</label>
                                 <select name="reason_id" id="reason_id" class="form-control select2" style="width: 100%;"> 

@@ -31,7 +31,7 @@ $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.last
 
     $detial = mysqli_query($db,"SELECT re.reseval_id,re.numdoc,re.app_date, re.year,re.episode,re.base_salary,re.salary,re.salary_up,re.percent
 ,e.eval_value,if(re.reason_id!=0,rs.reason_value,'') as reason_value
-,re.rec_date,CONCAT(em.firstname,' ',em.lastname)fullname
+,re.rec_date,CONCAT(em.firstname,' ',em.lastname)fullname,re.numdoc_edit
 FROM resulteval re
 INNER JOIN emppersonal em on em.empno=re.recorder
 INNER JOIN evaluation e on e.eval_id=re.eval_id
@@ -110,15 +110,16 @@ if ($_SESSION['Status'] != 'USER') {
                                         <tr align="center" bgcolor="#898888">
                                             <td align="center" width="2%"><b>ลำดับ</b></td>
                                             <td align="center" width="7%"><b>เลขที่คำสั่ง</b></td>
-                                            <td align="center" width="7%"><b>วันที่มีผล</b></td>
+                                            <td align="center" width="7%"><b>วันที่สั่ง</b></td>
                                             <td align="center" width="7%"><b>ปีงบประมาณ</b></td>
-                                            <td align="center" width="7%"><b>รอบที่</b></td>
+                                            <td align="center" width="7%"><b>วันที่มีผล</b></td>
                                             <td align="center" width="7%"><b>ฐานคำนวณ</b></td>
                                             <td align="center" width="10%"><b>เงินเดือนเดิม</b></td>
                                             <td align="center" width="5%"><b>เงินเพิ่ม</b></td>
                                             <td align="center" width="7%"><b>เงินเดือน</b></td>
                                             <td align="center" width="5%"><b>ร้อยละ</b></td>
                                             <td align="center" width="7%"><b>ผลการประเมิน</b></td>
+                                            <td align="center" width="7%"><b>แก้ไขคำสั่ง</b></td>
                                             <td align="center" width="7%"><b>หมายเหตุ</b></td>
                                             <td align="center" width="7%"><b>เหตุผล</b></td>
                                             <?php if($_SESSION['Status']=='ADMIN'){?>
@@ -146,8 +147,12 @@ if ($_SESSION['Status'] != 'USER') {
                                                             $episode = '';
                                                             $comment = 'การเพิ่มค่าจ้างประจำปี';
                                                         }
+
+                                                        if(!empty($result['numdoc_edit'])){
+                                                            echo "<tr bgcolor='#fad378'>";
+                                                        }else{echo "<tr>";}
                                                         ?>
-                                            <tr>
+                                            
                                                 <td align="center"><?= $i ?></td>
                                                 <td align="center"><?= $result['numdoc']; ?></td>
                                                 <td align="center"><?= DateThai1($result['app_date']); ?></td>
@@ -159,6 +164,7 @@ if ($_SESSION['Status'] != 'USER') {
                                                 <td align="center"><?= number_format($result['salary']); ?></td>
                                                 <td align="center"><?= $result['percent']; ?> %</td>
                                                 <td align="center"><?= $result['eval_value']; ?></td>
+                                                <td align="center"><?= $result['numdoc_edit']; ?></td>
                                                 <td align="center"><?= $comment; ?></td>
                                                 <td align="center"><?= $result['reason_value']; ?></td>
                                                 <?php if($_SESSION['Status']=='ADMIN'){?>

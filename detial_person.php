@@ -152,7 +152,7 @@ WHERE em.empno='$empno' order by ed2.educate desc");
                         </div>
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title">ข้อมูลการปฏิบัติงาน</h3>
+                                <h3 class="panel-title">ข้อมูลการปฏิบัติงาน ณ.ปัจจุบัน</h3>
                             </div>
                             <div class="panel-body">
                                 เลขที่คำสั่ง : <?= $Tophis['empcode']; ?><br>
