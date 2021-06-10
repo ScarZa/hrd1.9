@@ -1,2 +1,9 @@
 ALTER TABLE `resulteval` 
 ADD COLUMN `numdoc_edit` text CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `eval_id`;
+
+ALTER TABLE `pd_category` 
+ADD COLUMN `unit` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `cate_kind`;
+
+ALTER TABLE `se_company` 
+ADD COLUMN `comp_contact` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `comp_fax`,
+ADD COLUMN `comp_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `comp_contact`;
