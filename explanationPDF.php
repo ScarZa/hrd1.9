@@ -171,8 +171,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/explanation$empno.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/explanation$empno.pdf' />";
+$pdf->Output("MyPDF/explanation.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/explanation.pdf' />";
 ?>
 </body>
 </html>

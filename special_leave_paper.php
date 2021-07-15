@@ -129,8 +129,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/spec_leave$empno$Code.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/spec_leave$empno$Code.pdf' />";
+$pdf->Output("MyPDF/spec_leave.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/spec_leave.pdf' />";
 ?>
 </body>
 </html>

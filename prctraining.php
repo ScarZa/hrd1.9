@@ -84,12 +84,41 @@ $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name=
     }else if ($method == 'edit') {
         $project_no=$_POST['project_no'];
         $idpi=$_REQUEST['edit_id'];
-$edit = mysqli_query($db,"update trainingin set reg_date='$reg_date', in1='$project_no', in2='$project_name', in3='$project_dep',
+        $update = date('Y-m-d H:i:s');
+        function removespecialchars($raw) {
+            return preg_replace('#[^a-zA-Z0-9.-]#u', '', $raw);
+        }
+        
+        if (trim($_FILES["image"]["name"] != "")) {
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], "DocIN/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
+                $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
+                $image = removespecialchars($file1);
+            }
+        }  else {
+            $image ='';
+        }
+            if(!empty($image)){
+                $del_photo=mysqli_query($db,"select docin from trainingin where idpi='$idpi'");
+                        $del_photo=mysqli_fetch_assoc($del_photo);
+                        if(!empty($del_photo['docin'])){
+                        $location="DocIN/".$del_photo['docin'];
+                        include 'function/delet_file.php';
+                        fulldelete($location);}
+
+                            $edit = mysqli_query($db,"update trainingin set reg_date='$reg_date', in1='$project_no', in2='$project_name', in3='$project_dep',
                 in4='$project_obj', in5='$project_place', in6='$province', dateBegin='$Pdates', dateEnd='$Pdatee', in8='$amountd',
                    in9='$amounth', in10='$format', in11='$persen', in12='$barrier', in13='$further',
                       in14='$comment', mp='$cost', m1='$meals', m2='$expert', m3='$travel', m4='$material', in15='$source',
-                         in16='$type_know', adminadd='$respon', in18='$note'
+                         in16='$type_know', adminadd='$respon', in18='$note',docin='$image',editor='$admin',dupdate='$update'
                              where idpi='$idpi'");
+                        }else{
+                            $edit = mysqli_query($db,"update trainingin set reg_date='$reg_date', in1='$project_no', in2='$project_name', in3='$project_dep',
+                in4='$project_obj', in5='$project_place', in6='$province', dateBegin='$Pdates', dateEnd='$Pdatee', in8='$amountd',
+                   in9='$amounth', in10='$format', in11='$persen', in12='$barrier', in13='$further',
+                      in14='$comment', mp='$cost', m1='$meals', m2='$expert', m3='$travel', m4='$material', in15='$source',
+                         in16='$type_know', adminadd='$respon', in18='$note',editor='$admin',dupdate='$update'
+                             where idpi='$idpi'");
+                        }
 $date_end=date('Y-m-d', strtotime("$Pdatee+1 days "));
 $update_event=mysqli_query($db,"update tbl_event set event_title='$project_no',event_start='$Pdates',event_end='$date_end',
             empno='$respon',typela='$format'
@@ -259,18 +288,44 @@ $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name=
         $project_no=$_POST['project_no'];
         $idpi=$_REQUEST['edit_id'];
         $old_traveler = $_POST['old_traveler'];
+        $update = date('Y-m-d H:i:s');
+        function removespecialchars($raw) {
+            return preg_replace('#[^a-zA-Z0-9.-]#u', '', $raw);
+        }
+        
+        if (trim($_FILES["image"]["name"] != "")) {
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], "DocOUT/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
+                $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
+                $image = removespecialchars($file1);
+            }
+        }  else {
+            $image ='';
+        }
+            if(!empty($image)){
+                $del_photo=mysqli_query($db,"select docout from training_out where tuid='$idpi'");
+                        $del_photo=mysqli_fetch_assoc($del_photo);
+                        if(!empty($del_photo['docout'])){
+                        $location="DocOUT/".$del_photo['docout'];
+                        include 'function/delet_file.php';
+                        fulldelete($location);}
 
-        $event_sql=  mysqli_query($db,"select event_id from tbl_event where workid='$idpi' and process=1");
-        $Event_id=mysqli_fetch_assoc($event_sql);
+        
 $edit = mysqli_query($db,"update training_out set datein='$reg_date', memberbook='$project_no', traveler='$traveler', projectName='$project_name', anProject='$project_dep',
                 stantee='$project_place', provenID='$province', Beginedate='$Pdates', endDate='$Pdatee', stdate='$stdate', etdate='$etdate', Hos_car='$Hoscar', amount='$amountd',
                    dt='$format', m1='$cost', m2='$meals', m3='$expert', m4='$travel', m5='$material', budget='$source',
-                         material='$type_know', nameAdmin='$admin', empno='$admin'
+                         material='$type_know' ,docout='$image',editor='$admin',dupdate='$update'
                              where tuid='$idpi'");
-
+                        }else{
+                            $edit = mysqli_query($db,"update training_out set datein='$reg_date', memberbook='$project_no', traveler='$traveler', projectName='$project_name', anProject='$project_dep',
+                stantee='$project_place', provenID='$province', Beginedate='$Pdates', endDate='$Pdatee', stdate='$stdate', etdate='$etdate', Hos_car='$Hoscar', amount='$amountd',
+                   dt='$format', m1='$cost', m2='$meals', m3='$expert', m4='$travel', m5='$material', budget='$source',
+                         material='$type_know',editor='$admin',dupdate='$update'
+                             where tuid='$idpi'");
+                        }
  $edit_po = mysqli_query($db,"update plan_out set empno='$traveler', amount='$amountd', begin_date='$Pdates', end_date='$Pdatee',
                 join_type='$format' where idpo='$idpi' and empno='$old_traveler'");
-        
+                $event_sql=  mysqli_query($db,"select event_id from tbl_event where workid='$idpi' and process=1");
+                $Event_id=mysqli_fetch_assoc($event_sql);
         $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$traveler'");
         $Event=mysqli_fetch_assoc($event);
         $date_end=date('Y-m-d', strtotime("$Pdatee+1 days "));

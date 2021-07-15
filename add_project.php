@@ -142,7 +142,9 @@ function nextbox(e, id) {
                 <label>ข้อคิดเห็น &nbsp;</label>
              	<TEXTAREA value='' NAME="comment" id="comment"  cols="65" rows="" class="form-control" onkeydown="return nextbox(event, 'movedate')"><?= isset($edit_person['in14'])?$edit_person['in14']:''?></TEXTAREA>
                 </div><br>
-                
+                <?php if($method=='edit'){?>
+                <div class="form-group"><label>แนบเอกสาร &nbsp;</label><input type="file" name="image"  id="image" class="form-control"/></div>
+                <?php } ?>
                 </div>
                 </div>
 

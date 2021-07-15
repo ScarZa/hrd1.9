@@ -1,0 +1,10 @@
+ALTER TABLE `training_out` 
+ADD COLUMN `docout` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `Hos_car`,
+ADD COLUMN `editor` int(4) AFTER `docout`,
+ADD COLUMN `dupdate` datetime(0) AFTER `editor`;
+
+ALTER TABLE `trainingin` 
+ADD COLUMN `docin` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `in18`,
+ADD COLUMN `editor` int(4) AFTER `docin`,
+ADD COLUMN `dupdate` datetime(0) AFTER `editor`;
+

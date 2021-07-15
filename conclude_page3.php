@@ -145,8 +145,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/conclude1$empno$Code.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/conclude1$empno$Code.pdf' />";
+$pdf->Output("MyPDF/conclude.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/conclude.pdf' />";
 ?>
 </body>
 </html>

@@ -203,8 +203,8 @@ $pdf->SetDisplayMode('fullpage');
 $pdf->WriteHTML($html, 2);
 $pdf->AddPage();
 $pdf->WriteHTML($html2,2);
-$pdf->Output("MyPDF/approval1.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/approval1.pdf' />";
+$pdf->Output("MyPDF/approval.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/approval.pdf' />";
 ?>
 </body>
 </html>

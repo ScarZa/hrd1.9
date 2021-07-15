@@ -117,8 +117,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("card/card$empno$Code.pdf");
-echo "<meta http-equiv='refresh' content='0;url=card/card$empno$Code.pdf' />";
+$pdf->Output("card/card.pdf");
+echo "<meta http-equiv='refresh' content='0;url=card/card.pdf' />";
 
 ?>
 <?php include 'footeri.php';?>

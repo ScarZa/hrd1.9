@@ -170,7 +170,9 @@ function nextbox(e, id) {
 				 } ?>
 			 </select>
 			 </div> 
-                         
+             <?php if($method=='edit'){?>
+                <p></p><div class="form-group"><label>แนบเอกสาร &nbsp;</label><input type="file" name="image"  id="image" class="form-control"/></div>
+                <?php } ?>
                 
                 </div>
                 </div>

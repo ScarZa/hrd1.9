@@ -193,8 +193,9 @@ if($date >= $bdate and $date <= $edate){
                         <td width="45%" align="center"><b>ชื่อโครงการ</b></td>
                         <td width="14%" align="center"><b>หน่วยงานผู้จัด</b></td>
                         <td width="19%" align="center"><b>วันที่จัด</b></td>
-                        <td width="6%" align="center"><b>บันทึก</b></td>
-                        <td width="6%" align="center"><b>แก้ไข</b></td>
+                        <td width="6%" align="center"><b>เอกสารแนบ</b></td>
+                        <td width="5%" align="center"><b>บันทึก</b></td>
+                        <td width="5%" align="center"><b>แก้ไข</b></td>
                     </tr>
 
                     <?php
@@ -207,6 +208,9 @@ if($date >= $bdate and $date <= $edate){
                             <td><a href="#" onclick="return popup('pre_project.php?id=<?= $result['idpi']; ?>',popup,700,500);"><?= $result['in2']; ?></a></td>
                             <td align="center"><?= $result['in3']; ?></td>
                             <td align="center"><?= DateThai1($result['dateBegin']);?> <b>ถึง</b> <?= DateThai1($result['dateEnd']);?></td>
+                            <td align="center"><?php if (!empty($result['docin'])) {
+                                                echo "<a href='DocIN/".$result['docin']."' target='_blank'><span class='fa fa-download'></span> เอกสาร" . "<br />";
+                                            }?></td>
                             <td align="center"><a href="add_trainin.php?id=<?=$result['idpi'];?>"><img src='images/save_add.png' width='30'></a></td>
                             <td align="center"><a href="add_project.php?method=edit&&id=<?=$result['idpi'];?>"><img src='images/tool.png' width='30'></a></td>
                             

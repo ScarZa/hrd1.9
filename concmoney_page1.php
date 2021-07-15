@@ -208,8 +208,8 @@ $pdf->SetDisplayMode('fullpage');
 $pdf->WriteHTML($html, 2);
 $pdf->AddPage();
 $pdf->WriteHTML($html2,2);
-$pdf->Output("MyPDF/concmoney1.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/concmoney1.pdf' />";
+$pdf->Output("MyPDF/concmoney.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/concmoney.pdf' />";
 ?>
 </body>
 </html>

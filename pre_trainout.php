@@ -313,14 +313,15 @@ order by tuid desc";
                         <td width="15%" align="center"><b>หน่วยงานผู้จัด</b></td>
                         <td width="15%" align="center"><b>วันที่จัด</b></td>
                         <td width="6%" align="center"><b>จำนวนผู้เข้าร่วม</b></td>
-                        <td width="6%" align="center"><b>บันทึก</b></td>
+                        <td width="5%" align="center"><b>บันทึก</b></td>
                         <td width="6%" align="center"><b>สถานะโครงการ</b></td>
+                        <td width="6%" align="center"><b>เอกสารแนบ</b></td>
                          <?php if($_SESSION['Status']=='ADMIN'){?>
-                        <td width="6%" align="center"><b>สรุป</b></td>
+                        <td width="5%" align="center"><b>สรุป</b></td>
                         <td width="6%" align="center"><b>แก้ไข</b></td>
                         <?php }  else {?>
                         <th align="center" width="7%">พิมพ์คำขอ</th>
-                        <td width="6%" align="center"><b>สรุป</b></td>
+                        <td width="5%" align="center"><b>สรุป</b></td>
                         <td width="6%" align="center"><b>สถานะการสรุป</b></td>                    
                          <?php }?>
                     </tr>
@@ -352,6 +353,9 @@ order by tuid desc";
                                     <img src="images/button_cancel.ico" width="20" title="ไม่อนุมัติ">
                                      <?php }?>
                                         </td>
+                            <td align="center"><?php if (!empty($result['docout'])) {
+                                                echo "<a href='DocOUT/".$result['docout']."' target='_blank'><span class='fa fa-download'></span> เอกสาร" . "<br />";
+                                            }?></td>
                                 <?php if($_SESSION['Status']=='ADMIN'){
                                     if($result['hboss']=='C' or $result['hboss']=='N'){?>
                                     <td align="center">...</td>

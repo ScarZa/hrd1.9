@@ -270,7 +270,7 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/conclude_total$empno_$time_re.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/conclude_total$empno_$time_re.pdf' />";
+$pdf->Output("MyPDF/conclude_total.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/conclude_total.pdf' />";
 
 include_once 'footeri.php';?>

@@ -23,7 +23,7 @@
 </head>
 <?php
 include_once ('option/funcDateThai.php');
-include_once 'option/function_date.php';
+include_once ('option/function_date.php');
 
     $empno=$_REQUEST['empno'];
     $workid=$_REQUEST['work_id'];
@@ -339,9 +339,9 @@ where p.empno='$empno' and p.workid='$workid' order by print_id desc");
                                  </div>
                                      
                                       </div>
-<?php 
+                                      <?php
 $time_re=  date('Y_m_d');
-$reg_date=$work['reg_date'];
+$reg_date=$work[reg_date];
 $html = ob_get_contents();
 ob_clean();
 $pdf = new mPDF('tha2','A4','10','');
@@ -350,8 +350,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/leave$empno$Code.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/leave$empno$Code.pdf' />";
+$pdf->Output("MyPDF/leave.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/leave.pdf' />";
 ?>
 </body>
 </html>
