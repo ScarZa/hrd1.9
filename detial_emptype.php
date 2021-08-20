@@ -29,10 +29,17 @@ if (empty($_SESSION['user'])) {
     </head>
     <?php
     $emptype=$_REQUEST['emptype'];
+    if(!empty($_GET['date'])){
+        $date = "'".$_GET['date']."'";
+    }else{
+        $date = 'SUBSTR(NOW(),1,11)';
+    }
+    
 $sql=  mysqli_query($db,"SELECT CONCAT(e1.firstname,' ',lastname) as fullname,e2.TypeName as typename
-FROM emptype e2
-INNER JOIN emppersonal e1 on e1.emptype=e2.EmpType
-WHERE e1.emptype='$emptype' and e1.status='1'");
+FROM work_history wh 
+INNER JOIN emppersonal e1 on wh.empno = e1.empno 
+inner join emptype e2 on wh.emptype=e2.EmpType
+WHERE wh.emptype='$emptype' and e1.status='1' and ((wh.dateBegin BETWEEN '1947-01-01' AND $date) AND (wh.dateEnd_w > $date or wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)))");
                         ?>
     <body>
         <div class="row">

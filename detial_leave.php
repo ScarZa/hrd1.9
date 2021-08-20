@@ -53,6 +53,11 @@ if (!empty($_REQUEST['work_id'])) {
     
     $sql_delt = "delete from fingerprint where finger_id='$finger_id'";
     mysqli_query($db,$sql_delt) or die(mysqli_error($db));
+}elseif (!empty ($_REQUEST['abs_id'])) {
+    $abs_id = $_REQUEST['abs_id'];
+    
+    $sql_delt = "delete from absent where abs_id='$abs_id'";
+    mysqli_query($db,$sql_delt) or die(mysqli_error($db));
 }
 ?>
 <?php include 'option/function_date.php';
@@ -89,6 +94,7 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
     LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
     LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
     WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$date01' and '$date02')) order by l.late_id desc;");
+    $detialabsent = mysqli_query($db,"SELECT * FROM absent WHERE empno=$empno and (regdate BETWEEN '$date01' and '$date02') order by abs_id desc;");
     $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
     from work w1
     inner join typevacation t1 on w1.typela=t1.idla
@@ -109,6 +115,7 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
     LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
     LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
     WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$Y-10-01' and '$y-09-30')) order by l.late_id desc;");
+    $detialabsent = mysqli_query($db,"SELECT * FROM absent WHERE empno=$empno and (regdate BETWEEN '$Y-10-01' and '$y-09-30') order by abs_id desc;");
     $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
     from work w1
     inner join typevacation t1 on w1.typela=t1.idla
@@ -128,6 +135,7 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
     LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
     LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
     WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$y-10-01' and '$Yy-09-30')) order by l.late_id desc;");
+    $detialabsent = mysqli_query($db,"SELECT * FROM absent WHERE empno=$empno and (regdate BETWEEN '$y-10-01' and '$Yy-09-30') order by abs_id desc;");
     $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
     from work w1
     inner join typevacation t1 on w1.typela=t1.idla
@@ -146,6 +154,7 @@ WHERE ISNULL(w.enpid) AND ISNULL(p.empno) and f.empno='$empno' and (f.forget_dat
     LEFT JOIN `work` w ON l.empno=w.enpid AND l.late_date BETWEEN w.begindate AND w.enddate AND w.statusla='Y' 
     LEFT JOIN plan_out p ON l.empno=p.empno AND l.late_date BETWEEN p.begin_date AND p.end_date 
     WHERE l.empno='$empno' AND ISNULL(w.enpid) AND ISNULL(p.empno) and ((l.late_date BETWEEN '$Y-10-01' and '$y-09-30')) order by l.late_id desc;");
+    $detialabsent = mysqli_query($db,"SELECT * FROM absent WHERE empno=$empno and (regdate BETWEEN '$Y-10-01' and '$y-09-30') order by abs_id desc;");
     $amountL3 = mysqli_query($db,"SELECT SUM(w1.amount)as amount
     from work w1
     inner join typevacation t1 on w1.typela=t1.idla
@@ -583,6 +592,44 @@ $check_tl = mysqli_fetch_assoc($count_check);
                                                 <a href="#" onClick="return popup('add_sign.php?id=<?=$result['empno']?>&method=edit_late&method_id=<?= $result['late_id']?>', popup, 450, 600);" title="แก้ไข">
                                                 <img src='images/tool.png' alt="" width='30' /></a></td>
                                                 <td align="center" width="12%"><a href='detial_leave.php?id=<?= $empno; ?>&late_id=<?= $result['late_id']; ?>' onclick="return confirm('กรุณายืนยันการลบอีกครั้ง !!!')"><img src='images/bin1.png' alt="" width='30' /></a></td>
+                                            <?php } ?>
+                                                </tr>
+                                                <?php $i++; }?>
+                                        </table>
+                                 </div>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">ข้อมูลการขาดราชการ</h3>
+                                </div>
+                                 <div class="panel-body">
+                                        <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">
+                                            <tr align="center" bgcolor="#898888">
+                                                <td align="center" width="5%"><b>ลำดับ</b></td>
+                                                <td align="center" width="10%"><b>วันที่เริ่ม</b></td>
+                                                <td align="center" width="10%"><b>เวลาที่สิ้นสุด</b></td>
+                                                <td align="center" width="10%"><b>หมายเหตุ</b></td>
+                                                <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
+                                                    <td width="6%" align="center"><b>แก้ไข</b></td>
+                                                    <td align="center" width="6%"><b>ลบ</b></td>
+                                                <?php }?>
+                                            </tr>
+                                             <?php $i = 1;
+                                                        while ($result = mysqli_fetch_assoc($detialabsent)) {?>
+                                                <tr>
+                                                    <td align="center"><?= $i?></td>
+                                                    <td align="center"><?= DateThai1($result['beginabsdate'])?></td>
+                                                    <td align="center"><?= DateThai1($result['endabsdate'])?></td>
+                                                    <td align="center"><?= $result['note']?></td>
+                                                    <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
+                                                <td align="center">
+                                                <a href="#" onClick="return popup('add_absent.php?id=<?=$result['empno']?>&method=edit_absent&method_id=<?= $result['abs_id']?>', popup, 450, 600);" title="แก้ไข">
+                                                <img src='images/tool.png' alt="" width='30' /></a></td>
+                                                <td align="center" width="12%"><a href='detial_leave.php?id=<?= $empno; ?>&abs_id=<?= $result['abs_id']; ?>' onclick="return confirm('กรุณายืนยันการลบอีกครั้ง !!!')"><img src='images/bin1.png' alt="" width='30' /></a></td>
                                             <?php } ?>
                                                 </tr>
                                                 <?php $i++; }?>

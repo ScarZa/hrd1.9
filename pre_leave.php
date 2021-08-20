@@ -118,17 +118,18 @@ echo mysqli_error($db);
 <?php if($_SESSION['Status']=='ADMIN'){?>แสดงคำที่ค้นหา : <?= isset($Search_word)?$Search_word:''?><?php }?>
                         <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">
                             <tr align="center" bgcolor="#898888">
-                                <td align="center" width="5%"><b>ลำดับ</b></td>
+                                <td align="center" width="3%"><b>ลำดับ</b></td>
                                 <td align="center" width="9%"><b>เลขที่</b></td>
-                                <td align="center" width="20%"><b>ชื่อ-นามสกุล</b></td>
+                                <td align="center" width="15%"><b>ชื่อ-นามสกุล</b></td>
                                 <td align="center" width="15%"><b>ตำแหน่ง</b></td>
-                                <td align="center" width="10%"><b>บันทึกการลา</b></td>
-                                <td align="center" width="10%"><b>บันทึกการลา<p>ชั่วโมง</b></td>
+                                <td align="center" width="7%"><b>บันทึกการลา</b></td>
+                                <td align="center" width="7%"><b>บันทึกการลา<p>ชั่วโมง</b></td>
                                 <?php if($_SESSION['Status']=='ADMIN'){?>
-                                <td align="center" width="10%"><b>บันทึกการลา<p>(ย้อนหลัง)</b></td>
-                                <td align="center" width="10%"><b>เพิ่มวันลา</b></td>
-                                <td align="center" width="10%"><b>ลงเวลา</b></td>
-                                <td align="center" width="10%"><b>สาย</b></td>
+                                <td align="center" width="7%"><b>บันทึกการลา<p>(ย้อนหลัง)</b></td>
+                                <td align="center" width="7%"><b>เพิ่มวันลา</b></td>
+                                <td align="center" width="7%"><b>ลงเวลา</b></td>
+                                <td align="center" width="7%"><b>สาย</b></td>
+                                <td align="center" width="7%"><b>ขาดราชการ</b></td>
                                 <?php }?>
                             </tr>
                             
@@ -151,6 +152,9 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                     <td align="center">
                                     <a href="#" onClick="return popup('add_sign.php?id=<?=$result['empno'];?>&method=late', popup, 450, 500);" title="ลืมลงเวลา">
                                         <img src='images/hourglass.ico' width='30'></a></td>
+                                        <td align="center">
+                                    <a href="#" onClick="return popup('add_absent.php?id=<?=$result['empno'];?>', popup, 450, 600);" title="ขาดราชการ">
+                                        <img src='images/stop-icon.png' width='30'></a></td>
                                 <?php }?>
     </tr>
     <?php $i++; } ?>
