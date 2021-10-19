@@ -144,7 +144,7 @@ if ($_SESSION['Status'] != 'USER') {
                                                             $episode = '';
                                                             $comment = 'กรณีเยียวยาอายุงาน';
                                                         }else if($result['episode']==4) {
-                                                            $episode = '';
+                                                            $episode = '1 ต.ค. '.($result['year']-1);
                                                             $comment = 'การเพิ่มค่าจ้างประจำปี';
                                                         }
 

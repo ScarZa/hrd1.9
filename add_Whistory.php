@@ -77,6 +77,17 @@ if (empty($_SESSION['user'])) {
                   <td colspan="3">&nbsp;&nbsp; <?=$detial_l['posi'];?></td></tr>
                         </thead>
                     </table><br>
+                    <div class="form-group">
+         			<label>ตำแหน่ง &nbsp;</label>
+                                <select name="dictation_id" id="dictation_id" required  class="form-control select2" style="width: 100%;"  onkeydown="return nextbox(event, 'position');"> 
+				<?php	$sql = mysqli_query($db,"SELECT *  FROM dictation order by dictation_id");
+				 echo "<option value=''>--เลือกชนิดคำสั่ง--</option>";
+				 while( $result = mysqli_fetch_assoc( $sql ) ){
+          if($result['dictation_id']==$edit_person['dictation_id']){$selected='selected';}else{$selected='';}
+				 echo "<option value='".$result['dictation_id']."' $selected>".$result['dictation_name']." </option>";
+				 } ?>
+			 </select>
+			 </div>
                     <div class="form-group"> 
                 <label>คำสั่งเลขที่ &nbsp;</label>
                 <input value='<?= isset($edit_person['empcode'])?$edit_person['empcode']:''?>' type="text" class="form-control" name="order" id="order" placeholder="เลขที่คำสั่ง" onkeydown="return nextbox(event, 'position')">
@@ -162,7 +173,11 @@ if (empty($_SESSION['user'])) {
                 <input type="text" id="datepicker2"  placeholder='รูปแบบ 01-01-2560' class="form-control" name="dateEnd_w" id="dateEnd_w" onkeydown="return nextbox(event, 'teducat')">
              	</div>
                     <?php }?>
-                    <br>
+                    <div class="form-group"> 
+                                <label>แนบเอกสาร &nbsp;</label>
+                                <input type="file" class="form-control" id='dict_docs' name="dict_docs" value="<?= isset($edit_person['dict_docs'])?$edit_person['dict_docs']:''?>">
+                            </div><br>
+                    
                     <div class="form-group" align="center">
                         <input type="hidden" name="empno" value="<?= $empno?>">
                         <?php if($method =='edit_his'){?>

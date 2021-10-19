@@ -63,10 +63,26 @@ include 'connection/connect_i.php';
     $educat = $_POST['educat'];
     $swday =insert_date($_POST['swday']);
     $method = isset($_POST['method'])?$_POST['method']:'';
+    $dictation_id = $_POST['dictation_id'];
     if ($method == 'add_Whistory') {
-    
+        function removespecialchars($raw) {
+            return preg_replace('#[^ก-ฮะ-็่-๋์a-zA-Z0-9.-]#u', '', $raw);
+        }
+        if (trim($_FILES["dict_docs"]["name"] != "")) {
+            $temporary = explode(".", $_FILES["dict_docs"]["name"]);
+            $file_extension = end($temporary);
+            $newname = date("d-m-Y His")."DictDoc".$empno.".".$file_extension;
+            $dir = "Dictation/";
+            $target = $dir.$newname;
+            $sourcePath = $_FILES["dict_docs"]['tmp_name']; // Storing source path of the file in a variable
+                    move_uploaded_file($sourcePath, $target); // Moving Uploaded file
+               
+                $dict_docs =$newname;
+            }  else {
+                $dict_docs ='';
+            }
     $add_his= mysqli_query($db,"insert into work_history set empno='$empno', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
-                         education='$educat', dateBegin='$swday'");
+                         education='$educat', dateBegin='$swday',dictation_id='$dictation_id',dict_docs='$dict_docs'");
     mysqli_query($db, "update emppersonal set posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
                          education='$educat', dateBegin='$swday' where empno='$empno'");
     if ($add_his==false) {
@@ -82,10 +98,27 @@ include 'connection/connect_i.php';
 }else if ($method == 'update_Whistory') {
     $his=$_REQUEST['his'];
     $dateEnd_w = isset($_POST['dateEnd_w'])?insert_date($_POST['dateEnd_w']):'';
+    function removespecialchars($raw) {
+        return preg_replace('#[^ก-ฮะ-็่-๋์a-zA-Z0-9.-]#u', '', $raw);
+    }
+    if (trim($_FILES["dict_docs"]["name"] != "")) {
+        $temporary = explode(".", $_FILES["dict_docs"]["name"]);
+        $file_extension = end($temporary);
+        $newname = date("d-m-Y His")."DictDoc".$empno.".".$file_extension;
+        $dir = "Dictation/";
+        $target = $dir.$newname;
+        $sourcePath = $_FILES["dict_docs"]['tmp_name']; // Storing source path of the file in a variable
+                move_uploaded_file($sourcePath, $target); // Moving Uploaded file
+           
+            $dict_docs =$newname;
+            $value = ",dict_docs='$dict_docs'";
+        }  else {
+            $value ='';
+        }
     $edit_his=  mysqli_query($db,"update work_history set empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
-                         education='$educat', dateBegin='$swday', dateEnd_w='$dateEnd_w' where his_id='$his' and empno='$empno'");
+                         education='$educat', dateBegin='$swday', dateEnd_w='$dateEnd_w',dictation_id='$dictation_id' $value where his_id='$his' and empno='$empno'");
     $edit_emp=  mysqli_query($db,"update emppersonal set empcode='$order', pid='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
-                         education='$educat', dateBegin='$swday' where empno='$empno'");
+                         education='$educat', dateBegin='$swday' where empno='$empno' ");
     if ($edit_his == false) {
         echo "<p>";
         echo "Update not complete" . mysqli_error($db);

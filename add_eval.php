@@ -151,6 +151,8 @@ if (empty($_SESSION['user'])) {
                                 <?php if($method == 'edit_eval'){
                                     if($edit_person['episode']==3){
                                         $text = 'กรณีเยียวยาอายุงาน';
+                                    }elseif($edit_person['episode']==4){
+                                        $text = 'การเพิ่มค่าจ้างประจำปี';
                                     }else{
                                         $text = "รอบที่ ".$edit_person['episode'];
                                     }

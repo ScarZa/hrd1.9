@@ -1,0 +1,6 @@
+ALTER TABLE `work_history` 
+ADD COLUMN `dictation_id` int(2) NOT NULL AFTER `education`,
+ADD COLUMN `dict_docs` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `dictation_id`;
+
+UPDATE work_history set dictation_id = 1;
+

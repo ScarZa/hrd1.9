@@ -6,9 +6,9 @@ if (empty($_SESSION['user'])) {
 }
 ?>
 <?php
-if (!empty($_REQUEST['his'])) { //ถ้า ค่า del_id ไม่เท่ากับค่าว่างเปล่า
-    $his=$_REQUEST['his'];
-    $sqle_del = "delete from work_history where his_id='$his'";
+if (!empty($_REQUEST['pf_id'])) { //ถ้า ค่า del_id ไม่เท่ากับค่าว่างเปล่า
+    $pf_id=$_REQUEST['pf_id'];
+    $sqle_del = "delete from providentfund where pf_id='$pf_id'";
     mysqli_query($db,$sqle_del) or die(mysqli_error($db));
 //echo "ลบข้อมูล ID $del_id เรียบร้อยแล้ว";
 }?>
@@ -29,18 +29,11 @@ $name_detial = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.last
                             where e1.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) order by wh.his_id desc");
 
 
-    $detial = mysqli_query($db,"SELECT dic.dictation_name, wh.his_id, wh.empcode, wh.dateBegin, po.posname, d1.depName, et.StucName, etp.TypeName, ed.eduname ,
-CONCAT(TIMESTAMPDIFF(year,wh.dateBegin,IF((wh.dateEnd_w=0000-00-00 OR ISNULL(wh.dateEnd_w)),NOW(),wh.dateEnd_w)),' ปี ',
-timestampdiff(month,wh.dateBegin,IF((wh.dateEnd_w=0000-00-00 OR ISNULL(wh.dateEnd_w)),NOW(),wh.dateEnd_w))-(timestampdiff(year,wh.dateBegin,IF((wh.dateEnd_w=0000-00-00 OR ISNULL(wh.dateEnd_w)),NOW(),wh.dateEnd_w))*12),'  เดือน ',
-FLOOR(TIMESTAMPDIFF(DAY,wh.dateBegin,IF((wh.dateEnd_w=0000-00-00 OR ISNULL(wh.dateEnd_w)),NOW(),wh.dateEnd_w))%30.4375),'  วัน')AS age,wh.dict_docs
-FROM work_history wh 
-INNER JOIN posid po on po.posId=wh.posid
-INNER JOIN department d1 on d1.depId=wh.depid
-INNER JOIN empstuc et on et.Emstuc=wh.empstuc
-INNER JOIN emptype etp on etp.EmpType=wh.emptype
-INNER JOIN education ed on ed.education=wh.education
-INNER JOIN dictation dic on dic.dictation_id = wh.dictation_id
-WHERE wh.empno='$empno' ORDER BY wh.dateBegin DESC");
+    $detial = mysqli_query($db,"SELECT pf.pf_id,pf.regdate,if(pf.enddate!='0000-00-00',pf.enddate,'')enddate,if(pf.deductdate!='0000-00-00',pf.deductdate,'')deductdate
+    ,pf.docs,pf.recdate,CONCAT(em.firstname,' ',em.lastname)recorder
+    FROM providentfund pf
+    INNER JOIN emppersonal em on em.empno=pf.recorder
+    WHERE pf.empno=$empno ORDER BY pf_id ASC");
 
 
 $NameDetial = mysqli_fetch_assoc($name_detial);
@@ -49,7 +42,7 @@ include_once ('option/funcDateThai.php');
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1><font color='blue'>  รายละเอียดประวัติการทำงานของบุคลากร </font></h1> 
+        <h1><font color='blue'>  รายละเอียดกองทุนสำรองเลี้ยงชีพ </font></h1> 
         <ol class="breadcrumb alert-success">
             <li><a href="index.php"><i class="fa fa-home"></i> หน้าหลัก</a></li>
             
@@ -65,9 +58,9 @@ if ($_SESSION['Status'] != 'USER') {
                 <?php } elseif ($method == 'check_page2') { ?>
                     <li class="active"><a href="statistics_leave.php"><i class="fa fa-edit"></i> สถิติการลา</a></li>
 <?php }else{?>
-                    <li><a href="pre_Whistory.php"><i class="fa fa-edit"></i> ข้อมูลประวัติการทำงาน</a></li>
+                    <li><a href="pre_deduct.php"><i class="fa fa-edit"></i> ข้อมูลกองทุนสำรองเลี้ยงชีพ</a></li>
 <?php }} ?>
-            <li class="active"><i class="fa fa-edit"></i> รายละเอียดข้อมูลประวัติการทำงานของบุคลากร</li>
+            <li class="active"><i class="fa fa-edit"></i> รายละเอียดกองทุนสำรองเลี้ยงชีพ</li>
         </ol>
     </div>
 </div>
@@ -99,7 +92,7 @@ if ($_SESSION['Status'] != 'USER') {
                         <td>
                             <div class="panel panel-primary"> 
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">ข้อมูลการศึกษา</h3>
+                                    <h3 class="panel-title">ข้อมูลกองทุนสำรองเลี้ยงชีพ</h3>
                                 </div>
                                 <div class="panel-body">
                                     <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">
@@ -112,45 +105,35 @@ if ($_SESSION['Status'] != 'USER') {
                                             </tr>
 <?php } ?>
                                         <tr align="center" bgcolor="#898888">
-                                            <td align="center" width="5%"><b>ลำดับ</b></td>
-                                            <td align="center" width="5%"><b>ชนิดคำสั่ง</b></td>
-                                            <td align="center" width="10%"><b>เลขที่คำสั่ง</b></td>
-                                            <td align="center" width="10%"><b>วันที่เริ่มงาน</b></td>
-                                            <td align="center" width="10%"><b>ระยะเวลาทำงาน</b></td>
-                                            <td align="center" width="20%"><b>ตำแหน่ง</b></td>
-                                            <td align="center" width="10%"><b>หน่วยงาน</b></td>
-                                            <td align="center" width="10%"><b>สายงาน</b></td>
-                                            <td align="center" width="10%"><b>ประเภทพนักงาน</b></td>
-                                            <td align="center" width="10%"><b>วุฒิที่บรรจุ</b></td>
+                                            <td align="center" width="2%"><b>ลำดับ</b></td>
+                                            <td align="center" width="7%"><b>วันที่สมัคร</b></td>
+                                            <td align="center" width="7%"><b>วันที่ลาออกกองทุน</b></td>
+                                            <td align="center" width="7%"><b>วันที่เริ่มหักเงิน</b></td>
                                             <td align="center" width="10%"><b>เอกสาร</b></td>
                                             <?php if($_SESSION['Status']=='ADMIN'){?>
-                                            <th align="center" width="10%">แก้ไข</th>
-                                            <th align="center" width="10%">ลบ</th>
+                                            <td align="center" width="7%"><b>วันที่บันทึก</b></td>
+                                            <td align="center" width="20%"><b>ผู้บันทึก</b></td>
+                                            <th align="center" width="5%">แก้ไข</th>
+                                            <th align="center" width="5%">ลบ</th>
                                             <?php }?>
 
                                         </tr>
                                                     <?php
                                                     $i = 1;
-                                                    while ($result = mysqli_fetch_assoc($detial)) {
-                                                        ?>
-                                            <tr>
+                                                    while ($result = mysqli_fetch_assoc($detial)) {  ?>
+                                            
                                                 <td align="center"><?= $i ?></td>
-                                                <td align="center"><?= $result['dictation_name']; ?></td>
-                                                <td align="center"><?= $result['empcode']; ?></td>
-                                                <td align="center"><?= DateThai1($result['dateBegin']) ?></td>
-                                                <td align="center"><?= $result['age']; ?></td>
-                                                <td align="center"><?= $result['posname']; ?></td>
-                                                <td align="center"><?= $result['depName']; ?></td>
-                                                <td align="center"><?= $result['StucName']; ?></td>
-                                                <td align="center"><?= $result['TypeName']; ?></td>
-                                                <td align="center"><?= $result['eduname']; ?></td>
-                                                <td align="center"><?php if (!empty($result['dict_docs'])) {?>
-                                                    <a href="#" onclick="return popup('dictationDocs.php?id=<?= $result['his_id']?>', popup, 800, 1600);">
-                                                        <img src='images/printer.png' width='30'></a><?php }?></td>
+                                                <td align="center"><?= DateThai1($result['regdate']); ?></td>
+                                                <td align="center"><?= !empty($result['enddate'])?DateThai1($result['enddate']):''; ?></td>
+                                                <td align="center"><?= DateThai1($result['deductdate']); ?></td>
+                                                <td align="center"><a href="#" onclick="return popup('providentFundDocs.php?id=<?= $result['pf_id']?>', popup, 800, 1000);">
+                                                        <img src='images/printer.png' width='30'></a></td>
                                                 <?php if($_SESSION['Status']=='ADMIN'){?>
-                                                <td align="center" width="12%"><a href="#" onclick="return popup('add_Whistory.php?id=<?= $empno?>&amp;method=edit_his&amp;his=<?= $result['his_id']?>', popup, 500, 750);">
+                                                <td align="center"><?= DateThai1($result['recdate']) ?></td>
+                                                <td align="center"><?= $result['recorder']; ?></td>
+                                                <td align="center"><a href="#" onclick="return popup('add_deduct.php?id=<?= $empno?>&method=edit_deduct&pf_id=<?= $result['pf_id']?>', popup, 500, 600);">
                                                         <img src='images/tool.png' width='30'></a></td>
-                                                        <td align="center" width="12%"><a href='detial_Whistory.php?id=<?= $empno?>&his=<?= $result['his_id']?>' onClick="return confirm('กรุณายืนยันการลบอีกครั้ง !!!')"><img src='images/bin1.png' width='30'></a></td>
+                                                        <td align="center"><a href='detial_deduct.php?id=<?= $empno?>&pf_id=<?= $result['pf_id']?>' onClick="return confirm('กรุณายืนยันการลบอีกครั้ง !!!')"><img src='images/bin1.png' width='30'></a></td>
                                                 <?php }?>
                                             </tr>
     <?php $i++;

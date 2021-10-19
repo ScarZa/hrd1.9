@@ -227,6 +227,7 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="pre_educate.php?unset=1"><img src='images/Student.ico' width='25'> ประวัติการศึกษา</a></li>
                                     <li><a href="pre_Whistory.php?unset=1"><img src='images/work.ico' width='25'> ประวัติการทำงาน</a></li>
                                     <li><a href="pre_eval.php?unset=1"><img src='images/money.ico' width='25'> ประวัติการประเมิน/เงินเดือน</a></li>
+                                    <li><a href="pre_deduct.php?unset=1"><img src='images/money.ico' width='25'> กองทุนสำรองเลี้ยงชีพ</a></li>
                                     <li><a href="resign_person.php?unset=1"><img src='images/identity-x.png' width='25'> ข้อมูลบุคลากรย้าย/ลาออก</a></li>
                                     <li class="divider"></li>
                                     <li><a href="statistics_person.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติบุคลากร</a></li>
@@ -237,6 +238,7 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="detial_educate.php?unset=1"><img src='images/Student.ico' width='25'> ประวัติการศึกษา</a></li>
                                     <li><a href="detial_Whistory.php?unset=1"><img src='images/work.ico' width='25'> ประวัติการทำงาน</a></li>
                                     <li><a href="detial_eval.php?id=<?=$_SESSION['user']?>"><img src='images/money.ico' width='25'> ประวัติการประเมิน/เงินเดือน</a></li>
+                                    <li><a href="detial_deduct.php?id=<?=$_SESSION['user']?>"><img src='images/money.ico' width='25'> กองทุนสำรองเลี้ยงชีพ</a></li>
     <?php } if ($_SESSION['Status'] == 'SUSER' or $_SESSION['Status'] == 'USUSER') { ?>
                                     <li class="divider"></li>
                                     <li><a href="statistics_person.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติบุคลากรในหน่วยงาน</a></li>
