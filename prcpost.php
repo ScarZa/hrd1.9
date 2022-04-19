@@ -68,7 +68,7 @@ if (trim($_FILES["image"]["name"] != "")) {
     $image ='';
 }
 
-$sql=$db->prepare('insert into topic_post set empno_post=? , post=? , post_date=? , photo_post=? , link=? , empno_status=?');
+$sql=$db->prepare('insert ignore into topic_post set empno_post=? , post=? , post_date=? , photo_post=? , link=? , empno_status=?');
 $sql->bind_param('isssss',$empno,$post,$date_pos, $image,$link,$Status);
 $sql->execute();
 if (empty($sql)) {
@@ -135,7 +135,7 @@ if (empty($sql)) {
      $date_comm=date("Y-m-d H:m:s");
      $check_comm='N';
      
-     $sql=$db->prepare('insert into comment set topic_id=? , empno_comm=? , comm=? , comm_date=?, check_comm=?');
+     $sql=$db->prepare('insert ignore into comment set topic_id=? , empno_comm=? , comm=? , comm_date=?, check_comm=?');
 $sql->bind_param('iisss',$topic_id,$empno,$comm,$date_comm,$check_comm);
 $sql->execute();
 if (empty($sql)) {
@@ -155,7 +155,7 @@ if (empty($sql)) {
      $date_recomm=date("Y-m-d H:m:s");
      $check_recomm='N';
      
-     $sql=$db->prepare('insert into re_comment set comm_id=? , empno_re=? , recomm=? , recomm_date=?, check_recomm=?');
+     $sql=$db->prepare('insert ignore into re_comment set comm_id=? , empno_re=? , recomm=? , recomm_date=?, check_recomm=?');
 $sql->bind_param('iisss',$comm_id,$empno,$recomm,$date_recomm,$check_recomm);
 $sql->execute();
 if (empty($sql)) {
@@ -182,7 +182,7 @@ if (trim($_FILES["image"]["name"] != "")) {
 }  else {
     $image ='';
 }
-$sql=$db->prepare('insert into regularity set topic_regu=? , regu_file=? , regu_date=? , empno_regu=?');
+$sql=$db->prepare('insert ignore into regularity set topic_regu=? , regu_file=? , regu_date=? , empno_regu=?');
 $sql->bind_param('sssi',$regu, $image,$regu_date,$empno);
 $sql->execute();
 if (empty($sql)) {

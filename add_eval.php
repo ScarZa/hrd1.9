@@ -134,12 +134,12 @@ if (empty($_SESSION['user'])) {
                     <div class="form-group"> 
                                 <label>ปีงบประมาณ &nbsp;</label>
                                 <?php if($method == 'edit_eval'){
-                            echo "<input type='text' class='form-control' size='1' name='year' readonly value='".$edit_person['year']."'>";        
+                            echo "<input type='text' class='form-control' size='1' name='year' value='".$edit_person['year']."'>";        
                                 }else{ ?>
                                 <select name='year' class="form-control select2" required>
                                 <option value=''>กรุณาเลือกปีงบประมาณ</option>
                                 <?php
-                                for ($i = 2557; $i <= 2565; $i++) {
+                                for ($i = 2557; $i <= 2566; $i++) {
                                     echo "<option value='".$i."'>$i</option>";
                                 }
                                 ?>

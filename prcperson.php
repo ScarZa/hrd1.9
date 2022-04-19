@@ -64,7 +64,7 @@ if (trim($_FILES["image"]["name"] != "")) {
     $image ='';
 }
 
-    $add = mysqli_query($db,"insert into emppersonal set pid='$empid', idcard='$cid', pcode='$pname', firstname='$fname',
+    $add = mysqli_query($db,"insert ignore into emppersonal set pid='$empid', idcard='$cid', pcode='$pname', firstname='$fname',
                 lastname='$lname', sex='$sex', birthdate='$bday', address='$address', baan='$hname', provice='$Province',
                    empure='$Amphur', tambol='$district', zipcode='$postcode', emp_status='$status', telephone='$htell',
                       mobile='$mtell', email='$email', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
@@ -72,7 +72,7 @@ if (trim($_FILES["image"]["name"] != "")) {
     
     $select_empno = mysqli_insert_id($db);
     
-    $add_his= mysqli_query($db,"insert into work_history set empno='".$select_empno."', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
+    $add_his= mysqli_query($db,"insert ignore into work_history set empno='".$select_empno."', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
                          education='$educat', dateBegin='$swday'");
     if ($add == false or $add_his==false) {
         echo "<p>";
@@ -87,7 +87,7 @@ if (trim($_FILES["image"]["name"] != "")) {
         $educ = mysqli_fetch_assoc($select_ed);
         $empno = $educ['empno'];
 
-        $add_educate = mysqli_query($db,"insert into educate set empno='$empno', educate='$teducat',
+        $add_educate = mysqli_query($db,"insert ignore into educate set empno='$empno', educate='$teducat',
                                                                             major='$major', institute='$inst', enddate='$grad', check_ed='1'");
         if ($add_educate == false) {
             echo "<p>";

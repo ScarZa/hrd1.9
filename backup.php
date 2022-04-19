@@ -30,7 +30,7 @@ function backup_tables($db,$tables = '*')
         {
             while($row = mysqli_fetch_row($result))
             {
-                $return.= 'INSERT INTO '.$table.' VALUES(';
+                $return.= 'INSERT IGNORE INTO '.$table.' VALUES(';
                 for($j=0; $j<$num_fields; $j++) 
                 {
                     $row[$j] = addslashes($row[$j]);

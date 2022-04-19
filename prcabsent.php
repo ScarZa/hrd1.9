@@ -26,7 +26,7 @@ if($method=='add_absent'){
     $note= isset($_POST['note'])?$_POST['note']:'';
     $recorder=$_SESSION['user'];
 
-$sql=$db->prepare('insert into absent set empno=? , beginabsdate=? , endabsdate=? , note=? , regdate=? , recorder=?');
+$sql=$db->prepare('insert ignore into absent set empno=? , beginabsdate=? , endabsdate=? , note=? , regdate=? , recorder=?');
 $sql->bind_param('issssi',$empno,$beginabsdate,$endabsdate, $note,$regdate,$recorder);
 $sql->execute();
 if (empty($sql)) {
@@ -78,7 +78,7 @@ if (empty($sql)) {
     $see='N';
     $exp_status='W';
 
-$sql=$db->prepare('insert into late set empno=? , reg_date=? , late_date=? , late_time=? , register=?,
+$sql=$db->prepare('insert ignore into late set empno=? , reg_date=? , late_date=? , late_time=? , register=?,
         see=?,exp_status=?,late=?');
 $sql->bind_param('isssisss',$empno,$regdate,$late_date, $late_time,$register,$see,$exp_status,$late);
 $sql->execute();

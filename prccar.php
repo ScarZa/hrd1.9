@@ -73,7 +73,7 @@ $Y=date('y')+43;
 $car_no="$Y/$Ln";
     $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_car'");
     
-    $request = mysqli_query($db,"insert into ss_car set 
+    $request = mysqli_query($db,"insert ignore into ss_car set 
             car_no='$car_no', empno_request='$empno_request', obj='$obj', request_date='$request_date', start_date='$start_date', end_date='$end_date',
                 start_time='$start_time', end_time='$end_time', amount='$amount', place='$place', province='$province', amphur='$amphur',
                    passenger='$passenger', wait='$wait', amount_date='$amount_date'");

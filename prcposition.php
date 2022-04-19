@@ -68,7 +68,7 @@
  				 
    }//-----------------------------------------end delete
    elseif($method=='inser_pos'){
- 	 	$sqlInsert=mysqli_query($db,"insert into posid  SET  posname='$name' "); 
+ 	 	$sqlInsert=mysqli_query($db,"insert ignore into posid  SET  posname='$name' "); 
  
  							if($sqlInsert==false){
 											 echo "<p>";

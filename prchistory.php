@@ -81,7 +81,7 @@ include 'connection/connect_i.php';
             }  else {
                 $dict_docs ='';
             }
-    $add_his= mysqli_query($db,"insert into work_history set empno='$empno', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
+    $add_his= mysqli_query($db,"insert ignore into work_history set empno='$empno', empcode='$order', posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
                          education='$educat', dateBegin='$swday',dictation_id='$dictation_id',dict_docs='$dict_docs'");
     mysqli_query($db, "update emppersonal set posid='$posid', depid='$dep', empstuc='$line', emptype='$pertype',
                          education='$educat', dateBegin='$swday' where empno='$empno'");

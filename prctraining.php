@@ -61,14 +61,14 @@ $Ln=$Regis_po['count']+1;
 $Y=date('y')+43;
 $project_no="$Y/$Ln";
 $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_projectin'"); 
-    $add = mysqli_query($db,"insert into trainingin set reg_date='$reg_date', in1='$project_no', in2='$project_name', in3='$project_dep',
+    $add = mysqli_query($db,"insert ignore into trainingin set reg_date='$reg_date', in1='$project_no', in2='$project_name', in3='$project_dep',
                 in4='$project_obj', in5='$project_place', in6='$province', dateBegin='$Pdates', dateEnd='$Pdatee', in8='$amountd',
                    in9='$amounth', in10='$format', in11='$persen', in12='$barrier', in13='$further',
                       in14='$comment', mp='$cost', m1='$meals', m2='$expert', m3='$travel', m4='$material', in15='$source',
                          in16='$type_know', adminadd='$respon', in18='$note' ");
     $insert_id=mysqli_insert_id($db);
     $date_end=date('Y-m-d', strtotime("$Pdatee+1 days "));
-            $insert_event=mysqli_query($db,"insert into tbl_event set event_title='$project_no',event_start='$Pdates',event_end='$date_end',event_allDay='true',
+            $insert_event=mysqli_query($db,"insert ignore into tbl_event set event_title='$project_no',event_start='$Pdates',event_end='$date_end',event_allDay='true',
             empno='$respon',workid='$insert_id',typela='$format',process='6', event_url='../pre_project.php?id=$insert_id&method=back'");
     if ($add and $insert_event == false) {
         echo "<p>";
@@ -172,7 +172,7 @@ foreach ($check_ps as $key => $value) {
     echo "<meta http-equiv='refresh' content='2;URL=add_trainin.php?id=$project_id' />";
          }else{
         
-        $add = mysqli_query($db,"insert into plan set type_id='$empno_ID', amount='$Amount', pjid='$project_id', bdate='$dateS',
+        $add = mysqli_query($db,"insert ignore into plan set type_id='$empno_ID', amount='$Amount', pjid='$project_id', bdate='$dateS',
                 edate='$dateE' ");
     if ($add == false) {
         echo "<p>";
@@ -223,13 +223,13 @@ foreach ($check_ps as $key => $value) {
     echo "<meta http-equiv='refresh' content='2;URL=add_trainout.php?id=$project_id' />";
          }else{
         
-        $add = mysqli_query($db,"insert into plan_out set empno='$empno_ID', amount='$Amount', idpo='$project_id', begin_date='$dateS', end_date='$dateE',
+        $add = mysqli_query($db,"insert ignore into plan_out set empno='$empno_ID', amount='$Amount', idpo='$project_id', begin_date='$dateS', end_date='$dateE',
                 status_out='N',join_type='$Ptype' ");
         
         $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$empno_ID'");
         $Event=mysqli_fetch_assoc($event);
         $date_end=date('Y-m-d', strtotime("$dateE+1 days "));
-        $insert_event=mysqli_query($db,"insert into tbl_event set event_title='".$Event['fullname']."',event_start='$dateS',event_end='$date_end',event_allDay='true',
+        $insert_event=mysqli_query($db,"insert ignore into tbl_event set event_title='".$Event['fullname']."',event_start='$dateS',event_end='$date_end',event_allDay='true',
             empno='$empno_ID',workid='$project_id',typela='$Ptype',process='1', event_url='../pre_project_out.php?id=$project_id&method=back'");
     
     if ($add and $insert_event == false) {
@@ -254,18 +254,18 @@ $Ln=$Regis_po['count']+1;
 $Y=date('y')+43;
 $project_no="$Y/$Ln";
 $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_projectout'"); 
-    $add = mysqli_query($db,"insert into training_out set datein='$reg_date', memberbook='$project_no', traveler='$traveler', projectName='$project_name', anProject='$project_dep',
+    $add = mysqli_query($db,"insert ignore into training_out set datein='$reg_date', memberbook='$project_no', traveler='$traveler', projectName='$project_name', anProject='$project_dep',
                 stantee='$project_place', provenID='$province', Beginedate='$Pdates', endDate='$Pdatee', stdate='$stdate', etdate='$etdate', Hos_car='$Hoscar', amount='$amountd',
                    dt='$format', m1='$cost', m2='$meals', m3='$expert', m4='$travel', m5='$material', budget='$source',
                          material='$type_know', nameAdmin='$admin',hboss='W', empno='$admin',chek='$check'");
     $insert_id=mysqli_insert_id($db);
-    $add = mysqli_query($db,"insert into plan_out set empno='$traveler', amount='$amountd', idpo='$insert_id', begin_date='$Pdates', end_date='$Pdatee',
+    $add = mysqli_query($db,"insert ignore into plan_out set empno='$traveler', amount='$amountd', idpo='$insert_id', begin_date='$Pdates', end_date='$Pdatee',
                 status_out='N',join_type='$format' ");
         
         $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$traveler'");
         $Event=mysqli_fetch_assoc($event);
         $date_end=date('Y-m-d', strtotime("$Pdatee+1 days "));
-        $insert_event=mysqli_query($db,"insert into tbl_event set event_title='".$Event['fullname']."',event_start='$Pdates',event_end='$date_end',event_allDay='true',
+        $insert_event=mysqli_query($db,"insert ignore into tbl_event set event_title='".$Event['fullname']."',event_start='$Pdates',event_end='$date_end',event_allDay='true',
             empno='$traveler',workid='$insert_id',typela='$format',process='1', event_url='../pre_project_out.php?id=$insert_id&method=back'");
 
     if ($add == false) {

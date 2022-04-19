@@ -28,7 +28,7 @@ if($method=='add_scan'){
     $see='N';
     $exp_status='W';
 
-$sql=$db->prepare('insert into fingerprint set empno=? , reg_date=? , forget_date=? , work_scan=? , finish_work_scan=? , register=?,
+$sql=$db->prepare('insert ignore into fingerprint set empno=? , reg_date=? , forget_date=? , work_scan=? , finish_work_scan=? , register=?,
         see=?,exp_status=?');
 $sql->bind_param('issssiss',$empno,$regdate,$forget_date, $work_scan,$finish_work_scan,$register,$see,$exp_status);
 $sql->execute();
@@ -106,7 +106,7 @@ if (empty($sql)) {
     $see='N';
     $exp_status='W';
 
-$sql=$db->prepare('insert into late set empno=? , reg_date=? , late_date=? , late_time=? , register=?,
+$sql=$db->prepare('insert ignore into late set empno=? , reg_date=? , late_date=? , late_time=? , register=?,
         see=?,exp_status=?,late=?');
 $sql->bind_param('isssisss',$empno,$regdate,$late_date, $late_time,$register,$see,$exp_status,$late);
 $sql->execute();

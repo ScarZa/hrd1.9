@@ -78,7 +78,7 @@ include 'connection/connect_i.php';
         }  else {
             $docs ='';
         }
-    $pf= mysqli_query($db,"insert into providentfund set empno='$empno',regdate='$regdate',enddate='$enddate', deductdate='$deductdate', docs='$docs', recdate='$recdate', recorder='$recorder'");
+    $pf= mysqli_query($db,"insert ignore into providentfund set empno='$empno',regdate='$regdate',enddate='$enddate', deductdate='$deductdate', docs='$docs', recdate='$recdate', recorder='$recorder'");
     if ($pf==false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);

@@ -42,7 +42,7 @@
                    $empno=$_SESSION['user'];
                    $process=$_POST['type_event'];
                    
-		$insert_event=mysqli_query($db,"insert into tbl_event set event_title='$event_title',event_start='$event_start',event_end='$event_end',event_url='',event_allDay='$event_allDay',
+		$insert_event=mysqli_query($db,"insert ignore into tbl_event set event_title='$event_title',event_start='$event_start',event_end='$event_end',event_url='',event_allDay='$event_allDay',
                         empno='$empno',workid='0',process='$process'"); 	
 	
                    $event_id=  mysqli_query($db,"select event_id from tbl_event where empno='$empno' and workid='0' order by event_id desc limit 1");
@@ -144,7 +144,7 @@
                    $event_allDay = 'true';
                    $event_end=date('Y-m-d', strtotime($event_start."+1 days "));
                    
-		$insert_event=mysqli_query($db,"insert into tbl_event set event_title='$event_title',event_start='$event_start',event_end='$event_end',event_url='',event_allDay='$event_allDay',
+		$insert_event=mysqli_query($db,"insert ignore into tbl_event set event_title='$event_title',event_start='$event_start',event_end='$event_end',event_url='',event_allDay='$event_allDay',
                         workid='0',process='7'"); 	
  							if($insert_event==false){
 											 echo "<p>";

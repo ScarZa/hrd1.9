@@ -49,7 +49,7 @@ INNER JOIN emppersonal e on e.empno=po.empno
 INNER JOIN department d on e.depid=d.depId
 INNER JOIN work_history wh ON wh.empno=e.empno
 INNER JOIN posid p on wh.posid=p.posId
-WHERE (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) AND po.idpo='$project_id'");
+WHERE (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) AND po.idpo='$project_id' group by e.empno") ;
             $Person_detial = mysqli_fetch_assoc($sql_per);
              $Project_cost = mysqli_fetch_assoc($sql_cost);
          

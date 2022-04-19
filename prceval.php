@@ -71,7 +71,7 @@ include 'connection/connect_i.php';
     $method = isset($_POST['method'])?$_POST['method']:'';
     if ($method == 'add_eval') {
     
-    $evaluation= mysqli_query($db,"insert into resulteval set empno='$empno',numdoc='$numdoc',app_date='$app_date', year='$year', episode='$episode', base_salary='$base_salary', salary='$salary', salary_up='$salary_up',
+    $evaluation= mysqli_query($db,"insert ignore into resulteval set empno='$empno',numdoc='$numdoc',app_date='$app_date', year='$year', episode='$episode', base_salary='$base_salary', salary='$salary', salary_up='$salary_up',
                          percent='$percent', eval_id='$eval_id',numdoc_edit = '$numdoc_edit',reason_id='$reason_id', rec_date='$rec_date', recorder='$recorder'");
     if ($evaluation==false) {
         echo "<p>";

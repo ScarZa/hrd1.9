@@ -124,7 +124,7 @@ else if ($method == 'delete') {
     }
 }//-----------------------------------------end delete
 elseif ($method == 'inser_mdep') {
-    $sqlInsert = mysqli_query($db, "insert into department_group  SET    dep_name='$name' ");
+    $sqlInsert = mysqli_query($db, "insert ignore into department_group  SET    dep_name='$name' ");
 
     if ($sqlInsert == false) {
         echo "<p>";
@@ -148,7 +148,7 @@ elseif ($method == 'inser_mdep') {
         echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=Add_Department.php'>";
     }
 } elseif ($method == 'inser_dep') {
-    $sqlInsert = mysqli_query($db, "insert into department SET depName='$name',main_dep='$md_name' ");
+    $sqlInsert = mysqli_query($db, "insert ignore into department SET depName='$name',main_dep='$md_name' ");
 
     if ($sqlInsert == false) {
         echo "<p>";

@@ -21,7 +21,7 @@ $sql = $db->prepare("select m1.UserID, m1.Name as id,e1.firstname as fname,e1.la
            INNER JOIN work_history wh ON wh.empno=e1.empno
            inner join department d1 on wh.depid=d1.depId
            inner join posid p1 on e1.posid=p1.posId
-           where   m1.Username= ? && m1.Password= ? and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))") ;
+           where   m1.Username= ? && m1.Password= ? and e1.status = 1 and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))") ;
 $sql->bind_param("ss", $user_account,$user_pwd);
 $sql->execute();
 $sql->bind_result($UserID,$id, $fname, $lname, $dep,$main_dep,$Status);

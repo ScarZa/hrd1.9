@@ -117,7 +117,7 @@ inner join pcode p2 on e1.pcode=p2.pcode
 inner join plan_out po on po.empno=e1.empno
 inner join training_out tout on tout.tuid=po.idpo
          WHERE wh.posid=p1.posId and (firstname LIKE '%$Search_word%' or e1.empno LIKE '%$Search_word%' or pid LIKE '%$Search_word%')
-             and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) and e1.status ='1' order by empno"; 
+             and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) and e1.status ='1' group by e1.empno order by empno"; 
  }else{
  $q="select e1.empno as empno, e1.pid as pid, concat(p2.pname,e1.firstname,'  ',e1.lastname) as fullname, p1.posname as posname, po.status_out as status_out, tout.dt 
      from emppersonal e1 
@@ -126,7 +126,7 @@ inner JOIN posid p1 ON p1.posId=wh.posid
 inner join pcode p2 on e1.pcode=p2.pcode
 inner join plan_out po on po.empno=e1.empno
 inner join training_out tout on tout.tuid=po.idpo
-where wh.posid=p1.posId and e1.status ='1' and po.idpo='$project_id'  and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+where wh.posid=p1.posId and e1.status ='1' and po.idpo='$project_id'  and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by e1.empno
 ORDER BY empno";
  }
 }else{
@@ -138,7 +138,7 @@ inner JOIN posid p1 ON p1.posId=wh.posid
 inner join pcode p2 on e1.pcode=p2.pcode
 inner join plan_out po on po.empno=e1.empno
 inner join training_out tout on tout.tuid=po.idpo
-where wh.posid=p1.posId and po.empno='$empno' and po.idpo='$project_id'  and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+where wh.posid=p1.posId and po.empno='$empno' and po.idpo='$project_id'  and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by e1.empno
 ORDER BY empno";
 }
 $qr=mysqli_query($db,$q);

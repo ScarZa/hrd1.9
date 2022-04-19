@@ -83,7 +83,7 @@ for($i = 0; $i < count(isset($_POST["typela"])?$_POST["typela"]:''); $i++){
     
 }
 
-$insert_print=  mysqli_query($db,"insert into print_leave set empno='$empno', befor_workid='$befor_workid',last_type1='".@$typela[0]."',last_amount1='".@$last_amount[0]."',
+$insert_print=  mysqli_query($db,"insert ignore into print_leave set empno='$empno', befor_workid='$befor_workid',last_type1='".@$typela[0]."',last_amount1='".@$last_amount[0]."',
         last_type2='".@$typela[1]."',last_amount2='".@$last_amount[1]."',last_type3='".@$typela[2]."',last_amount3='".@$last_amount[2]."',last_type4='".@$typela[3]."',last_amount4='".@$last_amount[3]."',
         last_type5='".@$typela[4]."',last_amount5='".@$last_amount[4]."',last_type6='".@$typela[5]."',last_amount6='".@$last_amount[5]."',last_type7='".@$typela[6]."',last_amount7='".@$last_amount[6]."'");
 if ($insert_print == false) {
@@ -114,7 +114,7 @@ $Ln=$Regis_Leave['count']+1;
 $Y=date('y')+43;
 $leave_no="$Y/$Ln";
     $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_leave'");
-    $insert_leave=  mysqli_query($db,"insert into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
+    $insert_leave=  mysqli_query($db,"insert ignore into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
                                 typela='$typel', amount='$amount', abnote='$reason_l', address='$add_conn', tel='$tell',
                                     check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='$statusla',depId='$depno',regis_leave='$regis' ");
     $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$empno'");
@@ -123,7 +123,7 @@ $leave_no="$Y/$Ln";
     $Workid=mysqli_fetch_assoc($workid);
     
     $date_end=date('Y-m-d', strtotime("$date_e+1 days "));
-    $insert_event=mysqli_query($db,"insert into tbl_event set event_title='".$Event['fullname']."',event_start='$date_s',event_end='$date_end',event_allDay='true',
+    $insert_event=mysqli_query($db,"insert ignore into tbl_event set event_title='".$Event['fullname']."',event_start='$date_s',event_end='$date_end',event_allDay='true',
             empno='$empno',workid='$Workid[workid]',typela='$typel',process='0'");
         echo $year;
         $L_day=  mysqli_query($db,"select * from leave_day where empno='$empno' and fiscal_year='$year'");
@@ -208,7 +208,7 @@ $regis='W';
 
 $countla=$_POST["countla"];
 $sumt=$_POST["sumt"];
-$insert_print=  mysqli_query($db,"insert into print_tleave set empno='$empno',last_tleave='$countla',last_tamount='$sumt'");
+$insert_print=  mysqli_query($db,"insert ignore into print_tleave set empno='$empno',last_tleave='$countla',last_tamount='$sumt'");
 if ($insert_print == false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);
@@ -237,7 +237,7 @@ $Ln=$Regis_TLeave['count']+1;
 $Y=date('y')+43;
 $leave_no="$Y/$Ln";
     $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_tleave'");
-    $insert_leave=  mysqli_query($db,"insert into timela set empno='$empno', vstdate='$date_reg', idno='$leave_no',
+    $insert_leave=  mysqli_query($db,"insert ignore into timela set empno='$empno', vstdate='$date_reg', idno='$leave_no',
                                    comment='$reason_l',datela='$date_l',starttime='$time_s',endtime='$time_e',
                                        total='$amount',status='$stat_tl',depId='$depno',pics_t='$image',idAdmin='$adminId',regis_time='$regis' ");
     if ($insert_leave == false) {
@@ -278,7 +278,7 @@ $leave_no="$Y/$Ln";
     $cert = '';
     $image ='';
     $regis='Y';
-    $insert_leave=  mysqli_query($db,"insert into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
+    $insert_leave=  mysqli_query($db,"insert ignore into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
                                 typela='$typel', amount='$amount', abnote='$reason_l', address='$add_conn', tel='$tell',
                                     check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='Y',depId='$depno',regis_leave='$regis'");
 include 'option/function_date.php';
@@ -469,7 +469,7 @@ if (trim($_FILES["image"]["name"] != "")) {
     $image ='';
 }  
     $update_work=  mysqli_query($db,"update work set statusla='$status' where enpid='$empno' and workid='$Lno'");
-    $in_cancle=  mysqli_query($db,"insert into cancle set workid='$Lno', cancledate='$candate', cancle_comment='$comment',
+    $in_cancle=  mysqli_query($db,"insert ignore into cancle set workid='$Lno', cancledate='$candate', cancle_comment='$comment',
             admin_cancle='$adminId', pics_cancle='$image'");
            
     $delete_event=mysqli_query($db,"delete from tbl_event where empno='$empno' and workid='$Lno'");
@@ -524,7 +524,7 @@ if($date >= $bdate and $date <= $edate){
     $sel_fiscal = mysqli_query($db, "SELECT fiscal_year FROM leave_day WHERE empno=$empno AND fiscal_year='$year'");
     $num_row = mysqli_num_rows($sel_fiscal);
 if (empty($num_row)) {
-    $insert_leave=  mysqli_query($db,"insert into leave_day set empno='$empno',emptype='$emptype',fiscal_year='$year', L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7' ");
+    $insert_leave=  mysqli_query($db,"insert ignore into leave_day set empno='$empno',emptype='$emptype',fiscal_year='$year', L1='$L1',L2='$L2',L3='$L3',L4='$L4',L5='$L5',L6='$L6',L7='$L7' ");
     if ($insert_leave == false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);

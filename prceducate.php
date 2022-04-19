@@ -27,7 +27,7 @@ echo "<div class='alert alert-dismissable alert-success'>
     $check_ed=$_POST['check_ed'];
  $method = isset($_POST['method'])?$_POST['method']:'';   
 if($method =='add_educate'){
-        $add_educate = mysqli_query($db,"insert into educate set empno='$empno', educate='$teducat',
+        $add_educate = mysqli_query($db,"insert ignore into educate set empno='$empno', educate='$teducat',
                         major='$major', institute='$inst', enddate='$grad', start_date='$begin', check_ed='$check_ed'");
         if ($add_educate == false) {
             echo "<p>";

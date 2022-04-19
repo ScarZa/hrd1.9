@@ -41,7 +41,7 @@ function fncSubmit()
                          }else{
                          $status=$_SESSION['Status'];}
 			 $sqlGet=mysqli_query($db,"select m.*,concat(e.firstname,' ',e.lastname) as fullname,e.mobile as mobile from  member m
-                             inner join emppersonal e on e.empno=m.Name where m.Name='$user_idGet' and m.Status='$status' ");
+                             inner join emppersonal e on e.empno=m.Name where m.Name='$user_idGet' and m.Status='$status' and e.status =1 ");
 			 $resultGet=mysqli_fetch_assoc($sqlGet);
 			 }
 			   ?>    
@@ -60,7 +60,7 @@ function fncSubmit()
                             <input type="hidden" name="name" id="name" value="<?=$resultGet['Name']?>">
                             <?php }else{?>
                             <select name="name" id="name" required  class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'fname');"> 
-				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
+				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal where status =1 order by empno ");
 				 echo "<option value=''> -- เลือกบุคลากร -- </option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
           if($result['empno']==$resultGet['Name']){$selected='selected';}else{$selected='';}

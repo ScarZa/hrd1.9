@@ -92,7 +92,7 @@
  				 
    }//-----------------------------------------end delete
    else{
- 	 	$sqlInsert=mysqli_query($db,"insert into member  SET    Name='$user_name' ,  
+ 	 	$sqlInsert=mysqli_query($db,"insert ignore into member  SET    Name='$user_name' ,  
  		Status='$admin', Username='$user_account' , Password='$user_pwd',user_name='$username'  "); 
 
 	
