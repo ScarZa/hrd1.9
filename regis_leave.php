@@ -23,9 +23,12 @@ $method = isset($_POST['method'])?$_POST['method']:isset($_GET['method']);
 <!-- Add custom CSS here -->
 <link href="option/css/sb-admin.css" rel="stylesheet">
 <link rel="stylesheet" href="option/font-awesome/css/font-awesome.min.css">
+<script src="option/js/jquery.min.js"></script>
 <!-- Page Specific CSS -->
 <link rel="stylesheet" href="option/css/morris-0.4.3.min.css">
 <link rel="stylesheet" href="option/css/stylelist.css">
+<!-- Select2--> 
+<link href="option/select2/select2.min.css" rel="stylesheet" type="text/css"/>
 </head>
     <body>            
         <form class="navbar-form navbar-left" role="form" action='prcleave.php' enctype="multipart/form-data" method='post' onSubmit="return Check_txt()">
@@ -34,21 +37,28 @@ $method = isset($_POST['method'])?$_POST['method']:isset($_GET['method']);
         <div class="panel panel-primary">
            <?php if($method=='confirm_leave'){?> 
             <div class="panel-heading" align="center">
-                <h3 class="panel-title"> ยืนยันการอนมัติใบลา</h3>
+                <h3 class="panel-title"> ทรัพยากรบุคคลรับใบลา</h3>
             </div>
             <div class="panel-body" align='center'>
                 <div class="well well-sm">
                 <b>ยืนยันการอนมัติใบลา</b>
                 <div class="form-group">
-                    <input type="radio" name="confirm" id="confirm" value="Y" required="">&nbsp;&nbsp; อนุมัติ<br> 
-                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="confirm" id="confirm" value="N" required="">&nbsp;&nbsp; ไม่อนุมัติ
+                    <input type="radio" name="confirm" id="confirm" value="Y" required="" checked>&nbsp;&nbsp; รับ<br> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="confirm" id="confirm" value="N" required="">&nbsp;&nbsp; ไม่รับ
                 </div>
                 </div>
                 <?php }else{?>
                  <div class="panel-heading" align="center">
-                <h3 class="panel-title"> ลงทะเบียนรับใบลา</h3>
+                <h3 class="panel-title"> อนุมัติใบลา</h3>
             </div>
             <div class="panel-body" align='center'>
+            <div class="well well-sm">
+                <b>ยืนยันการรับใบลา</b>
+                <div class="form-group">
+                    <input type="radio" name="confirm" id="confirm" value="A" required="">&nbsp;&nbsp; อนุมัติ<br> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="confirm" id="confirm" value="N" required="">&nbsp;&nbsp; ไม่อนุมัติ
+                </div>
+                </div>
                 <?php }?>
                                         <?php include_once ('option/funcDateThai.php');
                                         
@@ -136,6 +146,19 @@ $method = isset($_POST['method'])?$_POST['method']:isset($_GET['method']);
                 <td align="right" valign="top"><b>ผู้บันทึก : </b></td>
                 <td colspan="3">&nbsp;&nbsp; <?=$detial_admin['adminname'];?></td>  
               </tr>
+              <?php if($method!='confirm_leave'){?> 
+              <tr>
+                <td align="right" valign="top"><b>ผู้ปฏิบัติงานแทน : </b></td>
+                <td colspan="3">&nbsp;&nbsp; <select name="surrogate" id="surrogate" required  class="form-control select2" style="width: 90%" onkeydown="return nextbox(event, 'fname');"> 
+				<?php	$sql = mysqli_query($db,"SELECT empno,concat(firstname,' ',lastname) as fullname  FROM emppersonal order by empno ");
+				 echo "<option value=''>-เลือกบุคลากร-</option>";
+				 while( $result = mysqli_fetch_assoc( $sql ) ){
+          //if($result['empno']==$resultGet['manager']){$selected='selected';}else{$selected='';}
+				 echo "<option value='".$result['empno']."'>".$result['fullname']."</option>";
+				 } ?>
+			 </select></td>
+            </tr>
+                <?php }?>
                         </thead>
                         </table><br>
                         <center>
@@ -145,10 +168,10 @@ $method = isset($_POST['method'])?$_POST['method']:isset($_GET['method']);
                         <?php if($method=='confirm_leave'){?> 
                     <input type="hidden" name="method" value="check_leave">
                     <input type="hidden" name="typela" value="<?=$detial_l[typela];?>">
-                    <input class="btn btn-success" type="submit" name="submit" value="ยืนยันกระบวนการ">
+                    <input class="btn btn-success" type="submit" name="submit" value="รับใบลา">
                         <?php }else{?>
                     <input type="hidden" name="method" value="regis_leave">    
-                    <input class="btn btn-success" type="submit" name="submit" value="ลงทะเบียน">
+                    <input class="btn btn-success" type="submit" name="submit" value="อนุมัติ">
                         <?php }?>
                     </center>
            </div>

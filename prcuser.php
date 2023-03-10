@@ -15,7 +15,28 @@
         $ID=$_POST['ID'];    
 	$user_idPOST=$_POST['user_id'];
         $mobile=$_POST['mobile'];
- 
+				
+				function removespecialchars($raw) {
+    return preg_replace('#[^a-zA-Z0-9.-]#u', '', $raw);
+}
+        if (trim($_FILES["image"]["name"] != "")) {
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], "signature/" . removespecialchars(date("d-m-Y/") . "1" . $_FILES["image"]["name"]))) {
+        $file1 = date("d-m-Y/") . "1" . $_FILES["image"]["name"];
+        $image = removespecialchars($file1);
+    }
+}  else {
+    $image ='';
+}
+if(!empty($image)){
+                $del_photo=mysqli_query($db,"select signature from emppersonal where empno=".$user_idPOST);
+                $del_photo=mysqli_fetch_assoc($del_photo);
+                if(!empty($del_photo['signature'])){
+                $location="signature/".$del_photo['signature'];
+                include 'function/delet_file.php';
+                fulldelete($location);
+                }
+		$sqlUpdate=mysqli_query($db,"update emppersonal  SET signature='$image' where empno=".$user_idPOST); 	
+            }
 		if(!empty($_POST['user_pwd'])){
  		$sqlUpdate=mysqli_query($db,"update member set Name='$user_name' ,  
  		Status='$admin', Username='$user_account' , Password='$user_pwd',user_name='$username'  

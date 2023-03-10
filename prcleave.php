@@ -116,7 +116,7 @@ $leave_no="$Y/$Ln";
     $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_leave'");
     $insert_leave=  mysqli_query($db,"insert ignore into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
                                 typela='$typel', amount='$amount', abnote='$reason_l', address='$add_conn', tel='$tell',
-                                    check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='$statusla',depId='$depno',regis_leave='$regis' ");
+                                    check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='$statusla',depId='$depno',authority='".$_SESSION['Status']."',regis_leave='$regis' ");
     $event=  mysqli_query($db,"select CONCAT(firstname,' ',lastname) as fullname from emppersonal where empno='$empno'");
     $Event=mysqli_fetch_assoc($event);
     $workid=mysqli_query($db,"select workid from work where enpid='$empno' ORDER BY workid DESC");
@@ -239,7 +239,7 @@ $leave_no="$Y/$Ln";
     $update_count=  mysqli_query($db,"update count set count='$Ln' where count_name='regis_tleave'");
     $insert_leave=  mysqli_query($db,"insert ignore into timela set empno='$empno', vstdate='$date_reg', idno='$leave_no',
                                    comment='$reason_l',datela='$date_l',starttime='$time_s',endtime='$time_e',
-                                       total='$amount',status='$stat_tl',depId='$depno',pics_t='$image',idAdmin='$adminId',regis_time='$regis' ");
+                                       total='$amount',status='$stat_tl',depId='$depno',authority='".$_SESSION['Status']."',pics_t='$image',idAdmin='$adminId',regis_time='$regis' ");
     if ($insert_leave == false) {
         echo "<p>";
         echo "Insert not complete" . mysqli_error($db);
@@ -280,7 +280,7 @@ $leave_no="$Y/$Ln";
     $regis='Y';
     $insert_leave=  mysqli_query($db,"insert ignore into work set enpid='$empno', reg_date='$date_reg', leave_no='$leave_no', begindate='$date_s', enddate='$date_e',
                                 typela='$typel', amount='$amount', abnote='$reason_l', address='$add_conn', tel='$tell',
-                                    check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='Y',depId='$depno',regis_leave='$regis'");
+                                    check_comment='$cert', comment='$note', pics='$image', idAdmin='$adminId', statusla='Y',depId='$depno',authority='".$_SESSION['Status']."',regis_leave='$regis'");
 include 'option/function_date.php';
 if($date >= $bdate and $date <= $edate){
     $year = date('Y')-1;
@@ -563,10 +563,11 @@ if (empty($num_row)) {
     echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=add_leave.php?id=$empno'>";
 }elseif ($method=='regis_leave') {
     $workid=$_POST['workid'];
-    $regis='A';
+    $regis=$_POST['confirm'];
     $leave_no=$_POST['leave_no'];
+    $surrogate=$_POST['surrogate'];
     $regis_date=date('Y-m-d');
-    $update_regis=  mysqli_query($db,"update work set  leave_no='$leave_no',regis_leave='$regis',receiver='$adminId',regis_date='$regis_date'
+    $update_regis=  mysqli_query($db,"update work set  leave_no='$leave_no',regis_leave='$regis',receiver='$adminId',regis_date='$regis_date',surrogate='$surrogate'
             where enpid='$empno' and workid='$workid' ");
     if ($update_regis == false) {
         echo "<p>";

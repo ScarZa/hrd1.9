@@ -59,7 +59,8 @@ $screen = isset($_REQUEST['screen']) ? $_REQUEST['screen'] : '';
                                 <select name='year'  class="form-control">
                                     <option value=''>กรุณาเลือกปีงบประมาณ</option>
 <?php
-for ($i = 2558; $i <= 2565; $i++) {
+$fiscalyear = (date("Y")+543)+1 ;
+for ($i = 2558; $i <= $fiscalyear; $i++) {
     echo "<option value='$i'>$i</option>";
 }
 ?>

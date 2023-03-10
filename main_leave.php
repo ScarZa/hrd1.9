@@ -120,8 +120,8 @@ include 'option/function_date.php';
                                 <select name='fiscal_year'  class="form-control">
                                     <option value=''>กรุณาเลือกปีงบประมาณ</option>
 <?php
-
-for ($i = 2558; $i <= 2565; $i++) {
+$fiscalyear = (date("Y")+543)+1 ;
+for ($i = 2558; $i <= $fiscalyear; $i++) {
   if((date("Y")+543)==$i){$selected='selected';}else{$selected='';}
     echo "<option value='$i' $selected>$i</option>";
 }

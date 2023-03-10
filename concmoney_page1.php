@@ -46,9 +46,10 @@ $sql_per = mysqli_query($db,"select concat(p1.pname,e1.firstname,' ',e1.lastname
     $sql_cost = mysqli_query($db,"SELECT SUM(abode)abode ,SUM(reg)reg,SUM(allow)allow,SUM(travel)travel,SUM(other)other
 FROM plan_out 
 WHERE idpo='$project_id'");
-    $sql_pjoin = mysqli_query($db,"SELECT CONCAT(e.firstname,' ',e.lastname) as fullname
+    $sql_pjoin = mysqli_query($db,"SELECT CONCAT(p1.pname,e.firstname,' ',e.lastname) as fullname
 from plan_out p
 INNER JOIN emppersonal e on e.empno = p.empno
+inner join pcode p1 on e.pcode=p1.pcode
 WHERE p.idpo= $project_id and p.empno != $empno");
             
 //    $sql_join=  mysqli_query($db,"select COUNT(empno)join_plan from plan_out where idpo='$project_id'");
@@ -58,6 +59,10 @@ WHERE p.idpo= $project_id and p.empno != $empno");
             $Person_detial = mysqli_fetch_assoc($sql_per);
             $Project_detial = mysqli_fetch_assoc($sql_pro);
             $Project_cost = mysqli_fetch_assoc($sql_cost);
+
+            $date1=date_create($Project_detial['stdate']);
+            $date2=date_create($Project_detial['etdate']);
+            $diff=date_diff($date1,$date2);
          
             $sql_trainout=  mysqli_query($db,"select *,
                     (select count(empno) from plan_out where idpo='$project_id') count_person from plan_out where idpo='$project_id' and empno='$empno'");
@@ -73,7 +78,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             <td width="20%" valign="bottom" align="right">ส่วนที่ 1</td>
         </tr>
         <tr>
-            <td valign="top">ชื่อผู้ยืม.......<?=$Person_detial['fullname']?>.........จำนวนเงิน........<?php $total_money=number_format($Project_detial['m1']+$Project_detial['m2']+$Project_detial['m3']+$Project_detial['m4']+$Project_detial['m5']); if($total_money==0){echo '.......';}else{echo $total_money;}?>.........บาท</td>
+            <td valign="top">ชื่อผู้ยืม............................................จำนวนเงิน............................................บาท</td>
             <td valign="bottom" align="right">แบบ 8708</td>
         </tr>
     </table>
@@ -97,11 +102,11 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 ข้าพเจ้าขอเบิกค่าใช้จ่ายในการเดินทางไปราชการสำหรับ (&nbsp;&nbsp;) ข้าพเจ้า (&nbsp;&nbsp;) คณะดังนี้<br>
 <table width="100%" border="0">
     <tr>
-        <td width="70%" height="30">ค่าเบี้ยเลี้ยงเดินทางประเภท..................................จำนวน<?php if(!empty($Project_detial['m3'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
+        <td width="70%" height="30">ค่าเบี้ยเลี้ยงเดินทางประเภท..................................จำนวน<?php if(!empty($Project_detial['m3'])){echo "..........".($diff->format("%a")+1)."..........";}else{?>.........................<?php }?>วัน</td>
         <td width="30%" height="30">รวม <?php if(!empty($Project_cost['allow'])){echo "..........".number_format($Project_cost['allow'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>
-        <td height="30">ค่าเช่าที่พักปะเภท................................................จำนวน<?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
+        <td height="30">ค่าเช่าที่พักประเภท................................................จำนวน<?php if(!empty($Project_detial['m1'])){echo "..........".number_format($Project_detial['amount'])."..........";}else{?>.........................<?php }?>วัน</td>
         <td height="30">รวม <?php if(!empty($Project_cost['abode'])){echo "..........".number_format($Project_cost['abode'])."..........";}else{?>...............................<?php }?> บาท</td>
     </tr>
     <tr>

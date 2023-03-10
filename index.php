@@ -46,19 +46,19 @@ if ($check_conn===FALSE) {
     <?php if (isset($_SESSION['user'])) { ?>
 <!--    <div class="row">-->
     <div class="row col-lg-12">
-        <div class="row col-lg-4">
-            <a href="<?= $resultHos['url'] ?>service&support1.2/process/from_hrd.php?fullname=<?= $_SESSION['fname'] . ' ' . $_SESSION['lname'] ?>
-               &id=<?= $_SESSION['user'] ?>&dep=<?= $_SESSION['dep'] ?>" class="btn btn-warning" target="_blank">โปรมแกรมสนับสนุน</a>      
-            <a href="#" class="btn btn-success" onClick="return popup('display.php', popup, 1248, 800);" title="แสดงกราฟ">กราฟ</a>
+        <div class="row col-lg-4 col-md-12 col-sm-12">
+        <div class=' row col-lg-5 col-md-6 col-sm-12'><a href="<?= $resultHos['url'] ?>service&support1.2/process/from_hrd.php?fullname=<?= $_SESSION['fname'] . ' ' . $_SESSION['lname'] ?>
+               &id=<?= $_SESSION['user'] ?>&dep=<?= $_SESSION['dep'] ?>" class="btn btn-warning col-lg-12 col-md-12 col-sm-12 col-xs-12" target="_blank">โปรมแกรมสนับสนุน</a></div>
+               <div class=' row col-lg-3 col-md-6 col-sm-12'><a href="#" class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12 col-lg-offset-1" onClick="return popup('display.php', popup, 1248, 800);" title="แสดงกราฟ">กราฟ</a></div>
         </div>
-        <div class="row" align="right">
-            <a href="#" class="btn btn-success" onClick="return popup('total_regularity.php', popup, 650, 600);" title="ดูระเบียบ/ข้อบังคับ">ระเบียบ</a>
-            <a href="mainpost_page.php" class="btn btn-info" title="ประกาศข่าว/ประชาสัมพันธ์">ประชาสัมพันธ์</a>
-            <a href="#" class="btn btn-primary" onClick="return popup('fullcalendar/fullcalendar3.php', popup, 820, 650);" title="ดูวันลาไปราชการ">ปฏิทินไปราชการ</a>
-            <a href="#" class="btn btn-info" onClick="return popup('fullcalendar/fullcalendar5.php', popup, 820, 650);" title="ดูวันลาไปราชการ">ปฏิทินอบรมภายใน</a>
-            <a href="#" class="btn btn-warning" onClick="return popup('fullcalendar/fullcalendar2.php', popup, 820, 650);" title="ดูวันลาของบุคลากร">ปฏิทินการลา</a>
+        <div class="col-lg-8 col-md-12 col-sm-12 row" align="right">
+            <div class=' row col-lg-2 col-md-6 col-sm-12'> <a href="#" class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick="return popup('total_regularity.php', popup, 650, 600);" title="ดูระเบียบ/ข้อบังคับ">ระเบียบ</a> </div>
+            <div class=' row col-lg-2 col-md-6 col-sm-12'> <a href="mainpost_page.php" class="btn btn-info col-lg-12 col-md-12 col-sm-12 col-xs-12" title="ประกาศข่าว/ประชาสัมพันธ์">ประชาสัมพันธ์</a> </div>
+            <div class=' row col-lg-2 col-md-6 col-sm-12'> <a href="#" class="btn btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick="return popup('fullcalendar/fullcalendar3.php', popup, 820, 650);" title="ดูวันลาไปราชการ">ปฏิทินไปราชการ</a> </div>
+            <div class=' row col-lg-3 col-md-6 col-sm-12'> <a href="#" class="btn btn-info col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick="return popup('fullcalendar/fullcalendar5.php', popup, 820, 650);" title="ดูวันลาไปราชการ">ปฏิทินอบรมภายใน</a> </div>
+            <div class=' row col-lg-2 col-md-6 col-sm-12'> <a href="#" class="btn btn-warning col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick="return popup('fullcalendar/fullcalendar2.php', popup, 820, 650);" title="ดูวันลาของบุคลากร">ปฏิทินการลา</a> </div>
             <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
-                <a href="#" class="btn btn-danger" onClick="return popup('fullcalendar/fullcalendar1.php', popup, 820, 650);" title="ดูวันลาของบุคลากร">ปฏิทินการลา</a><?php } ?>
+                <div class=' row col-lg-2 col-md-6 col-sm-12'> <a href="#" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" onClick="return popup('fullcalendar/fullcalendar1.php', popup, 820, 650);" title="ดูวันลาของบุคลากร">ปฏิทินการลา</a> </div><?php } ?>
         </div>
 <!--    </div>-->
     </div><br>

@@ -32,9 +32,10 @@ FROM hospital h
 INNER JOIN emppersonal e on e.empno=h.manager
 INNER JOIN pcode p on p.pcode=e.pcode");
     $hospital=mysqli_fetch_assoc($sql_hos);       
-$sql_per = mysqli_query($db,"select concat(e.firstname,' ',e.lastname) as fullname,po.reg_date,p2.posname as posi
+$sql_per = mysqli_query($db,"select concat(pc.pname,e.firstname,' ',e.lastname) as fullname,po.reg_date,p2.posname as posi
                                                         from plan_out po
                                                         inner join emppersonal e on e.empno=po.empno
+                                                        inner join pcode pc on pc.pcode=e.pcode
                                                         INNER JOIN work_history wh ON wh.empno=e.empno
                                                         inner join posid p2 on wh.posid=p2.posId
                                                         where po.idpo='$project_id' and po.empno='$empno' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
@@ -42,14 +43,15 @@ $sql_per = mysqli_query($db,"select concat(e.firstname,' ',e.lastname) as fullna
 FROM plan_out 
 WHERE idpo='$project_id'");
             
-    $sql_progroup=  mysqli_query($db,"SELECT CONCAT(e.firstname,' ',e.lastname)fullname,p.posname,po.allow,po.abode,po.travel,(po.other+po.reg)other
+    $sql_progroup=  mysqli_query($db,"SELECT CONCAT(pc.pname,e.firstname,' ',e.lastname)fullname,p.posname,po.allow,po.abode,po.travel,(po.other+po.reg)other
 ,(po.allow+po.abode+po.travel+po.other+po.reg)sum
 FROM plan_out po
 INNER JOIN emppersonal e on e.empno=po.empno
+inner join pcode pc on pc.pcode=e.pcode
 INNER JOIN department d on e.depid=d.depId
 INNER JOIN work_history wh ON wh.empno=e.empno
 INNER JOIN posid p on wh.posid=p.posId
-WHERE (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) AND po.idpo='$project_id' group by e.empno") ;
+WHERE (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) AND po.idpo='$project_id' group by e.empno order by d.depId asc") ;
             $Person_detial = mysqli_fetch_assoc($sql_per);
              $Project_cost = mysqli_fetch_assoc($sql_cost);
          
@@ -71,27 +73,27 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
         <thead>
             <tr>
                 <th rowspan="2" width='5%'>ลำดับที่</th>
-                <th rowspan="2" width='15%'>ชื่อ</th>
+                <th rowspan="2" width='16%'>ชื่อ</th>
                 <th rowspan="2" width='15%'>ตำแหน่ง</th>
-                <th colspan="4" width='29%'>ค่าใช้จ่าย</th>
+                <th colspan="4" width='28%'>ค่าใช้จ่าย</th>
                 <th rowspan="2" width='7%'>รวม</th>
                 <th rowspan="2" width='10%'>ลายมือชื่อ<br>ผู้รับเงิน</th>
                 <th rowspan="2" width='10%'>วัน เดือน ปี<br>ที่รับเงิน</th>
                 <th rowspan="2" width='9%'>หมายเหตุ</th>
             </tr>
             <tr>
-                <th width='8%'>ค่าเบี้ยเลี้ยง</th>
-                <th width='7%'>ค่าเช่าที่พัก</th>
-                <th width='7%'>ค่าพาหนะ</th>
-                <th width='7%'>ค่าใช้จ่ายอื่นๆ</th>
+                <th width='7%'>เบี้ยเลี้ยง</th>
+                <th width='7%'>เช่าที่พัก</th>
+                <th width='7%'>พาหนะ</th>
+                <th width='7%'>ใช้จ่ายอื่นๆ</th>
             </tr>
         </thead>
         <tbody>
             <?php $i=1; while ($progroup = mysqli_fetch_assoc($sql_progroup)) { ?>
             <tr align='center'>
                 <td align='center'><?= $i?></td>
-                <td> &nbsp;<?= $progroup['fullname']?></td>
-                <td align='center'><?= $progroup['posname']?></td>
+                <td><?= $progroup['fullname']?></td>
+                <td><?= $progroup['posname']?></td>
                 <td align='center'><?= number_format($progroup['allow'])?></td>
                 <td align='center'><?= number_format($progroup['abode'])?></td>
                 <td align='center'><?= number_format($progroup['travel'])?></td>

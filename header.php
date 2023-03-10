@@ -1,6 +1,7 @@
 <?php @session_start(); ?>
 <?php
 include_once 'connection/connect_i.php';
+//include_once 'connection/connect_i2.php';
 //===ชื่อโรงพยาบาล
 if ($db) {
     $sql = mysqli_query($db, "select * from  hospital");
@@ -137,7 +138,7 @@ if (!empty($resultHos['logo'])) {
 
 
     </head>
-    <?php
+    <?php 
     if (!empty($_GET['popup'])) {
         $project_place = $_GET['project_place'];
         $province = $_GET['province'];
@@ -148,11 +149,6 @@ if (!empty($resultHos['logo'])) {
         <body onload="return popup('popup_request_car.php?project_place=<?= $project_place ?>&province=<?= $province ?>&stdate=<?= $stdate ?>&etdate=<?= $etdate ?>&amount=<?= $amount ?>', popup, 600, 650);">
         <?php } elseif (!empty($_POST['popup'])) { ?>
         <body onLoad="KillMe();self.focus();window.opener.location.reload();">
-        <?php } elseif (!empty($_GET['approval'])) { 
-        $pro_id = $_GET['id'];
-        $id = $_GET['empno'];
-        ?>
-        <body onload="return popup('approval_page1.php?id=<?= $id ?>&pro_id=<?= $pro_id ?>', popup, 800,500);">
         <?php } else { ?>
         <body Onload="bodyOnload();">    
 <?php } ?>
@@ -182,7 +178,7 @@ if (!empty($resultHos['logo'])) {
                     </button>
 
                     <a class="navbar-brand logo-mini" href="index.php?unset=1"><img alt="Brand" src="images/kuser.ico" width='35'> 
-                        <font color='#ffff00'><b>HRD S</b>ystem V.1.9.4</font>
+                        <font color='#ffff00'><b>HRD S</b>ystem V.1.10</font>
                     </a>
                 </div>
             </div>
@@ -222,12 +218,10 @@ if (!empty($resultHos['logo'])) {
     <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
                                     <li><a href="add_person.php?unset=1"><img src='images/adduser.ico' width='25'> เพิ่มข้อมูลบุคลากร</a></li>
                                     <li><a href="pre_person.php?unset=1"><img src='images/identity.png' width='25'> ข้อมูลบุคลากร</a></li>
-                                    <!-- <li><a href="create_card.php?unset=1"><img src='images/phonebook.ico' width='25'> พิมพ์บัตรพนักงาน</a></li> -->
-                                    <li><a href="#" onClick="window.open('gencardgroup.html', '', 'width=600,height=800'); return false;"><img src='images/phonebook.ico' width='25'> พิมพ์บัตรพนักงาน</a></li>
+                                    <li><a href="create_card.php?unset=1"><img src='images/phonebook.ico' width='25'> พิมพ์บัตรพนักงาน</a></li>
                                     <li><a href="pre_educate.php?unset=1"><img src='images/Student.ico' width='25'> ประวัติการศึกษา</a></li>
                                     <li><a href="pre_Whistory.php?unset=1"><img src='images/work.ico' width='25'> ประวัติการทำงาน</a></li>
                                     <li><a href="pre_eval.php?unset=1"><img src='images/money.ico' width='25'> ประวัติการประเมิน/เงินเดือน</a></li>
-                                    <li><a href="pre_deduct.php?unset=1"><img src='images/money.ico' width='25'> กองทุนสำรองเลี้ยงชีพ</a></li>
                                     <li><a href="resign_person.php?unset=1"><img src='images/identity-x.png' width='25'> ข้อมูลบุคลากรย้าย/ลาออก</a></li>
                                     <li class="divider"></li>
                                     <li><a href="statistics_person.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติบุคลากร</a></li>
@@ -238,7 +232,6 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="detial_educate.php?unset=1"><img src='images/Student.ico' width='25'> ประวัติการศึกษา</a></li>
                                     <li><a href="detial_Whistory.php?unset=1"><img src='images/work.ico' width='25'> ประวัติการทำงาน</a></li>
                                     <li><a href="detial_eval.php?id=<?=$_SESSION['user']?>"><img src='images/money.ico' width='25'> ประวัติการประเมิน/เงินเดือน</a></li>
-                                    <li><a href="detial_deduct.php?id=<?=$_SESSION['user']?>"><img src='images/money.ico' width='25'> กองทุนสำรองเลี้ยงชีพ</a></li>
     <?php } if ($_SESSION['Status'] == 'SUSER' or $_SESSION['Status'] == 'USUSER') { ?>
                                     <li class="divider"></li>
                                     <li><a href="statistics_person.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติบุคลากรในหน่วยงาน</a></li>
@@ -267,8 +260,12 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="pre_leave.php?unset=1"><img src='images/Lfolder.ico' width='25'> บันทึกการลาบุคลากร</a></li>
     <?php } if ($_SESSION['Status'] == 'SUSER' or $_SESSION['Status'] == 'USUSER') { ?>
                                     <li class="divider"></li>
+                                    <li><a href="receive_leave.php?unset=1"><img src='images/kwrite.ico' width='25'> บันทึกทะเบียนใบลาในหน่วยงาน</a></li>
                                     <li><a href="Lperson_report.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลาในหน่วยงาน</a></li>
-    <?php } ?>
+    <?php } if($resultHos['manager']==$_SESSION['user']){?>
+        <li class="divider"></li>
+                                    <li><a href="receive_leave.php?unset=1"><img src='images/kwrite.ico' width='25'> บันทึกทะเบียนใบลาหัวหน้ากลุ่มภารกิจ</a></li>
+    <?php }?>
                             </ul> 
                         </li>
     <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
@@ -338,6 +335,7 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="Add_User.php?unset=1"><img src='images/Settings.ico' width='25'> ตั้งค่าผู้ใช้งาน</a></li>
                                     <li><a href="Add_Department.php?unset=1"><img src='images/Settings.ico' width='25'> ตั้งค่าฝ่าย/งาน</a></li>
                                     <li><a href="Add_Position.php?unset=1"><img src='images/Settings.ico' width='25'> ตั้งค่าตำแหน่ง</a></li>
+                                    <li><a href="Add_Signature.php?unset=1"><img src='images/Settings.ico' width='25'> เพิ่มลายเซ็นต์</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#" onClick="window.open('regularity.php', '', 'width=1200,height=700'); return false;" title="เพิ่มระเบียบ"><img src='images/sticky-notes.ico' width='25'> ระเบียบ/ข้อบังคับ</a></li>
                                     <li class="divider"></li>
@@ -347,8 +345,6 @@ if (!empty($resultHos['logo'])) {
                                 <li><a href="#" onClick="return popup('fullcalendar/fullcalendar4.php', popup, 820, 710);" title="ดูกิจกรรมส่วนตัว"><img src='images/calendar-clock.ico' width='25'> ปฏิทินกิจกรรมส่วนตัว</a></li>
                                  <?php if ($_SESSION['Status'] == 'ADMIN') { ?>
                                 <li><a href="#" onClick="return popup('add_holiday_calendra.php', popup, 800, 710);" title="เพิ่มวันหยุดนักขัตฤกษ์"><img src='images/Add_calendar.ico' width='25'> เพิ่มวันหยุดนักขัตฤกษ์</a></li>
-                                <li class="divider"></li>
-                                <li><a href="reset_counter.php" onclick="return confirm('ต่อไปนี้จะเป็นการ รีเซทการนับเลขเอกสารต่าง กรุณายืนยันอีกครั้ง !!!')"><img src='images/Bomb.ico' width='25'> Reset Counter.</a></li>
                                 <?php } ?>
                                 <li class="divider"></li>
                                 <li><a href="#" onClick="return popup('about.php', popup, 550, 700);" title="เกี่ยวกับเรา"><img src='images/Paper Mario.ico' width='25'> เกี่ยวกับเรา</a></li>

@@ -4,13 +4,30 @@ if (empty($_SESSION['user'])) {
     echo "<meta http-equiv='refresh' content='0;url=index.php'/>";
     exit();
 }
+if($resultHos['manager']==$_SESSION['user']){
+    $title = "ผู้อำนวยการอนุมัติใบลา";
+    $code = "and w.authority = 'USUSER'";
+    $code2 = "and t.authority = 'USUSER'";
+}elseif($_SESSION['Status']=='SUSER'){
+    $title = "หัวหน้างานอนุมัติใบลา";
+    $code = "and d.depId=".$_SESSION['dep'];
+    $code2 = "and d.depId=".$_SESSION['dep'];
+}else if($_SESSION['Status']=='USUSER'){
+    $title = "หัวหน้ากลุ่มงานอนุมัติใบลา";
+    $code = "and d.main_dep=".$_SESSION['main_dep'];
+    $code2 = "and d.main_dep=".$_SESSION['main_dep'];
+}else if($_SESSION['Status']=='ADMIN'){
+    $title = "บันทึกทะเบียนรับใบลา";
+    $code = "";$code2 = "";
+}
+ 
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1><img src='images/kwrite.ico' width='75'><font color='blue'>  บันทึกทะเบียนรับใบลา </font></h1> 
+        <h1><img src='images/kwrite.ico' width='75'><font color='blue'>  <?= $title?> </font></h1> 
         <ol class="breadcrumb alert-success">
             <li><a href="index.php"><i class="fa fa-home"></i> หน้าหลัก</a></li>
-            <li class="active"><i class="fa fa-edit"></i> บันทึกทะเบียนรับใบลา</li>
+            <li class="active"><i class="fa fa-edit"></i> <?= $title?></li>
         </ol>
     </div>
 </div>
@@ -18,7 +35,7 @@ if (empty($_SESSION['user'])) {
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title"><img src='images/bookcase.ico' width='25'> บันทึกทะเบียนรับใบลา</h3>
+                <h3 class="panel-title"><img src='images/bookcase.ico' width='25'> <?= $title?></h3>
             </div>
             <div class="panel-body">
                 <div class="alert alert-info alert-dismissable">
@@ -98,13 +115,15 @@ LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
 where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and regis_leave='$regis'
-and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where (datela between '$date01' and '$date02') and regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where (datela between '$date01' and '$date02') and regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc";
                     
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
@@ -114,13 +133,15 @@ LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc";  
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where datela between '$date01' and '$date02' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where datela between '$date01' and '$date02' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc";
                      
                     }
@@ -133,13 +154,15 @@ LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and regis_leave='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+where w.statusla='Y' and regis_leave='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc,vstdate desc";
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
@@ -148,13 +171,15 @@ LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and begindate BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+where w.statusla='Y' and begindate BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where datela BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where datela BETWEEN '$y-10-01' and '$Yy-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc,vstdate desc";
                     }
                     
@@ -173,64 +198,72 @@ LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
 where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02') and regis_leave='$regis'
-and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where (datela between '$date01' and '$date02') and regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where (datela between '$date01' and '$date02') and regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc";
                     
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
-                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
+                        $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
 where w.statusla='Y' and (begindate between '$date01' and '$date02') and (enddate between '$date01' and '$date02')
-and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc";  
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where datela between '$date01' and '$date02' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where datela between '$date01' and '$date02' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc";
                      
                     }
                 } else {
                     if($method=='status_leave' and $regis=$_REQUEST['select_status']!=''){
                         $regis=$_REQUEST['select_status'];
-                    $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
+                     $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where w.statusla='Y' and regis_leave='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+where w.statusla='Y' and regis_leave='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where regis_time='$regis' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc,vstdate desc";
                     }elseif($method=='' or $method=='status_leave' and $_REQUEST['select_status']==''){
-                    $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
+                 $q = "SELECT w.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname, t.nameLa as namela 
 FROM work w
 LEFT OUTER JOIN emppersonal e1 on e1.empno=w.enpid
 LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
 LEFT OUTER JOIN department d on wh.depid=d.depId
 LEFT OUTER JOIN typevacation t on t.idla=w.typela
-where  w.statusla='Y' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by w.workid
+where  w.statusla='Y' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+$code group by w.workid
 order by w.workid desc,reg_date desc";
                     $q2 = "select t.*,CONCAT(e1.firstname,'  ',e1.lastname) as fullname,d.depName as depname from timela t
                             LEFT OUTER JOIN emppersonal e1 on e1.empno=t.empno
                             LEFT OUTER JOIN work_history wh ON wh.empno=e1.empno
                             LEFT OUTER JOIN department d on wh.depid=d.depId
-                            where (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by t.id
+                            where (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+                            $code2 group by t.id
                             order by t.id desc,vstdate desc";
                     }
                     
@@ -285,7 +318,7 @@ order by w.workid desc,reg_date desc";
                         <td width="9%" align="center"><b>ถึง</b></td>
                         <td width="10%" align="center"><b>เรื่อง</b></td>
                         <td width="20%" align="center"><b>การปฏิบัติ</b></td>
-                        <td width="7%" align="center"><b>รับใบลา</b></td>
+                        <td width="7%" align="center"><b>อนุมัติใบลา</b></td>
 
                     </tr>
 
@@ -303,11 +336,23 @@ order by w.workid desc,reg_date desc";
                             <td align="center"><?= $result['namela']; ?></td>
                             <td align="center"><?= DateThai1($result['begindate']); ?> <b>ถึง</b> <?= DateThai1($result['enddate']); ?></td>
                             <td align="center">
-                           <?php if($result['regis_leave']=='W'){ ?>
-                            <a href="#" onClick="return popup('regis_leave.php?id=<?= $result['enpid']?>&Lno=<?= $result['workid']?>', popup, 550, 600);" title="รอลงทะเบียนรับใบลา"><i class="fa fa-spinner fa-spin"></i></a>
-                            <?php } elseif ($result['regis_leave']=='A') {?>
-                            <a href="#" onClick="return popup('regis_leave.php?method=confirm_leave&id=<?= $result['enpid']?>&Lno=<?= $result['workid']?>', popup, 550, 600);" title="รออนุมัติใบลา">
-                                    <img src="images/email.ico" width="20"></a>
+                           <?php if($result['regis_leave']=='W'){ 
+                               if(($_SESSION['Status']=='ADMIN' or $_SESSION['Status']=='SUSER') and $result['authority']=='USER'){?>
+                            <a href="#" onClick="return popup('regis_leave.php?id=<?= $result['enpid']?>&Lno=<?= $result['workid']?>', popup, 550, 600);" title="รอหัวหน้างานอนุมัติใบลา"><i class="fa fa-spinner fa-spin"></i></a>
+                               <?php }else if(($_SESSION['Status']=='ADMIN' or $_SESSION['Status']=='USUSER') and $result['authority']=='SUSER'){?>
+                                <a href="#" onClick="return popup('regis_leave.php?id=<?= $result['enpid']?>&Lno=<?= $result['workid']?>', popup, 550, 600);" title="รอหัวหน้ากลุ่มงานอนุมัติใบลา"><i class="fa fa-spinner fa-spin"></i></a>
+                                   <?php }else if(($_SESSION['Status']=='ADMIN' or ($resultHos['manager']==$_SESSION['user'])) and $result['authority']=='USUSER'){?>
+                                <a href="#" onClick="return popup('regis_leave.php?id=<?= $result['enpid']?>&Lno=<?= $result['workid']?>', popup, 550, 600);" title="รอผู้อำนวยการอนุมัติใบลา"><i class="fa fa-spinner fa-spin"></i></a>
+                                    <?php }else if($_SESSION['Status']=='USUSER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USER'){?>
+                                    <i class="fa fa-spinner"  title="รอหัวหน้าอนุมัติใบลา"></i>
+                                   <?php }?>
+                            <?php } elseif ($result['regis_leave']=='A') {
+                                if($_SESSION['Status']=='ADMIN'){?>
+                            <a href="#" onClick="return popup('regis_leave.php?method=confirm_leave&id=<?= $result['enpid']?>&Lno=<?= $result['workid']?>', popup, 550, 600);" title="รอหัวหน้ากลุ่มงานอนุมัติใบลา">
+                                    <img src="images/email.ico" width="20" title="รอฝ่ายทรัพยากรบุคคล"></a>
+                                <?php }else{ ?>
+                                    <img src="images/email.ico" width="20" title="รอฝ่ายทรัพยากรบุคคล">
+                                <?php }?>
                             <?php } elseif ($result['regis_leave']=='Y') {?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="อนุมัติ">
                                      <?php } elseif ($result['regis_leave']=='N') {?>
@@ -370,11 +415,24 @@ order by w.workid desc,reg_date desc";
                             <td align="center">ลาชั่วโมง</td>
                             <td align="center"><?= DateThai1($result2['datela']); ?>&nbsp; <?= $result2['starttime']; ?> <b>ถึง</b> <?= $result2['endtime']; ?></td>
                             <td align="center">
-                           <?php if($result2['regis_time']=='W'){ ?>
-                            <a href="#" onClick="return popup('regis_tleave.php?id=<?= $result2['empno']?>&Lno=<?= $result2['id']?>', popup, 550, 550);" title="รอลงทะเบียนรับใบลา"><i class="fa fa-spinner fa-spin"></i></a>
-                            <?php } elseif ($result2['regis_time']=='A') {?>
-                            <a href="#" onClick="return popup('regis_tleave.php?method=confirm_tleave&id=<?= $result2['empno']?>&Lno=<?= $result2['id']?>', popup, 550, 580);" title="รออนุมัติใบลา">
-                                    <img src="images/email.ico" width="20"></a>
+                           <?php if($result2['regis_time']=='W'){ 
+                            if(($_SESSION['Status']=='ADMIN' or $_SESSION['Status']=='SUSER') and $result2['authority']=='USER'){?>
+                            <a href="#" onClick="return popup('regis_tleave.php?id=<?= $result2['empno']?>&Lno=<?= $result2['id']?>', popup, 550, 550);" title="รอหัวหน้างานอนุมัติใบลา"><i class="fa fa-spinner fa-spin"></i></a>
+                            <?php }else 
+                               if(($_SESSION['Status']=='ADMIN' or $_SESSION['Status']=='USUSER') and ($result2['authority']=='SUSER')){?>
+                            <a href="#" onClick="return popup('regis_tleave.php?id=<?= $result2['empno']?>&Lno=<?= $result2['id']?>', popup, 550, 550);" title="รอหัวหน้ากลุ่มงานอนุมัติใบลา"><i class="fa fa-spinner fa-spin"></i></a>
+                            <?php }else if(($_SESSION['Status']=='ADMIN' or ($resultHos['manager']==$_SESSION['user'])) and $result2['authority']=='USUSER'){?>
+                            <a href="#" onClick="return popup('regis_tleave.php?id=<?= $result2['empno']?>&Lno=<?= $result2['id']?>', popup, 550, 550);" title="รอผู้อำนวยการอนุมัติใบลา"><i class="fa fa-spinner fa-spin"></i></a>
+                            <?php }else if($_SESSION['Status']=='USUSER' or $_SESSION['Status']=='SUSER' or $_SESSION['Status']=='USER'){?>
+                                    <i class="fa fa-spinner"  title="รอหัวหน้าอนุมัติใบลา"></i>
+                                   <?php }?>   
+                            <?php } elseif ($result2['regis_time']=='A') {
+                                if($_SESSION['Status']=='ADMIN'){?>
+                            <a href="#" onClick="return popup('regis_tleave.php?method=confirm_tleave&id=<?= $result2['empno']?>&Lno=<?= $result2['id']?>', popup, 550, 580);" title="รอหัวหน้ากลุ่มงานอนุมัติใบลา">
+                                    <img src="images/email.ico" width="20" title="รอฝ่ายทรัพยากรบุคคล"></a>
+                                    <?php }else{ ?>
+                                    <img src="images/email.ico" width="20" title="รอฝ่ายทรัพยากรบุคคล">
+                                <?php }?>        
                             <?php } elseif ($result2['regis_time']=='Y') {?>
                                     <img src="images/Symbol_-_Check.ico" width="20"  title="อนุมัติ">
                                      <?php } elseif ($result2['regis_time']=='N') {?>

@@ -206,6 +206,7 @@ if ($_SESSION['Status'] != 'USER') {
                             </div>
                             <input type="hidden" name="method" value="check_detial_leave">
                             <input type="hidden" name="empno" value="<?= $empno ?>">
+                            <input type='hidden' name='id' value='<?= $empno ?>'>
                             <button type="submit" class="btn btn-success">ตกลง</button>
                         </form>
                     </div>
@@ -215,12 +216,14 @@ if ($_SESSION['Status'] != 'USER') {
                             <select name='year'  class="form-control">
                                 <option value=''>กรุณาเลือกปีงบประมาณ</option>
                                 <?php
-                                for ($i = 2558; $i <= 2565; $i++) {
+                                $fiscalyear = (date("Y")+543)+1 ;
+                                for ($i = 2558; $i <= $fiscalyear; $i++) {
                                     echo "<option value='$i'>$i</option>";
                                 }
                                 ?>
                             </select>
                         </div>
+                        <input type='hidden' name='id' value='<?= $empno ?>'>
                         <button type="submit" class="btn btn-success">ตกลง</button> 						
                     </form>
                 

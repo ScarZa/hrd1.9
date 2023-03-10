@@ -1,0 +1,97 @@
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset='utf-8'/>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name="viewport" content="width=device-width" />
+    <title>Work Tree</title>
+    <style id="myStyles">
+        html, body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    font-family: Helvetica;
+    overflow: hidden;
+}
+
+#tree {
+    width: 100%;
+    height: 100%;
+}
+
+
+    </style>
+<script type="text/javascript">
+  function get(name){
+if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^?]*)')).exec(location.search))
+return decodeURIComponent(name[1]);
+}
+
+</script>
+</head>
+<body>
+    <script src="../option/js/jquery.min.js"></script>
+    <!-- <script src="https://balkangraph.com/js/latest/OrgChart.js"></script> -->
+    <script src="../option/FamilyTreeJS/OrgChart.js"></script>
+    <div><h3 style="text-align: center;"></h3></div>
+<div id="tree"></div>
+    <script>
+
+window.onload = function () {
+    var depid = get('id');
+
+    var uri = window.location.toString();
+    if (uri.indexOf("?") > 0) {
+        var clean_uri = uri.substring(0, uri.indexOf("?"));
+        window.history.replaceState({}, document.title, clean_uri);
+    }
+
+    $.getJSON("../JsonData/detail_worktree.php" ,{ data : depid}, function (data) {console.log(data)
+      $("h3").empty().append("แผนผัง"+data[1]['depName'])
+      var c =1;
+      //var val =  [ { id: 1, name: "นพ.จุฬาพันธุ์ เหมกูล", title: "ผอ.รพจ.เลยฯ", img: "../photo/18-01-202311-1-200x300.jpg" },];
+      var val =[];
+      $.each( data, function( key, value ) {
+        console.log(value['fullname'])
+if(key==0){
+    val.push({ id: c, name: value['fullname'], title: value['position'],detail:value['posname'], img: "../photo/"+ value['photo']})
+}else{
+    val.push({ id: c, pid: value['class'], name: value['fullname'], title: value['position'],detail:value['posname'], img: "../photo/"+ value['photo']})
+}
+      
+       c++;
+       console.log(val)
+  });
+   
+    var chart = new OrgChart(document.getElementById("tree"), {
+        enableDragDrop: true,
+        tags: {
+            "assistant": {
+                template: "ula"
+            }
+        },
+        nodeMenu: {
+            details: { text: "Details" },
+            edit: { text: "Edit" },
+            add: { text: "Add" },
+            remove: { text: "Remove" }
+        },
+        nodeBinding: {
+            field_0: "name",
+            field_1: "title",
+            img_0: "img"
+        }
+        
+        , nodes: val
+        
+    });
+  });
+};
+
+    </script>
+</body>
+</html>

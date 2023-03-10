@@ -93,8 +93,9 @@ echo mysqli_error($db);
  <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" class="divider" rules="rows" frame="below">  
  <TR bgcolor='#898888'>
 					<th width='10%'><CENTER>ลำดับ</CENTER></th>
-					<th width='36%'><CENTER>หน่วยงาน</CENTER></th>
-                                        <th width='36%'><CENTER>ฝ่าย</CENTER></th>
+					<th width='30%'><CENTER>หน่วยงาน</CENTER></th>
+                                        <th width='30%'><CENTER>ฝ่าย</CENTER></th>
+																				<th width='12%'>รายละเอียด</th>
 					<th width='18%'><CENTER>แก้ไข | ลบฝ่าย | ลบงาน</CENTER></th>
  </TR>
 <?php 
@@ -105,6 +106,7 @@ while($result=mysqli_fetch_assoc($qr)){?>
                                         <TD height="20" align="center" ><?=($chk_page*$e_page)+$i?></TD>
 					<TD><?=$result['depName']; ?></TD>
                                         <TD><?=$result['dep_name']; ?></TD>
+																				<td><CENTER><a href='#' onClick="return popup('WorkTree/WorkTree.html?id=<?= $result['depId'] ?>', popup, 900, 1024);"><i class='fa fa-search'></i></a></CENTER></td>
  					<TD><CENTER>
 				    <a href='Add_Department.php?method=update&dep_id=<?=$result['depId']?>&mdep_id=<?=$result['main_dep']?>' ><i class="fa fa-edit"></i></a> 
 				    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

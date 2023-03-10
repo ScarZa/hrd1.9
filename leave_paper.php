@@ -23,7 +23,7 @@
 </head>
 <?php
 include_once ('option/funcDateThai.php');
-include_once ('option/function_date.php');
+include_once 'option/function_date.php';
 
     $empno=$_REQUEST['empno'];
     $workid=$_REQUEST['work_id'];
@@ -34,6 +34,13 @@ INNER JOIN pcode p on p.pcode=e.pcode");
     $hospital=mysqli_fetch_assoc($sql_hos);
     $sql=  mysqli_query($db,"select w.*,concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,d2.dep_name as depname,p2.posname as posi ,
 ty.nameLa as namela,w.tel as telephone,e1.emptype,CONCAT(TIMESTAMPDIFF(year,e1.regis_date,NOW()))AS age
+,(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=w.enpid) writer
+,(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=w.receiver) appr
+,(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=w.surrogate) surrog
+,(SELECT concat(p1.pname,e2.firstname,' ',e2.lastname) FROM emppersonal e2 inner join pcode p1 on e2.pcode=p1.pcode WHERE e2.empno=w.receiver) appr_name
+,(SELECT concat(p1.pname,e3.firstname,' ',e3.lastname) FROM emppersonal e3 inner join pcode p1 on e3.pcode=p1.pcode WHERE e3.empno=w.surrogate) surrogater
+,if(!ISNULL(w.confirmer),(SELECT concat(p1.pname,e1.firstname,' ',e1.lastname) FROM emppersonal e1 WHERE e1.empno=w.confirmer),'') confirm_name
+,if(!ISNULL(w.confirmer),(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=w.confirmer),'') confirm
             from work w 
             inner join emppersonal e1 on w.enpid=e1.empno
             inner join pcode p1 on e1.pcode=p1.pcode
@@ -44,6 +51,26 @@ ty.nameLa as namela,w.tel as telephone,e1.emptype,CONCAT(TIMESTAMPDIFF(year,e1.r
             INNER JOIN typevacation ty on ty.idla=w.typela
             where w.enpid='$empno' and w.workid='$workid' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
     $work =  mysqli_fetch_assoc($sql);
+    if(!empty($work['confirmer']) and ($work['authority']=='USER'and ($work['regis_leave']=='A' or $work['regis_leave']=='Y'))){
+      $sql2=  mysqli_query($db,"SELECT concat(p1.pname,e.firstname,' ',e.lastname) fullname ,e.signature
+      FROM emppersonal e
+      inner join pcode p1 on e.pcode=p1.pcode
+      LEFT OUTER JOIN work_history wh ON wh.empno=e.empno and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+      inner join department d1 on wh.depid=d1.depId
+      inner join department_group d2 on d2.main_dep=d1.main_dep
+      INNER JOIN member m on m.Name = e.empno and m.Status = 'USUSER'
+      WHERE d2.main_dep = (SELECT main_dep FROM department WHERE depId = ".$work['depId'].")");
+
+      $head_group =  mysqli_fetch_assoc($sql2);
+    }
+    if(!empty($work['confirmer']) and ($work['authority']=='SUSER' and ($work['regis_leave']=='A' or $work['regis_leave']=='Y'))){
+      $sql3=  mysqli_query($db,"SELECT concat(p1.pname,e.firstname,' ',e.lastname) fullname ,e.signature
+      FROM emppersonal e
+      inner join hospital h on h.manager = e.empno
+      inner join pcode p1 on e.pcode=p1.pcode");
+
+      $shead_group =  mysqli_fetch_assoc($sql3);
+    }
     
      if($date >= $bdate and $date <= $edate){
     $sql_leave=  mysqli_query($db,"select ty.nameLa,w.begindate,w.enddate,w.amount FROM print_leave p
@@ -64,17 +91,13 @@ where p.empno='$empno' and p.workid='$workid' and (w.begindate  BETWEEN '$Y-10-0
                                     $leave_total= mysqli_fetch_assoc($sql_total);
                                     if($date >= $bdate and $date <= $edate){
                                     $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and statusla='Y' and
-                                                                begindate BETWEEN '$y-10-01' and '$Yy-09-30'");  
-                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$y'"); 
+                                                                begindate BETWEEN '$y-10-01' and '$Yy-09-30'");   
                                     }else{
                                     $sql_leave_t=  mysqli_query($db,"SELECT SUM(amount) sum_leave FROM work WHERE enpid='$empno' and typela='3' and statusla='Y' and 
                                                                 begindate BETWEEN '$Y-10-01' and '$y-09-30'");
-                                    $sql_total2=  mysqli_query($db,"select L1,L2,L3 from leave_day where empno='$empno' and fiscal_year='$Y'");                           
                                     }
                                     $sum_leave= mysqli_fetch_assoc($sql_leave_t);
                                     //$sum_total=$leave_total['L3']+$sum_leave['sum_leave'];
-                                    
-                                    $befor_leave_total= mysqli_fetch_assoc($sql_total2);
 ?>
 <body>
     <?php
@@ -111,26 +134,19 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             สังกัดกรมสุขภาพจิต  กระทรวงสาธารณสุข<br>  
             <?php
             if($work['typela']=='3'){
-              if($work['emptype']=='1' or $work['emptype']=='2'){
-                $cumu_leave = $befor_leave_total['L3'];
-                if($work['age']<10 and $cumu_leave+10 > 20){
-                    $L3 = 20;
-                }elseif ($work['age']>=10 and $cumu_leave+10 > 30) {
-                    $L3 = 30;
-                }else{
-                    $L3 = $cumu_leave+10;
-                }
-            }else if($work['emptype']=='3' or $work['emptype']=='4'){
-                $cumu_leave = $befor_leave_total['L3'];
-                if($cumu_leave>=5){
-                    $L3 = 5+10;
-                }else{
-                    $L3 = $cumu_leave+10;
-                }
-            }else{
-                $cumu_leave = 0;
-                $L3 = $cumu_leave+10;
-            } ?>
+                if($work['emptype']=='1' or $work['emptype']=='2'){
+                                        $cumu_leave = $leave_total['L3'];
+                                        if($work['age']<10 and $cumu_leave+10 > 20){
+                                            $L3 = 20;
+                                        }elseif ($work['age']>=10 and $cumu_leave+10 > 30) {
+                                            $L3 = 30;
+                                        }else{
+                                            $L3 = $cumu_leave+10;
+                                        }
+                                    }else{
+                                        $cumu_leave = 0;
+                                        $L3 = $cumu_leave+10;
+                                    } ?>
                                  มีวันลาพักผ่อนสะสม<u>&nbsp; <?=$cumu_leave?> &nbsp;</u>วันทำการ  มีสิทธิลาพักผ่อนประจำปีอีก 10 วัน รวมเป็น<u>&nbsp; <?=$L3?> &nbsp;</u>วันทำการ <br> 
                              <?php }?>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขอลา<u> <?= $work['namela']?> </u>เนื่องจาก<u> <?= $work['abnote']?> </u><br>
@@ -274,10 +290,15 @@ where p.empno='$empno' and p.workid='$workid' order by print_id desc");
   <?php }?>
 </table><br><br>
                                     
-                                         <center>(ลงชื่อ)..........................................................ผู้ตรวจสอบ<br><br>
-                                         ........../............/............<br><br></center>
+                                         <center><?php if(!empty($work['confirmer'])){?>
+                                            (ลงชื่อ) <img src='<?= "signature/".$work['confirm']?>' height='35'> ผู้ตรวจสอบ<br>
+                                            ( <?= $work['confirm_name']?> )<br>
+                                            <?= DateThai2($work['reg_date'])?><br></center>
+                                         <?php }else{ ?>_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>(ลงชื่อ)..........................................................ผู้ตรวจสอบ<br><br>
+                                         ........../............/............<?php }?><br><br></center>
                                          ในการลาครั้งนี้ได้มอบหมายให้&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                         <!-- <?php if(empty($work['surrogater'])){?>
                                          นาย/นาง/น.ส..........................................................<br>
                                          ปฎิบัติงานแทน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -288,49 +309,84 @@ where p.empno='$empno' and p.workid='$workid' order by print_id desc");
                                          (ลงชื่อ)..........................................................ผู้รับมอบ<br><br>
                                          (..........................................................)<br><br>
                                          ........../............/............</center><br><br>
+                                         <?php }else{?> -->
+                                            <?= $work['surrogater']?> ปฎิบัติงานแทน
+                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                                         <!-- <center>(ลงชื่อ) <img src='<?= "signature/".$work['writer']?>' height='35'> ผู้มอบ<br>
+                                         ( <?= $work['fullname']?> )<br>
+                                          <?= DateThai2($work['reg_date'])?><br><br>
+                                          (ลงชื่อ) <img src='<?= "signature/".$work['surrog']?>' height='35'> ผู้รับมอบ<br>
+                                                     ( <?= $work['surrogater']?> )<br>
+                                                      <?= DateThai2($work['reg_date'])?></center><br><br>
+                                         <?php }?> -->
                                          <?php if($work['typela']=='3'){?>
                                          <h5><b>* สำหรับบุคลกรที่ปฏิบัตงานไม่ครบ 6 เดือนไม่ได้รับสิทธิให้ลาพักผ่อน</b></h5><br>
                                          <?php }else{?>
                                          <h5><b>** สำหรับลูกจ้างชั่วคราวภายใน 6 เดือนแรกที่ลาป่วยเกิน 3 วัน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></h5><br>
                                          <center>ยินยอม&nbsp; (&nbsp; )&nbsp; หักเงินเดือน&nbsp; (&nbsp; )&nbsp; ทำงานชดเชย<br><br>
-                                         (ลงชื่อ)..........................................................ผู้ขออนุญาต<br>
+                                         (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['writer']?>' height='35'>&nbsp;&nbsp; ผู้ขออนุญาต<br>
                                          ( <?= $work['fullname']?> )<br></center>
                                          <?php }?>
                                          </td>
                                          <td width="50%">
                                      <br>
-                                         <center>ขอแสดงความนับถือ<br><br>
-                                                     ..........................................................<br>
-                                                     ( <?= $work['fullname']?> )<br>
+                                         <center>ขอแสดงความนับถือ<br>
+                                                     <img src='<?= "signature/".$work['writer']?>' height='35'><br>
+                                                     ( <?= $work['fullname']?> )<br><br>
                                                       <?= DateThai2($work['reg_date'])?><br><br></center>
                                          <left> เรียน  หัวหน้า <?= $work['depname']?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                                             - เห็นควรเสนอผู้อำนวยการพิจารณาอนุญาต&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br></left>
-                                         <center>(ลงชื่อ).............................................หัวหน้างาน/รักษาการ<br><br>
+                                             - เห็นควรเสนอผู้อำนวยการพิจารณาอนุญาต&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br></left>
+                                         <center><?php if($work['authority']=='USER'and ($work['regis_leave']=='A' or $work['regis_leave']=='Y')){?>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['appr']?>' height='35'>&nbsp;&nbsp; หัวหน้างาน/กลุ่มงาน<br><br>
+                                            ( <?= $work['appr_name']?> )<br><br>
+                                            <?= DateThai2($work['reg_date'])?><br><p></center>
+                                         <?php }else{ ?>_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>(ลงชื่อ).............................................หัวหน้างาน/กลุ่มงาน<br><br>
                                              (..........................................................)<br><br>
-                                         ........../............/............<br><br></center>
+                                         ........../............/............<br><br></center><?php }?> 
                                          <left>เรียน  ผู้อำนวยการ <?=$hospital['name']?>&nbsp;&nbsp;<br>
                                                      - เพื่อพิจารณาอนุญาต&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br></left>
-                                         <center>(ลงชื่อ).............................................หัวหน้าฝ่าย/รักษาการ<br><br>
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br></left><br>
+                                         <center><?php if($work['authority']=='SUSER' and ($work['regis_leave']=='A' or $work['regis_leave']=='Y')){?>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['appr']?>' height='35'>&nbsp;&nbsp; หัวหน้ากลุ่มภารกิจ<br><br>
+                                            ( <?= $work['appr_name']?> )<br><br>
+                                            <?= DateThai2($work['reg_date'])?><br></center>
+                                            <?php }elseif(!empty($work['confirmer']) and ($work['authority']=='USER'and ($work['regis_leave']=='A' or $work['regis_leave']=='Y'))){?>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$head_group['signature']?>' height='35'>&nbsp;&nbsp; หัวหน้ากลุ่มภารกิจ<br><br>
+                                            ( <?= $head_group['fullname']?> )<br><br>
+                                            <?= DateThai2($work['reg_date'])?><br><br></center>
+                                         <?php }else{ ?>_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>(ลงชื่อ).............................................หัวหน้ากลุ่มภารกิจ<br><br>
                                          (..........................................................)<br><br>
-                                         ........../............/............<br><br>
+                                         ........../............/............<br><br><?php }?> 
+                                         <?php if($work['authority']=='USUSER' and ($work['regis_leave']=='A' or $work['regis_leave']=='Y')){?>
+                                            <u>คำสั่ง</u>&nbsp; (<img src='images/check.png' height='10'>)&nbsp; อนุญาต &nbsp;    (&nbsp; )&nbsp; ไม่อนุญาต<br><br>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['appr']?>' height='35'>&nbsp;&nbsp; ผู้อำนวยการฯ<br><br>
+                                            ( <?= $work['appr_name']?> )<br><br>
+                                            <?= DateThai2($work['reg_date'])?><br><br></center>
+                                         <?php }elseif(!empty($work['confirmer']) and ($work['authority']=='SUSER' and ($work['regis_leave']=='A' or $work['regis_leave']=='Y'))){?>
+                                            <u>คำสั่ง</u>&nbsp; (<img src='images/check.png' height='10'>)&nbsp; อนุญาต &nbsp;    (&nbsp; )&nbsp; ไม่อนุญาต<br><br>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$shead_group['signature']?>' height='35'>&nbsp;&nbsp; ผู้อำนวยการฯ<br><br>
+                                            ( <?= $shead_group['fullname']?> )<br><br>
+                                            <?= DateThai2($work['reg_date'])?><br><br></center>
+                                         <?php }else{ ?>
                                          <u>คำสั่ง</u>&nbsp; (&nbsp; )&nbsp; อนุญาต &nbsp;    (&nbsp; )&nbsp; ไม่อนุญาต<br><br><br>
                                          (ลงชื่อ)..........................................................ผู้อำนวยการฯ<br><br>
                                          (..........................................................)<br><br>
                                          ........../............/............</center>
+                                         <?php }?> 
                                          <br>
                                          <div class="col-lg-12" align="right">
                                          <?php if($work['typela']=='3'){?>
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                         F-HR-010
+                                         F-AD-018
                                          <?php }else{ ?>
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                         F-HR-009
+                                         F-AD-019
                                          <?php }?>
                                      </div>
                                          
@@ -339,9 +395,9 @@ where p.empno='$empno' and p.workid='$workid' order by print_id desc");
                                  </div>
                                      
                                       </div>
-                                      <?php
+<?php 
 $time_re=  date('Y_m_d');
-$reg_date=$work[reg_date];
+$reg_date=$work['reg_date'];
 $html = ob_get_contents();
 ob_clean();
 $pdf = new mPDF('tha2','A4','10','');
@@ -350,8 +406,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("MyPDF/leave.pdf");
-echo "<meta http-equiv='refresh' content='0;url=MyPDF/leave.pdf' />";
+$pdf->Output("MyPDF/leave$empno$Code.pdf");
+echo "<meta http-equiv='refresh' content='0;url=MyPDF/leave$empno$Code.pdf' />";
 ?>
 </body>
 </html>

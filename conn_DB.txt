@@ -1,5 +1,5 @@
-10.0.0.11
-admintoy
-Gotoyt@y1@y2522
+localhost
+root
+
 hrd
 3306

@@ -1,0 +1,12 @@
+ALTER TABLE `work` 
+ADD COLUMN `authority` enum('ADMIN','USUSER','SUSER','USER') CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `depId`;
+
+ALTER TABLE `timela` 
+ADD COLUMN `authority` enum('ADMIN','USUSER','SUSER','USER') CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `depId`;
+
+ALTER TABLE `work` 
+ADD COLUMN `surrogate` int(7) AFTER `regis_date`;
+
+ALTER TABLE `emppersonal` 
+ADD COLUMN `signature` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci AFTER `regis_date`;
+

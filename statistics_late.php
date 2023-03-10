@@ -52,7 +52,7 @@ if (empty($_SESSION['user'])) {
                                     <label> ระบุเดือน-ปี : </label>
                                     <div class="form-group">
                                         <select name="txt_month" class="form-control">
-                                            <option value="">--------------</option>
+                                            <option value=""> เลือกเดือน </option>
                                             <?php
                                             $month = array('01' => 'มกราคม', '02' => 'กุมภาพันธ์', '03' => 'มีนาคม', '04' => 'เมษายน',
                                                 '05' => 'พฤษภาคม', '06' => 'มิถุนายน', '07' => 'กรกฎาคม', '08' => 'สิงหาคม',
@@ -69,14 +69,14 @@ if (empty($_SESSION['user'])) {
                                     </div>
                                     <div class="form-group">
                                         <select name="txt_year" class="form-control">
-                                            <option value="">--------------</option>
+                                            <option value=""> เลือกปี </option>
                                             <?php
                                             $txtYear = (isset($_POST['txt_year']) && $_POST['txt_year'] != '') ? $_POST['txt_year'] : date('Y');
 
                                             $yearStart = date('Y');
-                                            $yearEnd = $txtYear - 5;
+                                            $yearEnd = 2017;
 
-                                            for ($year = $yearStart; $year > $yearEnd; $year--) {
+                                            for ($year = ($yearStart+1); $year > $yearEnd; $year--) {
                                                 $selected = '';
                                                 if ($txtYear == $year)
                                                     $selected = 'selected="selected"';

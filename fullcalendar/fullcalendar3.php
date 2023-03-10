@@ -52,12 +52,12 @@
 <div align="center">
 <?php
 include '../connection/connect_calendra.php';
-$train=  mysqli_query($db,"SELECT tName FROM trainingtype ORDER BY tid ASC") or die(mysqli_error($db));
-$code_color=array("1"=>"orange","2"=>"violet","3"=>"green","4"=>"red","5"=>"yellowgreen","6"=>"blue","7"=>"brown","8"=>"purple");
-$i=1;
-while ($row = mysqli_fetch_array($train)) {  ?>
+$train=  mysqli_query($db,"SELECT tid,tName FROM trainingtype ORDER BY tid ASC") or die(mysqli_error($db));
+$code_color=array("1"=>"orange","2"=>"violet","3"=>"green","4"=>"red","5"=>"yellowgreen","6"=>"blue","7"=>"brown","8"=>"purple","9"=>"#977dd1","10"=>"#6a6a6a","11"=>"#361203");
+
+while ($row = mysqli_fetch_array($train)) {  $i=$row['tid'];?>
 <a style="background-color:<?= $code_color[$i]?>; color: white"><?= $row['tName']?></a> 
-<?php $i++; }?>
+<?php  }?>
 </div>
     
 <script src="js/fullcalendar-2.1.1/lib/jquery.min.js"></script>    

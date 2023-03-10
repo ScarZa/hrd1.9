@@ -72,7 +72,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 <div class="col-lg-12" align="let">
     <b>เรียน</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้อำนวยการ<?=$hospital['name']?>&nbsp;&nbsp;(ผ่านหัวหน้าฝ่ายทรัพยากรบุคคล)</div>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยข้าพเจ้า <?=$Person_detial['fullname']?> ตำแหน่ง <?=$Person_detial['posi']?> พร้อมคณะจำนวน <?= $person_data['count_person']-1?> คน
-(รายละเอียดแนบท้าย) มีความประสงค์เดินทางไปราชการเรื่อง <?=$Project_detial['projectName']?> ระหว่างวันที่</b> <?= DateThai2($Project_detial['Beginedate']) ?>&nbsp; ถึงวันที่ &nbsp; <?= DateThai2($Project_detial['endDate']) ?>
+(รายละเอียดแนบท้าย) มีความประสงค์เดินทางไปราชการเรื่อง <?=$Project_detial['projectName']?> (<b><?php if($Project_detial['dt']=='10' or $Project_detial['dt']=='11'){echo $Project_detial['tname'];}?></b>) ระหว่างวันที่</b> <?= DateThai2($Project_detial['Beginedate']) ?>&nbsp; ถึงวันที่ &nbsp; <?= DateThai2($Project_detial['endDate']) ?>
 ณ. <?= $Project_detial['stantee'] ?> จ. <?= $Project_detial['PROVINCE_NAME'] ?><br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในการนี้ ข้าพเจ้าขออนุมัติเดินทางไปราชการตั้งแต่วันที่&nbsp; <?= DateThai2($Project_detial['stdate'])?>&nbsp; ถึงวันที่&nbsp; <?= DateThai2($Project_detial['etdate'])?>&nbsp;
             โดยไม่ถือเป็นวันลา และขออนุมัติเดินทางโดย<br>
@@ -162,7 +162,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                 </table>
                     
                 
-            <br><br><div align="right">F-AD-100-03</div>
+            <br><div align="right">F-AD-100-03</div>
     <?php
     $html = ob_get_contents();
 ob_clean();

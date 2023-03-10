@@ -102,7 +102,13 @@ function fncSubmit()
                         }else{
                             $read='readonly';
                         }
-?>
+                        	if(!empty($_GET['user_id'])){?>
+                <div class="form-group">
+                <label>ลายเซ็นต์ &nbsp;</label>
+                <input type="file" name="image"  id="image" class="form-control"/>
+                    </div><br>
+                          <?php }?>
+                
 			<div class="form-group">	
 			<b>ชื่อผู้ใช้งาน</b>
                         <input type='text' name='user_account'  size="4"  id='user_account' placeholder='ชื่อผู้ใช้งาน' class='form-control'  onkeydown="return nextbox(event, 'user_pwd');"   value='<?= isset($resultGet['user_name'])?$resultGet['user_name']:''?>' required <?= $read?>>
@@ -139,8 +145,8 @@ function fncSubmit()
 	if(!empty($_GET['user_id'])){
 		$get=$_GET['user_id'];
                 $Get_id= isset($_GET['ID'])?$_GET['ID']:$_SESSION['UserID'];
-                echo "<input type='hidden' name='ID' value='$Get_id'>";
-		echo "<input type='hidden' name='user_id' value='$get'>";
+                echo "<input type='hidden' name='ID' value='".$Get_id."'>";
+		echo "<input type='hidden' name='user_id' value='".$get."'>";
 		echo "<input type='hidden' name='method' value='update'>";
 	 }
  ?> <br>

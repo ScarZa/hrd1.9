@@ -153,6 +153,8 @@ if (empty($_SESSION['user'])) {
                                         $text = 'กรณีเยียวยาอายุงาน';
                                     }elseif($edit_person['episode']==4){
                                         $text = 'การเพิ่มค่าจ้างประจำปี';
+                                    }elseif($edit_person['episode']==5){
+                                        $text = 'เพิ่มค่าจ้าง (ให้ถึงขั้นต่ำ)';
                                     }else{
                                         $text = "รอบที่ ".$edit_person['episode'];
                                     }
@@ -164,6 +166,7 @@ if (empty($_SESSION['user'])) {
                                 <option value='2'>รอบที่ 2</option>
                                 <option value='3'>กรณีเยียวยาอายุงาน</option>
                                 <option value='4'>การเพิ่มค่าจ้างประจำปี</option>
+                                <option value='5'>เพิ่มค่าจ้าง (ให้ถึงขั้นต่ำ)</option>
                            </select>
                                 <?php }?>
                             </div>

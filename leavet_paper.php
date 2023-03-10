@@ -31,6 +31,11 @@ INNER JOIN emppersonal e on e.empno=h.manager
 INNER JOIN pcode p on p.pcode=e.pcode");
     $hospital=mysqli_fetch_assoc($sql_hos);
     $sql=  mysqli_query($db,"select t1.*,concat(p1.pname,e1.firstname,' ',e1.lastname) as fullname,d1.depName as dep,d2.dep_name as depname,p2.posname as posi 
+    ,(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=t1.idAdmin) writer
+    ,(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=t1.receivert) appr
+    ,(SELECT concat(p1.pname,e2.firstname,' ',e2.lastname) FROM emppersonal e2 inner join pcode p1 on e2.pcode=p1.pcode WHERE e2.empno=t1.receivert) appr_name
+    ,if(!ISNULL(t1.comfirmert),(SELECT concat(p1.pname,e1.firstname,' ',e1.lastname) FROM emppersonal e1 WHERE e1.empno=t1.comfirmert),'') confirm_name
+    ,if(!ISNULL(t1.comfirmert),(SELECT e1.signature FROM emppersonal e1 WHERE e1.empno=t1.comfirmert),'') confirm
             from timela t1 
             inner join emppersonal e1 on t1.empno=e1.empno
             inner join pcode p1 on e1.pcode=p1.pcode
@@ -40,7 +45,26 @@ INNER JOIN pcode p on p.pcode=e.pcode");
             inner join posid p2 on wh.posid=p2.posId
             where t1.empno='$empno' and t1.id='$workid' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
     $work=  mysqli_fetch_assoc($sql);
-    
+    if(!empty($work['comfirmert']) and ($work['authority']=='USER'and ($work['regis_time']=='A' or $work['regis_time']=='Y'))){
+      $sql2=  mysqli_query($db,"SELECT concat(p1.pname,e.firstname,' ',e.lastname) fullname ,e.signature
+      FROM emppersonal e
+      inner join pcode p1 on e.pcode=p1.pcode
+      LEFT OUTER JOIN work_history wh ON wh.empno=e.empno and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+      inner join department d1 on wh.depid=d1.depId
+      inner join department_group d2 on d2.main_dep=d1.main_dep
+      INNER JOIN member m on m.Name = e.empno and m.Status = 'USUSER'
+      WHERE d2.main_dep = (SELECT main_dep FROM department WHERE depId = ".$work['depId'].")");
+
+      $head_group =  mysqli_fetch_assoc($sql2);
+    }
+    if(!empty($work['comfirmert']) and ($work['authority']=='SUSER' and ($work['regis_time']=='A' or $work['regis_time']=='Y'))){
+      $sql3=  mysqli_query($db,"SELECT concat(p1.pname,e.firstname,' ',e.lastname) fullname ,e.signature
+      FROM emppersonal e
+      inner join hospital h on h.manager = e.empno
+      inner join pcode p1 on e.pcode=p1.pcode");
+
+      $shead_group =  mysqli_fetch_assoc($sql3);
+    }
     $sql_leave=  mysqli_query($db,"select ty.nameLa,w.begindate,w.enddate,w.amount FROM print_leave p
 INNER JOIN `work` w on w.workid=p.befor_workid
 INNER JOIN typevacation ty on w.typela=ty.idla
@@ -55,7 +79,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
 <div class="col-lg-12" align="center">
 <table width="35%" border="0" align="right">
   <tr>
-    <th scope="col">ฝ่ายทรัพยากรบุคคล</th>
+    <th scope="col">กลุ่มทรัพยากรบุคคล</th>
   </tr>
   <tr>
     <td align="left">เลขรับ&nbsp;&nbsp;&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $work['idno']?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td>
@@ -85,8 +109,8 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                         ในวันที่วันที่<u>&nbsp; <?= DateThai2($work['datela'])?>&nbsp; </u>ตั้งแต่เวลา<u>&nbsp; <?= $work['starttime']?>&nbsp; </u>น. ถึงเวลา<u>&nbsp; <?= $work['endtime']?> &nbsp;</u>น.รวม<u> <?=$work['total']?> </u>ชั่วโมง<br>
                          เมื่อครบกำหนดเวลาดังกล่าวแล้ว ข้าพเจ้าจะกลับมาปฏิบัติหน้าที่ตามปกติ <br>
 </div>
-<div class="col-lg-12" align="center">ขอแสดงความนับถือ<br><br>
-                                                     ..........................................................<br>
+<div class="col-lg-12" align="center">ขอแสดงความนับถือ<br>
+                                          <img src='<?= "signature/".$work['writer']?>' height='35'><br>
                                                      ( <?= $work['fullname']?> )<br>
                                                       <?= DateThai2($work['vstdate'])?></div><br>
 
@@ -118,8 +142,12 @@ where empno='$empno' and tleave_id='$workid' order by printt_id desc limit 1");
 
 </table><br><br>
                                     
-                                         <center>(ลงชื่อ)..........................................................ผู้ตรวจสอบ<br><br>
-                                         ........../............/............<br><br></center>
+                                         <center><?php if(!empty($work['comfirmert'])){?>
+                                            (ลงชื่อ) <img src='<?= "signature/".$work['confirm']?>' height='35'> ผู้ตรวจสอบ<br>
+                                            ( <?= $work['confirm_name']?> )<br>
+                                            <?= DateThai2($work['regis_date'])?><br></center>
+                                         <?php }else{ ?>_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>(ลงชื่อ)..........................................................ผู้ตรวจสอบ<br><br>
+                                         ........../............/............<?php }?><br><br></center>
                                          </td>
                                          <td width="50%">
                                      
@@ -127,19 +155,43 @@ where empno='$empno' and tleave_id='$workid' order by printt_id desc limit 1");
                                          <left> เรียน  หัวหน้า <?= $work['depname']?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                                              - เห็นควรเสนอผู้อำนวยการพิจารณาอนุญาต&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br></left>
-                                         <center>(ลงชื่อ).............................................หัวหน้างาน/รักษาการ<br><br>
+                                         <center><?php if($work['authority']=='USER'and ($work['regis_time']=='A' or $work['regis_time']=='Y')){?>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['appr']?>' height='35'>&nbsp;&nbsp; หัวหน้างาน/กลุ่มงาน<br><br>
+                                            ( <?= $work['appr_name']?> )<br><br>
+                                            <?= DateThai2($work['regis_date'])?><br><p></center>
+                                         <?php }else{ ?>_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>(ลงชื่อ)..........................................หัวหน้างาน/กลุ่มงาน<br><br>
                                              (..........................................................)<br><br>
-                                         ........../............/............<br><br></center>
+                                         ........../............/............<br><br></center><?php }?>
                                          <left>เรียน  ผู้อำนวยการ <?=$hospital['name']?>&nbsp;&nbsp;<br>
                                                      - เพื่อพิจารณาอนุญาต&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br></left>
-                                         <center>(ลงชื่อ).............................................หัวหน้าฝ่าย/รักษาการ<br><br>
+                                         <center><?php if($work['authority']=='SUSER' and ($work['regis_time']=='A' or $work['regis_time']=='Y')){?>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['appr']?>' height='35'>&nbsp;&nbsp; หัวหน้ากลุ่มภารกิจ<br><br>
+                                            ( <?= $work['appr_name']?> )<br><br>
+                                            <?= DateThai2($work['regis_date'])?><br></center>
+                                            <?php }elseif(!empty($work['comfirmert']) and ($work['authority']=='USER'and ($work['regis_time']=='A' or $work['regis_time']=='Y'))){?>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$head_group['signature']?>' height='35'>&nbsp;&nbsp; หัวหน้ากลุ่มภารกิจ<br><br>
+                                            ( <?= $head_group['fullname']?> )<br><br>
+                                            <?= DateThai2($work['regis_date'])?><br><br></center>
+                                         <?php }else{ ?>_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>(ลงชื่อ)..........................................หัวหน้ากลุ่มภารกิจ<br><br>
                                          (..........................................................)<br><br>
-                                         ........../............/............<br><br>
+                                         ........../............/............<br><br><?php }?>
+                                         <?php if($work['authority']=='USUSER' and ($work['regis_time']=='A' or $work['regis_time']=='Y')){?>
+                                            <u>คำสั่ง</u>&nbsp; (<img src='images/check.png' height='10'>)&nbsp; อนุญาต &nbsp;    (&nbsp; )&nbsp; ไม่อนุญาต<br><br>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$work['appr']?>' height='35'>&nbsp;&nbsp; ผู้อำนวยการฯ<br><br>
+                                            ( <?= $work['appr_name']?> )<br><br>
+                                            <?= DateThai2($work['regis_date'])?><br><br></center>
+                                         <?php }elseif(!empty($work['comfirmert']) and ($work['authority']=='SUSER' and ($work['regis_time']=='A' or $work['regis_time']=='Y'))){?>
+                                            <u>คำสั่ง</u>&nbsp; (<img src='images/check.png' height='10'>)&nbsp; อนุญาต &nbsp;    (&nbsp; )&nbsp; ไม่อนุญาต<br><br>
+                                            (ลงชื่อ) &nbsp;&nbsp;<img src='<?= "signature/".$shead_group['signature']?>' height='35'>&nbsp;&nbsp; ผู้อำนวยการฯ<br><br>
+                                            ( <?= $shead_group['fullname']?> )<br><br>
+                                            <?= DateThai2($work['regis_date'])?><br><br></center>
+                                         <?php }else{ ?>
                                          <u>คำสั่ง</u>&nbsp; (&nbsp; )&nbsp; อนุญาต &nbsp;    (&nbsp; )&nbsp; ไม่อนุญาต<br><br><br>
                                          (ลงชื่อ)..........................................................ผู้อำนวยการฯ<br><br>
                                          (..........................................................)<br><br>
                                          ........../............/............</center>
+                                         <?php }?>
                                          <br><div class="col-lg-12" align="right">
                                          
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

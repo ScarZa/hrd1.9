@@ -14,7 +14,7 @@ if($_GET['gData']){
          and process='1' ORDER by event_id";    
     $qr=mysqli_query($db,$q) or die(mysqli_error($db)); 
     
-    $code_color=array("1"=>"orange","2"=>"violet","3"=>"green","4"=>"red","5"=>"yellowgreen","6"=>"blue","7"=>"brown","8"=>"purple");
+    $code_color=array("1"=>"orange","2"=>"violet","3"=>"green","4"=>"red","5"=>"yellowgreen","6"=>"blue","7"=>"brown","8"=>"purple","9"=>"#361203","10"=>"#6a6a6a","11"=>"#977dd1");
     $sql_train=  mysqli_query($db,"SELECT COUNT(tid) as count_train FROM trainingtype") or die(mysqli_error($db));
     $train= mysqli_fetch_array($sql_train);
     while($rs=mysqli_fetch_array($qr)){  
