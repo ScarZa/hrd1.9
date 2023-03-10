@@ -49,6 +49,8 @@ if (!empty($resultHos['logo'])) {
         <!-- excell export -->
         <script src="option/js/excellentexport.js"></script>
 
+        <script src="js/createTableAjax.js"></script>
+
         <!-- InstanceBeginEditable name="head" -->
             <!--<style type="text/css">
         html{
@@ -260,7 +262,7 @@ if (!empty($resultHos['logo'])) {
                                     <li><a href="pre_leave.php?unset=1"><img src='images/Lfolder.ico' width='25'> บันทึกการลาบุคลากร</a></li>
     <?php } if ($_SESSION['Status'] == 'SUSER' or $_SESSION['Status'] == 'USUSER') { ?>
                                     <li class="divider"></li>
-                                    <li><a href="receive_leave.php?unset=1"><img src='images/kwrite.ico' width='25'> บันทึกทะเบียนใบลาในหน่วยงาน</a></li>
+                                    <li><a href="receive_leave.php?unset=1"><img src='images/kwrite.ico' width='25'> บันทึกทะเบียนใบลาในกลุ่มงาน/กลุ่มภารกิจ</a></li>
                                     <li><a href="Lperson_report.php?unset=1"><img src='images/kchart.ico' width='25'> สถิติการลาในหน่วยงาน</a></li>
     <?php } if($resultHos['manager']==$_SESSION['user']){?>
         <li class="divider"></li>
